@@ -281,10 +281,6 @@ fun LeaderboardScreen(
 
                             Column {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-<<<<<<< HEAD
-                                    Text(
-                                        text = if (isYou) "👑 $userName" else row.name,
-=======
                                     val rowDisplayName = when {
                                         row.name.isNotBlank() -> row.name
                                         row.username.isNotBlank() -> "@${row.username.removePrefix("@")}"
@@ -292,29 +288,10 @@ fun LeaderboardScreen(
                                     }
                                     Text(
                                         text = rowDisplayName,
->>>>>>> 6e834ed (Update Taqwahub)
                                         color = if (isYou) GoldPrimary else Color.White,
                                         fontSize = 13.sp,
                                         fontWeight = if (isYou) FontWeight.Black else FontWeight.Bold
                                     )
-<<<<<<< HEAD
-                                    if (isYou) {
-                                        Spacer(modifier = Modifier.width(6.dp))
-                                        Box(
-                                            modifier = Modifier
-                                                .background(GoldPrimary.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                                                .padding(horizontal = 4.dp, vertical = 2.dp)
-                                        ) {
-                                            Text(
-                                                text = "YOU",
-                                                color = GoldPrimary,
-                                                fontSize = 8.sp,
-                                                fontWeight = FontWeight.Black
-                                            )
-                                        }
-                                    }
-=======
->>>>>>> 6e834ed (Update Taqwahub)
                                     if (viewModel.isUserVerified(row)) {
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Icon(
@@ -437,10 +414,6 @@ fun LeaderboardScreen(
 
                                 Column {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-<<<<<<< HEAD
-                                        Text(
-                                            text = "👑 $userName",
-=======
                                         val myDisplayName = when {
                                             userName.isNotBlank() -> userName
                                             stats.username.isNotBlank() -> "@${stats.username.removePrefix("@")}"
@@ -448,28 +421,10 @@ fun LeaderboardScreen(
                                         }
                                         Text(
                                             text = myDisplayName,
->>>>>>> 6e834ed (Update Taqwahub)
                                             color = GoldPrimary,
                                             fontSize = 13.sp,
                                             fontWeight = FontWeight.Black
                                         )
-<<<<<<< HEAD
-                                        Spacer(modifier = Modifier.width(6.dp))
-                                        // "ME" Tag
-                                        Box(
-                                            modifier = Modifier
-                                                .background(GoldPrimary.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                                                .padding(horizontal = 4.dp, vertical = 2.dp)
-                                        ) {
-                                            Text(
-                                                text = "YOU",
-                                                color = GoldPrimary,
-                                                fontSize = 8.sp,
-                                                fontWeight = FontWeight.Black
-                                            )
-                                        }
-=======
->>>>>>> 6e834ed (Update Taqwahub)
                                     }
                                     Text(
                                         text = "Your Position",
@@ -693,10 +648,6 @@ fun UserProfileDialog(
                             }
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
-<<<<<<< HEAD
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(user.name, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-=======
                                 val profileDisplayName = when {
                                     user.name.isNotBlank() -> user.name
                                     user.username.isNotBlank() -> "@${user.username.removePrefix("@")}"
@@ -704,7 +655,6 @@ fun UserProfileDialog(
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(profileDisplayName, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
->>>>>>> 6e834ed (Update Taqwahub)
                                     if (isVerified) {
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Icon(
@@ -715,9 +665,6 @@ fun UserProfileDialog(
                                         )
                                     }
                                 }
-<<<<<<< HEAD
-                                Text("${user.sectOrCast} • ${user.gender}", color = TextGray, fontSize = 11.sp)
-=======
 
                                 val handle = if (user.username.isNotBlank()) "@${user.username.removePrefix("@")}" else ""
                                 val caste = if (user.sectOrCast.isNotBlank() && !user.sectOrCast.equals("none", ignoreCase = true)) user.sectOrCast else ""
@@ -728,7 +675,6 @@ fun UserProfileDialog(
                                 if (subtitleText.isNotBlank()) {
                                     Text(subtitleText, color = TextGray, fontSize = 11.sp)
                                 }
->>>>>>> 6e834ed (Update Taqwahub)
                             }
                         }
 

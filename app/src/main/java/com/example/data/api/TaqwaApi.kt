@@ -72,12 +72,8 @@ data class AudioFile(
 
 // Models for Aladhan Prayer Times API
 data class AladhanResponse(val code: Int, val status: String, val data: AladhanData?)
-<<<<<<< HEAD
-data class AladhanData(val timings: AladhanTimings?)
-=======
 data class AladhanData(val timings: AladhanTimings?, val meta: AladhanMeta? = null)
 data class AladhanMeta(val timezone: String?)
->>>>>>> 6e834ed (Update Taqwahub)
 data class AladhanTimings(
     val Fajr: String,
     val Sunrise: String,

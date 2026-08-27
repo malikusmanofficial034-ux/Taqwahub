@@ -16,14 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-<<<<<<< HEAD
-=======
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import com.example.R
->>>>>>> 6e834ed (Update Taqwahub)
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -31,11 +28,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-<<<<<<< HEAD
-=======
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDirection
->>>>>>> 6e834ed (Update Taqwahub)
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.GoldPrimary
@@ -63,10 +57,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.util.Base64
 import androidx.compose.ui.graphics.asImageBitmap
-<<<<<<< HEAD
-import androidx.compose.ui.layout.ContentScale
-=======
->>>>>>> 6e834ed (Update Taqwahub)
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.graphicsLayer
@@ -408,8 +398,6 @@ fun MaintenanceBlockScreen(message: String, onSignOut: () -> Unit) {
     }
 }
 
-<<<<<<< HEAD
-=======
 @Composable
 fun ModuleLockedContentView(
     moduleTitle: String,
@@ -905,7 +893,6 @@ fun ModuleMatrixItemCard(
     }
 }
 
->>>>>>> 6e834ed (Update Taqwahub)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
@@ -945,8 +932,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
     var isTrackerCardLockedInput by remember { mutableStateOf(viewModel.appConfig.isTrackerCardLocked) }
     var trackerMsgInput by remember { mutableStateOf(viewModel.appConfig.trackerBlockedMessage) }
 
-<<<<<<< HEAD
-=======
     // Module Control Matrix States (12 Modules)
     var isHadithLockedInput by remember { mutableStateOf(viewModel.appConfig.isHadithLocked) }
     var isHadithHiddenInput by remember { mutableStateOf(viewModel.appConfig.isHadithHidden) }
@@ -1011,7 +996,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
     // Admin Lock Screen Live Preview State
     var previewLockData by remember { mutableStateOf<Triple<String, String, String>?>(null) }
 
->>>>>>> 6e834ed (Update Taqwahub)
     // Collapsible states
     var isConfigExpanded by remember { mutableStateOf(true) }
     var isPageFeatureBlockersExpanded by remember { mutableStateOf(false) }
@@ -1057,25 +1041,17 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
     var announceMessage by remember { mutableStateOf("") }
     var announceType by remember { mutableStateOf("Announcement") } // "Announcement", "Update", "Reminder"
 
-<<<<<<< HEAD
-    // Add Dua Form states
-    var duaCategory by remember { mutableStateOf("") }
-=======
     // Add/Edit Dua Form states
     var editingDuaId by remember { mutableStateOf<String?>(null) }
     var duaCategory by remember { mutableStateOf("") }
     var newCategoryInput by remember { mutableStateOf("") }
     var isAddingNewCategory by remember { mutableStateOf(false) }
->>>>>>> 6e834ed (Update Taqwahub)
     var duaReference by remember { mutableStateOf("") }
     var duaArabic by remember { mutableStateOf("") }
     var duaTransliteration by remember { mutableStateOf("") }
     var duaTranslation by remember { mutableStateOf("") }
     var duaTranslationUrdu by remember { mutableStateOf("") }
-<<<<<<< HEAD
-=======
     var duaToDeleteId by remember { mutableStateOf<String?>(null) }
->>>>>>> 6e834ed (Update Taqwahub)
 
     // Add Hadith Form states
     var hadithChapter by remember { mutableStateOf("") }
@@ -1324,8 +1300,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
         )
     }
 
-<<<<<<< HEAD
-=======
     // DUA DELETE CONFIRMATION DIALOG
     if (duaToDeleteId != null) {
         AlertDialog(
@@ -1379,7 +1353,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     Scaffold(
         topBar = {
             TopAppBar(
@@ -1578,11 +1551,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = donateRedirectUrlInput,
                         onValueChange = { donateRedirectUrlInput = it },
-<<<<<<< HEAD
-                        label = { Text("Donation Website Redirection URL 💖", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Donation Website Redirection URL", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -1590,11 +1559,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = privacyPolicyUrlInput,
                         onValueChange = { privacyPolicyUrlInput = it },
-<<<<<<< HEAD
-                        label = { Text("Privacy Policy URL 🛡️", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Privacy Policy URL", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -1602,11 +1567,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = termsOfServiceUrlInput,
                         onValueChange = { termsOfServiceUrlInput = it },
-<<<<<<< HEAD
-                        label = { Text("Terms of Service URL 📜", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Terms of Service URL", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -1614,11 +1575,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = deleteAccountUrlInput,
                         onValueChange = { deleteAccountUrlInput = it },
-<<<<<<< HEAD
-                        label = { Text("Web Account Deletion Portal URL ⚠️", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Web Account Deletion Portal URL", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -1665,11 +1622,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                 }
             }
 
-<<<<<<< HEAD
-            // SECTION 1.2: Page & Feature Blockers
-            AdminCollapsibleCard(
-                title = "1.2. Page & Feature Blockers",
-=======
             // SECTION 1.2: Module Security & Visibility Matrix (Lock, Hide, Custom Reasons)
             val saveModuleMatrixSettings = {
                 try {
@@ -1746,110 +1698,10 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
 
             AdminCollapsibleCard(
                 title = "1.2. Module Security & Visibility Matrix (12 Pages)",
->>>>>>> 6e834ed (Update Taqwahub)
                 icon = Icons.Default.Block,
                 isExpanded = isPageFeatureBlockersExpanded,
                 onHeaderClick = { isPageFeatureBlockersExpanded = !isPageFeatureBlockersExpanded }
             ) {
-<<<<<<< HEAD
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        text = "Easily turn off specific app features, blocks, and define custom warning messages globally.",
-                        color = Color.White.copy(alpha = 0.6f),
-                        fontSize = 12.sp
-                    )
-                    
-                    // Quran Page
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Quran Page", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isQuranPageLockedInput, onCheckedChange = { isQuranPageLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = quranPageMsgInput, onValueChange = { quranPageMsgInput = it },
-                        label = { Text("Quran Page Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    // Tools Page
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Tools Page", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isToolsPageLockedInput, onCheckedChange = { isToolsPageLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = toolsPageMsgInput, onValueChange = { toolsPageMsgInput = it },
-                        label = { Text("Tools Page Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    // Learn Page
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Learn Page", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isLearnPageLockedInput, onCheckedChange = { isLearnPageLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = learnPageMsgInput, onValueChange = { learnPageMsgInput = it },
-                        label = { Text("Learn Page Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    // Cards
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Prayer Times Card", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isPrayerTimesCardLockedInput, onCheckedChange = { isPrayerTimesCardLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = prayerTimesMsgInput, onValueChange = { prayerTimesMsgInput = it },
-                        label = { Text("Prayer Times Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Jumu'ah Card", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isDailyAyahCardLockedInput, onCheckedChange = { isDailyAyahCardLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = dailyAyahMsgInput, onValueChange = { dailyAyahMsgInput = it },
-                        label = { Text("Jumu'ah Card Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Lock Tracker Card", color = Color.White, fontWeight = FontWeight.Bold)
-                        Switch(checked = isTrackerCardLockedInput, onCheckedChange = { isTrackerCardLockedInput = it }, colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary))
-                    }
-                    OutlinedTextField(
-                        value = trackerMsgInput, onValueChange = { trackerMsgInput = it },
-                        label = { Text("Tracker Locked Message", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White), modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Button(
-                        onClick = {
-                            try {
-                                val newConfig = viewModel.appConfig.copy(
-                                    isQuranPageLocked = isQuranPageLockedInput,
-                                    quranPageBlockedMessage = quranPageMsgInput,
-                                    isToolsPageLocked = isToolsPageLockedInput,
-                                    toolsPageBlockedMessage = toolsPageMsgInput,
-                                    isLearnPageLocked = isLearnPageLockedInput,
-                                    learnPageBlockedMessage = learnPageMsgInput,
-                                    isPrayerTimesCardLocked = isPrayerTimesCardLockedInput,
-                                    prayerTimesBlockedMessage = prayerTimesMsgInput,
-                                    isDailyAyahCardLocked = isDailyAyahCardLockedInput,
-                                    dailyAyahBlockedMessage = dailyAyahMsgInput,
-                                    isTrackerCardLocked = isTrackerCardLockedInput,
-                                    trackerBlockedMessage = trackerMsgInput
-                                )
-                                viewModel.saveAppConfig(newConfig, {
-                                    Toast.makeText(context, "Blockers successfully updated!", Toast.LENGTH_SHORT).show()
-                                }, { err ->
-                                    Toast.makeText(context, "Blockers save failed: $err", Toast.LENGTH_LONG).show()
-                                })
-                            } catch (e: Exception) {
-                                Toast.makeText(context, "Save Exception: ${e.message}", Toast.LENGTH_LONG).show()
-                            }
-                        },
-=======
                 Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                     Text(
                         text = "Granular security matrix: Lock, Hide, set Custom Reason Messages, and select Theme-Matching Artwork for all 12 core app pages.",
@@ -2062,14 +1914,10 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
 
                     Button(
                         onClick = saveModuleMatrixSettings,
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = ButtonDefaults.buttonColors(containerColor = GoldPrimary),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth().height(48.dp)
                     ) {
-<<<<<<< HEAD
-                        Text("Save Blockers", color = Color(0xFF021612), fontWeight = FontWeight.Black)
-=======
                         Icon(
                             imageVector = Icons.Default.Save,
                             contentDescription = null,
@@ -2078,7 +1926,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Save All Module Configurations", color = Color(0xFF021612), fontWeight = FontWeight.Black)
->>>>>>> 6e834ed (Update Taqwahub)
                     }
                 }
             }
@@ -2264,101 +2111,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
 
                     Spacer(modifier = Modifier.height(16.dp))
                     HorizontalDivider(color = Color(0xFF1B4E38), thickness = 1.dp)
-<<<<<<< HEAD
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = "Admin User Lookup & Remote Control",
-                        color = GoldPrimary,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = userSearchQuery,
-                        onValueChange = { userSearchQuery = it.trim().lowercase() },
-                        modifier = Modifier.fillMaxWidth().testTag("admin_user_search_field"),
-                        placeholder = { Text("Search by unique username...", color = Color.White.copy(alpha = 0.4f), fontSize = 13.sp) },
-                        shape = RoundedCornerShape(12.dp),
-                        singleLine = true,
-                        trailingIcon = {
-                            if (isSearchingUser) {
-                                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = GoldPrimary, strokeWidth = 2.dp)
-                            } else {
-                                IconButton(
-                                    onClick = {
-                                        val queryStr = userSearchQuery.trim().lowercase()
-                                        if (queryStr.isEmpty()) {
-                                            Toast.makeText(context, "Please enter a username", Toast.LENGTH_SHORT).show()
-                                            return@IconButton
-                                        }
-                                        isSearchingUser = true
-                                        searchedUserStats = null
-                                        searchedUserUid = null
-
-                                        val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                                        db.collection("users")
-                                            .whereEqualTo("userStats.username", queryStr)
-                                            .get()
-                                            .addOnSuccessListener { snapshot ->
-                                                isSearchingUser = false
-                                                if (snapshot != null && !snapshot.isEmpty) {
-                                                    val doc = snapshot.documents.first()
-                                                    val uid = doc.id
-                                                    val remoteStatsMap = doc.get("userStats") as? Map<String, Any>
-                                                    if (remoteStatsMap != null) {
-                                                        val stats = UserStatsEntity(
-                                                            id = 1,
-                                                            totalTasksCompleted = (remoteStatsMap["totalTasksCompleted"] as? Long)?.toInt() ?: 0,
-                                                            daysActive = (remoteStatsMap["daysActive"] as? Long)?.toInt() ?: 1,
-                                                            quranProgress = (remoteStatsMap["quranProgress"] as? Long)?.toInt() ?: 0,
-                                                            lastReadSurah = (remoteStatsMap["lastReadSurah"] as? Long)?.toInt() ?: 1,
-                                                            lastReadVerse = (remoteStatsMap["lastReadVerse"] as? Long)?.toInt() ?: 1,
-                                                            lastReadVerseKey = remoteStatsMap["lastReadVerseKey"] as? String ?: "1:1",
-                                                            tasbeehCount = (remoteStatsMap["tasbeehCount"] as? Long)?.toInt() ?: 0,
-                                                            lastResetDate = remoteStatsMap["lastResetDate"] as? String ?: "",
-                                                            currentStreak = (remoteStatsMap["currentStreak"] as? Long)?.toInt() ?: 0,
-                                                            streakChancesLeft = (remoteStatsMap["streakChancesLeft"] as? Long)?.toInt() ?: 2,
-                                                            longestStreak = (remoteStatsMap["longestStreak"] as? Long)?.toInt() ?: 0,
-                                                            totalXp = (remoteStatsMap["totalXp"] as? Long)?.toInt() ?: 0,
-                                                            weeklyXp = (remoteStatsMap["weeklyXp"] as? Long)?.toInt() ?: 0,
-                                                            lastActiveWeekOfYear = (remoteStatsMap["lastActiveWeekOfYear"] as? Long)?.toInt() ?: 0,
-                                                            name = remoteStatsMap["name"] as? String ?: "Servant of Allah",
-                                                            username = remoteStatsMap["username"] as? String ?: "",
-                                                            gender = remoteStatsMap["gender"] as? String ?: "Male",
-                                                            sectOrCast = remoteStatsMap["sectOrCast"] as? String ?: "Sunni",
-                                                            email = remoteStatsMap["email"] as? String ?: "",
-                                                            completedSurahs = remoteStatsMap["completedSurahs"] as? String ?: "",
-                                                            firstPlaceCount = (remoteStatsMap["firstPlaceCount"] as? Long)?.toInt() ?: 0,
-                                                            secondPlaceCount = (remoteStatsMap["secondPlaceCount"] as? Long)?.toInt() ?: 0,
-                                                            thirdPlaceCount = (remoteStatsMap["thirdPlaceCount"] as? Long)?.toInt() ?: 0,
-                                                            isBlocked = remoteStatsMap["isBlocked"] as? Boolean ?: false, isVerified = remoteStatsMap["isVerified"] as? Boolean ?: false, profilePictureBase64 = remoteStatsMap["profilePictureBase64"] as? String ?: ""
-                                                        )
-                                                        searchedUserStats = stats
-                                                        searchedUserUid = uid
-                                                        Toast.makeText(context, "User found!", Toast.LENGTH_SHORT).show()
-                                                    } else {
-                                                        Toast.makeText(context, "User stats map is empty", Toast.LENGTH_SHORT).show()
-                                                    }
-                                                } else {
-                                                    Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
-                                                }
-                                            }
-                                            .addOnFailureListener {
-                                                isSearchingUser = false
-                                                Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_LONG).show()
-                                            }
-                                    }
-                                ) {
-                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search", tint = GoldPrimary)
-                                }
-                            }
-                        },
-=======
                     // SECTION 1.6: PAGINATED USER DIRECTORY & REMOTE CONTROL
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -2452,7 +2204,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                         },
                         shape = RoundedCornerShape(12.dp),
                         singleLine = true,
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
@@ -2461,21 +2212,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                         )
                     )
 
-<<<<<<< HEAD
-                    searchedUserStats?.let { stats ->
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Card(
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF021612)),
-                            shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(1.dp, GoldPrimary.copy(alpha = 0.2f)),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-=======
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Filtered List Logic
@@ -2891,246 +2627,11 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                             // Pagination Load More Controls
                             if (searchQuery.isBlank()) {
                                 Spacer(modifier = Modifier.height(4.dp))
->>>>>>> 6e834ed (Update Taqwahub)
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-<<<<<<< HEAD
-                                    Column {
-                                        Text(stats.name, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                                        Text("@${stats.username}", color = GoldPrimary, fontSize = 12.sp, fontWeight = FontWeight.Medium)
-                                        Text(stats.email, color = Color.White.copy(alpha = 0.5f), fontSize = 11.sp)
-                                    }
-                                    Card(
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = if (stats.isBlocked) Color(0xFF7F1D1D).copy(alpha = 0.15f) else Color(0xFF10B981).copy(alpha = 0.15f)
-                                        ),
-                                        shape = RoundedCornerShape(8.dp),
-                                        border = BorderStroke(1.dp, if (stats.isBlocked) Color(0xFFEF4444) else Color(0xFF10B981))
-                                    ) {
-                                        Text(
-                                            text = if (stats.isBlocked) "SUSPENDED" else "ACTIVE",
-                                            color = if (stats.isBlocked) Color(0xFFEF4444) else Color(0xFF10B981),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                                        )
-                                    }
-                                }
-
-                                HorizontalDivider(color = Color(0xFF1B4E38).copy(alpha = 0.5f))
-
-                                var editTotalXp by remember(stats) { mutableStateOf(stats.totalXp.toString()) }
-                                var editWeeklyXp by remember(stats) { mutableStateOf(stats.weeklyXp.toString()) }
-                                var editCurrentStreak by remember(stats) { mutableStateOf(stats.currentStreak.toString()) }
-                                var editStreakChances by remember(stats) { mutableStateOf(stats.streakChancesLeft.toString()) }
-                                var editFirstPlace by remember(stats) { mutableStateOf(stats.firstPlaceCount.toString()) }
-                                var editIsVerified by remember(stats) { mutableStateOf(stats.isVerified) }
-
-                                Text("Modify User Statistics", color = GoldPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    OutlinedTextField(
-                                        value = editTotalXp,
-                                        onValueChange = { editTotalXp = it },
-                                        label = { Text("Total XP", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp) },
-                                        modifier = Modifier.weight(1f),
-                                        singleLine = true,
-                                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38))
-                                    )
-                                    OutlinedTextField(
-                                        value = editWeeklyXp,
-                                        onValueChange = { editWeeklyXp = it },
-                                        label = { Text("Weekly XP", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp) },
-                                        modifier = Modifier.weight(1f),
-                                        singleLine = true,
-                                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38))
-                                    )
-                                }
-
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    OutlinedTextField(
-                                        value = editCurrentStreak,
-                                        onValueChange = { editCurrentStreak = it },
-                                        label = { Text("Streak", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp) },
-                                        modifier = Modifier.weight(1f),
-                                        singleLine = true,
-                                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38))
-                                    )
-                                    OutlinedTextField(
-                                        value = editStreakChances,
-                                        onValueChange = { editStreakChances = it },
-                                        label = { Text("Chances", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp) },
-                                        modifier = Modifier.weight(1f),
-                                        singleLine = true,
-                                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38))
-                                    )
-                                    OutlinedTextField(
-                                        value = editFirstPlace,
-                                        onValueChange = { editFirstPlace = it },
-                                        label = { Text("1st Place", color = Color.White.copy(alpha = 0.5f), fontSize = 10.sp) },
-                                        modifier = Modifier.weight(1f),
-                                        singleLine = true,
-                                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38))
-                                    )
-                                }
-
-                                if (viewModel.isSuperAdmin) {
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Column(modifier = Modifier.weight(1f)) {
-                                            Text("Verified Servant Badge", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                            Text("Grant premium golden verified badge to this user", color = Color.White.copy(alpha = 0.5f), fontSize = 11.sp)
-                                        }
-                                        Switch(
-                                            checked = editIsVerified,
-                                            onCheckedChange = { editIsVerified = it },
-                                            colors = SwitchDefaults.colors(checkedThumbColor = GoldPrimary, checkedTrackColor = Color(0xFF1B4E38))
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(4.dp))
-
-                                var isSavingChanges by remember { mutableStateOf(false) }
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Button(
-                                        onClick = {
-                                            isSavingChanges = true
-                                            val updatedStatsMap = hashMapOf<String, Any>(
-                                                "totalTasksCompleted" to stats.totalTasksCompleted,
-                                                "daysActive" to stats.daysActive,
-                                                "quranProgress" to stats.quranProgress,
-                                                "lastReadSurah" to stats.lastReadSurah,
-                                                "lastReadVerse" to stats.lastReadVerse,
-                                                "lastReadVerseKey" to stats.lastReadVerseKey,
-                                                "tasbeehCount" to stats.tasbeehCount,
-                                                "lastResetDate" to stats.lastResetDate,
-                                                "currentStreak" to (editCurrentStreak.toIntOrNull()?.coerceAtLeast(0) ?: stats.currentStreak) as Any,
-                                                "streakChancesLeft" to (editStreakChances.toIntOrNull()?.coerceAtLeast(0) ?: stats.streakChancesLeft) as Any,
-                                                "longestStreak" to stats.longestStreak,
-                                                "totalXp" to (editTotalXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.totalXp) as Any,
-                                                "weeklyXp" to (editWeeklyXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.weeklyXp) as Any,
-                                                "lastActiveWeekOfYear" to stats.lastActiveWeekOfYear,
-                                                "name" to stats.name,
-                                                "username" to stats.username,
-                                                "gender" to stats.gender,
-                                                "sectOrCast" to stats.sectOrCast,
-                                                "email" to stats.email,
-                                                "completedSurahs" to stats.completedSurahs,
-                                                "firstPlaceCount" to (editFirstPlace.toIntOrNull()?.coerceAtLeast(0) ?: stats.firstPlaceCount) as Any,
-                                                "secondPlaceCount" to stats.secondPlaceCount,
-                                                "thirdPlaceCount" to stats.thirdPlaceCount,
-                                                "isBlocked" to !stats.isBlocked,
-                                                "isVerified" to editIsVerified,
-                                                "profilePictureBase64" to stats.profilePictureBase64
-                                            )
-
-                                            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                                            db.collection("users").document(searchedUserUid!!)
-                                                .update(
-                                                    "userStats", updatedStatsMap,
-                                                    "lastUpdatedAt", System.currentTimeMillis()
-                                                )
-                                                .addOnSuccessListener {
-                                                    isSavingChanges = false
-                                                    searchedUserStats = stats.copy(
-                                                        isBlocked = !stats.isBlocked,
-                                                        totalXp = editTotalXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.totalXp,
-                                                        weeklyXp = editWeeklyXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.weeklyXp,
-                                                        currentStreak = editCurrentStreak.toIntOrNull()?.coerceAtLeast(0) ?: stats.currentStreak,
-                                                        streakChancesLeft = editStreakChances.toIntOrNull()?.coerceAtLeast(0) ?: stats.streakChancesLeft,
-                                                        firstPlaceCount = editFirstPlace.toIntOrNull()?.coerceAtLeast(0) ?: stats.firstPlaceCount,
-                                                        isVerified = editIsVerified
-                                                    )
-                                                    Toast.makeText(context, if (!stats.isBlocked) "User Suspended!" else "User Activated!", Toast.LENGTH_SHORT).show()
-                                                }
-                                                .addOnFailureListener {
-                                                    isSavingChanges = false
-                                                    Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_LONG).show()
-                                                }
-                                        },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = if (stats.isBlocked) Color(0xFF10B981) else Color(0xFFEF4444)
-                                        ),
-                                        modifier = Modifier.weight(1.5f),
-                                        shape = RoundedCornerShape(10.dp)
-                                    ) {
-                                        Text(if (stats.isBlocked) "UNSUSPEND" else "SUSPEND", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                    }
-
-                                    Button(
-                                        onClick = {
-                                            isSavingChanges = true
-                                            val updatedStatsMap = hashMapOf<String, Any>(
-                                                "totalTasksCompleted" to stats.totalTasksCompleted,
-                                                "daysActive" to stats.daysActive,
-                                                "quranProgress" to stats.quranProgress,
-                                                "lastReadSurah" to stats.lastReadSurah,
-                                                "lastReadVerse" to stats.lastReadVerse,
-                                                "lastReadVerseKey" to stats.lastReadVerseKey,
-                                                "tasbeehCount" to stats.tasbeehCount,
-                                                "lastResetDate" to stats.lastResetDate,
-                                                "currentStreak" to (editCurrentStreak.toIntOrNull()?.coerceAtLeast(0) ?: stats.currentStreak) as Any,
-                                                "streakChancesLeft" to (editStreakChances.toIntOrNull()?.coerceAtLeast(0) ?: stats.streakChancesLeft) as Any,
-                                                "longestStreak" to stats.longestStreak,
-                                                "totalXp" to (editTotalXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.totalXp) as Any,
-                                                "weeklyXp" to (editWeeklyXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.weeklyXp) as Any,
-                                                "lastActiveWeekOfYear" to stats.lastActiveWeekOfYear,
-                                                "name" to stats.name,
-                                                "username" to stats.username,
-                                                "gender" to stats.gender,
-                                                "sectOrCast" to stats.sectOrCast,
-                                                "email" to stats.email,
-                                                "completedSurahs" to stats.completedSurahs,
-                                                "firstPlaceCount" to (editFirstPlace.toIntOrNull()?.coerceAtLeast(0) ?: stats.firstPlaceCount) as Any,
-                                                "secondPlaceCount" to stats.secondPlaceCount,
-                                                "thirdPlaceCount" to stats.thirdPlaceCount,
-                                                "isBlocked" to stats.isBlocked,
-                                                "isVerified" to editIsVerified,
-                                                "profilePictureBase64" to stats.profilePictureBase64
-                                            )
-
-                                            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                                            db.collection("users").document(searchedUserUid!!)
-                                                .update(
-                                                    "userStats", updatedStatsMap,
-                                                    "lastUpdatedAt", System.currentTimeMillis()
-                                                )
-                                                .addOnSuccessListener {
-                                                    isSavingChanges = false
-                                                    searchedUserStats = stats.copy(
-                                                        totalXp = editTotalXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.totalXp,
-                                                        weeklyXp = editWeeklyXp.toIntOrNull()?.coerceAtLeast(0) ?: stats.weeklyXp,
-                                                        currentStreak = editCurrentStreak.toIntOrNull()?.coerceAtLeast(0) ?: stats.currentStreak,
-                                                        streakChancesLeft = editStreakChances.toIntOrNull()?.coerceAtLeast(0) ?: stats.streakChancesLeft,
-                                                        firstPlaceCount = editFirstPlace.toIntOrNull()?.coerceAtLeast(0) ?: stats.firstPlaceCount,
-                                                        isVerified = editIsVerified
-                                                    )
-                                                    Toast.makeText(context, "User stats updated remote!", Toast.LENGTH_SHORT).show()
-                                                }
-                                                .addOnFailureListener {
-                                                    isSavingChanges = false
-                                                    Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_LONG).show()
-                                                }
-                                        },
-                                        colors = ButtonDefaults.buttonColors(containerColor = GoldPrimary),
-                                        modifier = Modifier.weight(2f),
-                                        shape = RoundedCornerShape(10.dp),
-                                        enabled = !isSavingChanges
-                                    ) {
-                                        Text("SAVE REMOTELY", color = Color(0xFF021612), fontWeight = FontWeight.Bold, fontSize = 11.sp)
-=======
                                     Text(
                                         text = "Showing ${viewModel.adminUserList.size} of ${if (viewModel.adminTotalUserCount > 0) viewModel.adminTotalUserCount else viewModel.adminUserList.size} users",
                                         color = Color.White.copy(alpha = 0.5f),
@@ -3151,7 +2652,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                             }
                                             Text("Load More Users (+20)", color = GoldPrimary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                         }
->>>>>>> 6e834ed (Update Taqwahub)
                                     }
                                 }
                             }
@@ -3402,32 +2902,12 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
 
             // SECTION 4: MANAGE DUAS
             AdminCollapsibleCard(
-<<<<<<< HEAD
-                title = "4. Manage Dynamic Duas",
-=======
                 title = "4. Manage Dynamic Duas & Categories",
->>>>>>> 6e834ed (Update Taqwahub)
                 icon = Icons.Default.MenuBook,
                 isExpanded = isDuasExpanded,
                 onHeaderClick = { isDuasExpanded = !isDuasExpanded }
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-<<<<<<< HEAD
-                    Text("Add Custom Supplication / Dua", color = GoldPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-
-                    OutlinedTextField(
-                        value = duaCategory,
-                        onValueChange = { duaCategory = it },
-                        label = { Text("Category (e.g. Morning, Sleep)", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    OutlinedTextField(
-                        value = duaReference,
-                        onValueChange = { duaReference = it },
-                        label = { Text("Reference (e.g. Surah Al-Baqarah 2:255)", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                     Text(
                         text = if (editingDuaId != null) "Edit Supplication / Dua" else "Add New Supplication / Dua",
                         color = GoldPrimary,
@@ -3513,7 +2993,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                         value = duaReference,
                         onValueChange = { duaReference = it },
                         label = { Text("Reference (e.g. Sahih Al-Bukhari, Quran 2:255)", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -3521,11 +3000,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = duaArabic,
                         onValueChange = { duaArabic = it },
-<<<<<<< HEAD
-                        label = { Text("Arabic Text", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Arabic Text *", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -3533,11 +3008,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = duaTransliteration,
                         onValueChange = { duaTransliteration = it },
-<<<<<<< HEAD
-                        label = { Text("Transliteration", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Transliteration (Optional)", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -3545,11 +3016,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = duaTranslation,
                         onValueChange = { duaTranslation = it },
-<<<<<<< HEAD
-                        label = { Text("English Translation", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("English Translation *", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -3557,49 +3024,11 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                     OutlinedTextField(
                         value = duaTranslationUrdu,
                         onValueChange = { duaTranslationUrdu = it },
-<<<<<<< HEAD
-                        label = { Text("Urdu Translation", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
-=======
                         label = { Text("Urdu Translation (Optional)", color = Color(0xFFA7F3D0).copy(alpha = 0.6f)) },
->>>>>>> 6e834ed (Update Taqwahub)
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.White, unfocusedTextColor = Color.White, focusedBorderColor = GoldPrimary, unfocusedBorderColor = Color(0xFF1B4E38)),
                         modifier = Modifier.fillMaxWidth()
                     )
 
-<<<<<<< HEAD
-                    Button(
-                        onClick = {
-                            if (duaArabic.isBlank() || duaTranslation.isBlank()) {
-                                Toast.makeText(context, "Arabic and English Translation are required!", Toast.LENGTH_SHORT).show()
-                                return@Button
-                            }
-                            val newDua = Dua(
-                                id = "custom_" + java.util.UUID.randomUUID().toString().take(8),
-                                category = duaCategory.ifEmpty { "General" },
-                                reference = duaReference,
-                                arabic = duaArabic,
-                                transliteration = duaTransliteration,
-                                translation = duaTranslation,
-                                translationUrdu = duaTranslationUrdu
-                            )
-                            viewModel.addCustomDua(newDua, {
-                                Toast.makeText(context, "Dua added and synced!", Toast.LENGTH_SHORT).show()
-                                duaCategory = ""
-                                duaReference = ""
-                                duaArabic = ""
-                                duaTransliteration = ""
-                                duaTranslation = ""
-                                duaTranslationUrdu = ""
-                            }, { err ->
-                                Toast.makeText(context, "Failed: $err", Toast.LENGTH_LONG).show()
-                            })
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = GoldPrimary),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier.fillMaxWidth().height(44.dp)
-                    ) {
-                        Text("Add Supplication", color = Color(0xFF021612), fontWeight = FontWeight.Bold)
-=======
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -3690,25 +3119,10 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                 fontWeight = FontWeight.Bold
                             )
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
                     
-<<<<<<< HEAD
-                    val customDuasList = viewModel.dynamicDuaList.filter { 
-                        it.id !in IslamicData.duas.map { d -> d.id } 
-                    }
-                    Text("Custom Added Supplications (${customDuasList.size})", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-
-                    if (customDuasList.isEmpty()) {
-                        Text("No custom Supplications added yet", color = Color.White.copy(alpha = 0.4f), fontSize = 11.sp)
-                    } else {
-                        customDuasList.forEach { dua ->
-                            Card(
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFF021612)),
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-=======
                     val allDuasList = viewModel.dynamicDuaList
                     Text("Published Supplications (${allDuasList.size})", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
 
@@ -3720,29 +3134,12 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                 colors = CardDefaults.cardColors(containerColor = Color(0xFF021612)),
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
                                 border = BorderStroke(1.dp, if (editingDuaId == dua.id) GoldPrimary else Color(0xFF1B4E38).copy(alpha = 0.5f))
->>>>>>> 6e834ed (Update Taqwahub)
                             ) {
                                 Row(
                                     modifier = Modifier.padding(12.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column(modifier = Modifier.weight(1f)) {
-<<<<<<< HEAD
-                                        Text(dua.category, color = GoldPrimary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                        Text(dua.arabic, color = Color.White, fontSize = 13.sp, maxLines = 1)
-                                        Text(dua.translation, color = Color.White.copy(alpha = 0.7f), fontSize = 11.sp, maxLines = 1)
-                                    }
-                                    IconButton(
-                                        onClick = {
-                                            viewModel.deleteCustomDua(dua.id, {
-                                                Toast.makeText(context, "Supplication removed!", Toast.LENGTH_SHORT).show()
-                                            }, { err ->
-                                                Toast.makeText(context, "Failed: $err", Toast.LENGTH_SHORT).show()
-                                            })
-                                        }
-                                    ) {
-                                        Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color(0xFFEF4444))
-=======
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(
                                                 modifier = Modifier
@@ -3785,7 +3182,6 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                         ) {
                                             Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color(0xFFEF4444))
                                         }
->>>>>>> 6e834ed (Update Taqwahub)
                                     }
                                 }
                             }
@@ -3866,15 +3262,10 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                 Toast.makeText(context, "Hadith text and Arabic text are required!", Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
-<<<<<<< HEAD
-                            // Generate unique numerical identifier for custom hadiths
-                            val numericId = 10000 + (viewModel.dynamicHadithList.filter { it.id >= 10000 }.maxOfOrNull { it.id } ?: 0) + 1
-=======
                             // Generate unique collision-free numerical identifier for custom hadiths
                             val baseOffset = 100000 + (System.currentTimeMillis() % 800000).toInt()
                             val randomPadding = (1..99).random()
                             val numericId = baseOffset + randomPadding
->>>>>>> 6e834ed (Update Taqwahub)
                             val newHadith = Hadith(
                                 id = numericId,
                                 chapter = hadithChapter.ifEmpty { "General" },
@@ -4034,11 +3425,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                 Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF021612)), modifier = Modifier.fillMaxWidth()) {
                                     Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                         Text("Verse: ${verseObj.verse_key}", color = GoldPrimary, fontWeight = FontWeight.Bold)
-<<<<<<< HEAD
-                                        Text(if (viewModel.quranScript == "indopak") (verseObj.text_indopak ?: verseObj.text_uthmani ?: "") else (verseObj.text_uthmani ?: ""), color = Color.White, fontSize = 24.sp, fontFamily = FontHelper.getFontForScript(viewModel.quranScript), textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
-=======
                                         Text(FontHelper.formatArabicText(if (viewModel.quranScript == "indopak") (verseObj.text_indopak ?: verseObj.text_uthmani ?: "") else (verseObj.text_uthmani ?: "")), color = Color.White, fontSize = 24.sp, fontFamily = FontHelper.getFontForScript(viewModel.quranScript), textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth())
->>>>>>> 6e834ed (Update Taqwahub)
                                         
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             IconButton(onClick = { if (verseAudio != null) viewModel.audioPlayerHelper.playAudio(verseAudio) }) {
@@ -4078,11 +3465,7 @@ fun AdminDashboardScreen(viewModel: TaqwaViewModel) {
                                     Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF1B4E38)), modifier = Modifier.padding(end=8.dp).width(240.dp)) {
                                         Column(modifier = Modifier.padding(12.dp)) {
                                             Text("ID: word_${word.id} (v$verseKey)", color = Color.White.copy(alpha=0.5f), fontSize=11.sp)
-<<<<<<< HEAD
-                                            Text(if (viewModel.quranScript == "indopak") (word.text_indopak ?: word.text_uthmani ?: "") else (word.text_uthmani ?: ""), color = GoldPrimary, fontSize=24.sp, fontFamily = FontHelper.getFontForScript(viewModel.quranScript), textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth().padding(vertical=8.dp))
-=======
                                             Text(FontHelper.formatArabicText(if (viewModel.quranScript == "indopak") (word.text_indopak ?: word.text_uthmani ?: "") else (word.text_uthmani ?: "")), color = GoldPrimary, fontSize=24.sp, fontFamily = FontHelper.getFontForScript(viewModel.quranScript), textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth().padding(vertical=8.dp))
->>>>>>> 6e834ed (Update Taqwahub)
                                             
                                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                                                 IconButton(onClick = { if (wordAudio != null) viewModel.audioPlayerHelper.playAudio(wordAudio) }, modifier = Modifier.size(36.dp)) {
@@ -4956,8 +4339,6 @@ fun AdminCollapsibleCard(
 
 @Composable
 fun AnnouncementBanner(message: String) {
-<<<<<<< HEAD
-=======
     val isArabicOrUrdu = remember(message) {
         message.any { it in '\u0600'..'\u06FF' || it in '\u0750'..'\u077F' || it in '\uFB50'..'\uFDFF' || it in '\uFE70'..'\uFEFF' }
     }
@@ -4968,7 +4349,6 @@ fun AnnouncementBanner(message: String) {
         message
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     Card(
         colors = CardDefaults.cardColors(containerColor = Color(0xFF0F3624)),
         border = BorderStroke(1.dp, GoldPrimary.copy(alpha = 0.3f)),
@@ -4988,15 +4368,6 @@ fun AnnouncementBanner(message: String) {
                 tint = GoldPrimary,
                 modifier = Modifier.size(24.dp)
             )
-<<<<<<< HEAD
-            LoopingAnnouncementText(
-                text = message,
-                modifier = Modifier.weight(1f),
-                color = Color.White,
-                fontSize = 13.sp,
-                lineHeight = 18.sp,
-                fontWeight = FontWeight.Medium
-=======
             Text(
                 text = displayText,
                 color = Color.White,
@@ -5008,7 +4379,6 @@ fun AnnouncementBanner(message: String) {
                     textDirection = if (isArabicOrUrdu) TextDirection.Rtl else TextDirection.Ltr
                 ),
                 modifier = Modifier.weight(1f)
->>>>>>> 6e834ed (Update Taqwahub)
             )
         }
     }

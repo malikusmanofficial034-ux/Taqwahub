@@ -4,64 +4,6 @@ import com.example.data.room.TaskEntity
 import java.util.Calendar
 import java.util.TimeZone
 
-<<<<<<< HEAD
-object TaskGenerator {
-
-    fun generateTasksForToday(): List<TaskEntity> {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Karachi"))
-        val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-        val dayIndex = dayOfYear % 30 // 30-day loop
-
-        val tasks = mutableListOf<TaskEntity>()
-
-        // Base Obligatory Salah tasks - always present
-        tasks.addAll(
-            listOf(
-                TaskEntity("1", "Offer Fajr Namaz", false, "Salah", "First obligatory prayer.", 30, "OBLIGATORY", 0, true, actionRoute = "home"),
-                TaskEntity("2", "Offer Dhuhr Namaz", false, "Salah", "Second obligatory prayer.", 20, "OBLIGATORY", 0, true, actionRoute = "home"),
-                TaskEntity("3", "Offer Asr Namaz", false, "Salah", "Third obligatory prayer.", 20, "OBLIGATORY", 0, true, actionRoute = "home"),
-                TaskEntity("4", "Offer Maghrib Namaz", false, "Salah", "Fourth obligatory prayer.", 20, "OBLIGATORY", 0, true, actionRoute = "home"),
-                TaskEntity("5", "Offer Isha Namaz", false, "Salah", "Fifth obligatory prayer.", 30, "OBLIGATORY", 0, true, actionRoute = "home")
-            )
-        )
-
-        // Dynamic Auto Tasks (Based on day index)
-        when (dayIndex % 7) {
-            0 -> {
-                tasks.add(TaskEntity("auto_1", "Read Surah Baqarah for 10 Mins", false, "Quran", "Spend 10 minutes reciting the longest Surah.", 100, "AUTO", 0, true, isAuto = true, autoType = "SURAH", autoTarget = 600, actionRoute = "quran"))
-                tasks.add(TaskEntity("auto_2", "Recite Astaghfar 100x", false, "Dhikr", "Seek forgiveness 100 times.", 50, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 100, actionRoute = "tasbeeh"))
-            }
-            1 -> {
-                tasks.add(TaskEntity("auto_1", "Read 5 Hadiths", false, "Knowledge", "Read 5 authentic Hadiths to gain knowledge.", 80, "AUTO", 0, true, isAuto = true, autoType = "HADITH", autoTarget = 5, actionRoute = "hadith"))
-                tasks.add(TaskEntity("auto_2", "Recite SubhanAllah 33x", false, "Dhikr", "Glorify Allah 33 times.", 30, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 33, actionRoute = "tasbeeh"))
-            }
-            2 -> {
-                tasks.add(TaskEntity("auto_1", "Learn 5 Names of Allah", false, "Knowledge", "Memorize or reflect upon 5 names of Allah.", 70, "AUTO", 0, true, isAuto = true, autoType = "99_NAMES", autoTarget = 5, actionRoute = "names"))
-                tasks.add(TaskEntity("auto_2", "Recite Alhamdulillah 33x", false, "Dhikr", "Praise Allah 33 times.", 30, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 33, actionRoute = "tasbeeh"))
-            }
-            3 -> {
-                tasks.add(TaskEntity("auto_1", "Read 3 Duas", false, "Supplication", "Read 3 Duas from the library.", 60, "AUTO", 0, true, isAuto = true, autoType = "DUA", autoTarget = 3, actionRoute = "dua"))
-                tasks.add(TaskEntity("auto_2", "Recite Allahu Akbar 34x", false, "Dhikr", "Proclaim Allah's greatness 34 times.", 30, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 34, actionRoute = "tasbeeh"))
-            }
-            4 -> { // Jummah
-                tasks.add(TaskEntity("auto_1", "Read Surah Kahf", false, "Quran", "Read Surah Al-Kahf on Friday.", 150, "AUTO", 0, true, isAuto = true, autoType = "SURAH", autoTarget = 900, actionRoute = "quran"))
-                tasks.add(TaskEntity("auto_2", "Send Durood 100x", false, "Dhikr", "Send blessings upon the Prophet (SAW).", 80, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 100, actionRoute = "tasbeeh"))
-            }
-            5 -> { // Charity Day
-                tasks.add(TaskEntity("manual_charity", "Give Charity Today", false, "Deeds", "Give Sadaqah, even a smile counts.", 100, "WEEKLY", 0, true, actionRoute = "donate"))
-                tasks.add(TaskEntity("auto_1", "Read Surah Yaseen", false, "Quran", "Read the heart of the Quran.", 120, "AUTO", 0, true, isAuto = true, autoType = "SURAH", autoTarget = 600, actionRoute = "quran"))
-            }
-            6 -> {
-                tasks.add(TaskEntity("auto_1", "Recite La Ilaha Illallah 100x", false, "Dhikr", "Renew your faith.", 50, "AUTO", 0, true, isAuto = true, autoType = "TASBEEH", autoTarget = 100, actionRoute = "tasbeeh"))
-                tasks.add(TaskEntity("auto_2", "Read 5 Hadiths", false, "Knowledge", "Increase your knowledge of the Sunnah.", 80, "AUTO", 0, true, isAuto = true, autoType = "HADITH", autoTarget = 5, actionRoute = "hadith"))
-            }
-        }
-
-        // Night time specific
-        tasks.add(TaskEntity("auto_night", "Read Surah Al-Mulk", false, "Quran", "A surah that intercedes for its companion.", 60, "HOT", 0, true, isAuto = true, autoType = "SURAH", autoTarget = 300, actionRoute = "quran"))
-
-        return tasks
-=======
 /**
  * Enterprise-grade TaskMasterCatalog:
  * - Deterministic, immutable task definitions
@@ -513,6 +455,5 @@ object TaskGenerator {
 
         // Strict Deduplication by unique ID
         return taskList.distinctBy { it.id }
->>>>>>> 6e834ed (Update Taqwahub)
     }
 }

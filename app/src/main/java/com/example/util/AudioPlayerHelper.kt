@@ -29,17 +29,6 @@ class AudioPlayerHelper(private val context: Context) {
     val isAudioPlaying: StateFlow<Boolean> = _isAudioPlaying
 
     private var currentPlayingUrlToken: String? = null
-<<<<<<< HEAD
-
-    // Prefetching and caching thread safety
-    private val prefetchExecutor = Executors.newFixedThreadPool(3)
-    private val currentlyDownloading = ConcurrentHashMap.newKeySet<String>()
-
-    fun resolveUrl(url: String): String {
-        var resolved = url
-        // DO NOT replace with mirrors.quranicaudio.com as the mirror is extremely slow and causes severe gaps/buffering.
-        // download.quranicaudio.com is backed by high-speed Cloudflare CDN and supports rapid streaming/range requests.
-=======
     private var currentSessionId: Long = 0L
     var onTrackFinished: (() -> Unit)? = null
 
@@ -49,15 +38,11 @@ class AudioPlayerHelper(private val context: Context) {
 
     fun resolveUrl(url: String): String {
         var resolved = url.trim()
->>>>>>> 6e834ed (Update Taqwahub)
         return when {
             resolved.startsWith("http://") -> resolved.replace("http://", "https://")
             resolved.startsWith("https://") -> resolved
             resolved.startsWith("//") -> "https:$resolved"
-<<<<<<< HEAD
-=======
             resolved.contains("everyayah.com") -> "https://$resolved"
->>>>>>> 6e834ed (Update Taqwahub)
             resolved.contains("quranicaudio.com") -> "https://$resolved"
             else -> {
                 val prefix = if (resolved.startsWith("/")) "https://audio.qurancdn.com" else "https://audio.qurancdn.com/"
@@ -139,10 +124,7 @@ class AudioPlayerHelper(private val context: Context) {
         val resolvedUrl = resolveUrl(url)
         Log.d("AudioPlayerHelper", "Requested playing: $url (start: $startMs, end: $endMs) -> Resolved: $resolvedUrl")
         
-<<<<<<< HEAD
-=======
         val sessionId = ++currentSessionId
->>>>>>> 6e834ed (Update Taqwahub)
         currentPlayingUrlToken = playbackToken
         _currentlyPlayingUrl.value = playbackToken
         _isAudioPlaying.value = false
@@ -151,19 +133,11 @@ class AudioPlayerHelper(private val context: Context) {
         val localFile = getLocalFile(url)
         if (localFile != null) {
             Log.d("AudioPlayerHelper", "Local file found! Playing instantly: ${localFile.absolutePath}")
-<<<<<<< HEAD
-            playLocalFile(localFile.absolutePath, playbackToken, startMs, endMs)
-        } else {
-            Log.d("AudioPlayerHelper", "No local cache. Direct-streaming instantly for 0s lag while buffering background cache...")
-            // 1. Start direct streaming immediately on Foreground Player so user hears sound within milliseconds
-            playDirectStreamUrl(resolvedUrl, playbackToken, startMs, endMs)
-=======
             playLocalFile(localFile.absolutePath, playbackToken, startMs, endMs, sessionId)
         } else {
             Log.d("AudioPlayerHelper", "No local cache. Direct-streaming instantly for 0s lag while buffering background cache...")
             // 1. Start direct streaming immediately on Foreground Player so user hears sound within milliseconds
             playDirectStreamUrl(resolvedUrl, playbackToken, startMs, endMs, sessionId)
->>>>>>> 6e834ed (Update Taqwahub)
 
             // 2. Download to cache concurrently in background so next time we read from disk
             if (!currentlyDownloading.contains(resolvedUrl)) {
@@ -194,11 +168,7 @@ class AudioPlayerHelper(private val context: Context) {
     private var stopHandler: android.os.Handler? = null
     private var stopRunnable: Runnable? = null
 
-<<<<<<< HEAD
-    private fun scheduleStop(mediaPlayer: MediaPlayer, endMs: Int) {
-=======
     private fun scheduleStop(mediaPlayer: MediaPlayer, endMs: Int, sessionId: Long) {
->>>>>>> 6e834ed (Update Taqwahub)
         if (stopHandler == null) {
             stopHandler = android.os.Handler(android.os.Looper.getMainLooper())
         }
@@ -206,16 +176,10 @@ class AudioPlayerHelper(private val context: Context) {
         
         val runnable = Runnable {
             try {
-<<<<<<< HEAD
-                if (mediaPlayer.isPlaying && mediaPlayer.currentPosition >= endMs) {
-                    stop()
-                } else if (mediaPlayer.isPlaying) {
-=======
                 if (currentSessionId == sessionId && mediaPlayer.isPlaying && mediaPlayer.currentPosition >= endMs) {
                     stop()
                     onTrackFinished?.invoke()
                 } else if (currentSessionId == sessionId && mediaPlayer.isPlaying) {
->>>>>>> 6e834ed (Update Taqwahub)
                     // Check again in 20ms if we haven't reached endMs
                     stopRunnable?.let { stopHandler?.postDelayed(it, 20) }
                 }
@@ -230,36 +194,23 @@ class AudioPlayerHelper(private val context: Context) {
 
     private var completionPollRunnable: Runnable? = null
 
-<<<<<<< HEAD
-    private fun startCompletionPolling(player: MediaPlayer) {
-=======
     private fun startCompletionPolling(player: MediaPlayer, sessionId: Long) {
->>>>>>> 6e834ed (Update Taqwahub)
         completionPollRunnable?.let { mainHandler.removeCallbacks(it) }
         var consecutiveNotPlayingCount = 0
         val runnable = object : Runnable {
             override fun run() {
                 try {
-<<<<<<< HEAD
-                    if (mediaPlayer == player) {
-=======
                     if (currentSessionId == sessionId && mediaPlayer == player) {
->>>>>>> 6e834ed (Update Taqwahub)
                         if (!player.isPlaying) {
                             consecutiveNotPlayingCount++
                             _isAudioPlaying.value = false
                             if (consecutiveNotPlayingCount > 10) { // grace of ~300ms
-<<<<<<< HEAD
-                                Log.d("AudioPlayerHelper", "Polling detected player is no longer playing. Stopping and resetting state.")
-                                stop()
-=======
                                 val wasNearEnd = player.duration > 0 && player.currentPosition >= (player.duration - 800)
                                 Log.d("AudioPlayerHelper", "Polling detected player stopped. Near end: $wasNearEnd")
                                 stop()
                                 if (wasNearEnd) {
                                     onTrackFinished?.invoke()
                                 }
->>>>>>> 6e834ed (Update Taqwahub)
                             } else {
                                 mainHandler.postDelayed(this, 30)
                             }
@@ -273,13 +224,9 @@ class AudioPlayerHelper(private val context: Context) {
                     }
                 } catch (e: Exception) {
                     Log.d("AudioPlayerHelper", "Polling exception (player likely released or errored). Stopping.")
-<<<<<<< HEAD
-                    stop()
-=======
                     if (currentSessionId == sessionId) {
                         stop()
                     }
->>>>>>> 6e834ed (Update Taqwahub)
                 }
             }
         }
@@ -287,18 +234,11 @@ class AudioPlayerHelper(private val context: Context) {
         mainHandler.postDelayed(runnable, 100)
     }
 
-<<<<<<< HEAD
-    private fun playLocalFile(filePath: String, originalUrl: String, startMs: Int? = null, endMs: Int? = null) {
-        runOnMainThread {
-            try {
-                stopOnly()
-=======
     private fun playLocalFile(filePath: String, originalUrl: String, startMs: Int? = null, endMs: Int? = null, sessionId: Long) {
         runOnMainThread {
             try {
                 stopOnly()
                 if (currentSessionId != sessionId) return@runOnMainThread
->>>>>>> 6e834ed (Update Taqwahub)
                 mediaPlayer = MediaPlayer().apply {
                     setAudioAttributes(
                         android.media.AudioAttributes.Builder()
@@ -308,13 +248,10 @@ class AudioPlayerHelper(private val context: Context) {
                     )
                     setDataSource(mediaContext, android.net.Uri.fromFile(java.io.File(filePath)))
                     setOnPreparedListener {
-<<<<<<< HEAD
-=======
                         if (currentSessionId != sessionId) {
                             try { release() } catch (e: Exception) {}
                             return@setOnPreparedListener
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                         start()
                         if (startMs != null && startMs > 0) {
                             try {
@@ -326,18 +263,6 @@ class AudioPlayerHelper(private val context: Context) {
                         _currentlyPlayingUrl.value = originalUrl
                         _isAudioPlaying.value = true
                         if (endMs != null) {
-<<<<<<< HEAD
-                            scheduleStop(this, endMs)
-                        }
-                        startCompletionPolling(this)
-                    }
-                    setOnCompletionListener {
-                        stop()
-                    }
-                    setOnErrorListener { _, what, extra ->
-                        Log.e("AudioPlayerHelper", "MediaPlayer local file play error: what=$what, extra=$extra. Retrying with streaming...")
-                        playDirectStreamUrl(resolveUrl(originalUrl), originalUrl, startMs, endMs)
-=======
                             scheduleStop(this, endMs, sessionId)
                         }
                         startCompletionPolling(this, sessionId)
@@ -353,36 +278,24 @@ class AudioPlayerHelper(private val context: Context) {
                         if (currentSessionId == sessionId) {
                             playDirectStreamUrl(resolveUrl(originalUrl), originalUrl, startMs, endMs, sessionId)
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                         true
                     }
                     prepareAsync()
                 }
             } catch (e: Exception) {
                 Log.e("AudioPlayerHelper", "Error playing local file: $filePath", e)
-<<<<<<< HEAD
-                playDirectStreamUrl(resolveUrl(originalUrl), originalUrl, startMs, endMs)
-=======
                 if (currentSessionId == sessionId) {
                     playDirectStreamUrl(resolveUrl(originalUrl), originalUrl, startMs, endMs, sessionId)
                 }
->>>>>>> 6e834ed (Update Taqwahub)
             }
         }
     }
 
-<<<<<<< HEAD
-    private fun playDirectStreamUrl(streamUrl: String, originalUrl: String, startMs: Int? = null, endMs: Int? = null) {
-        runOnMainThread {
-            try {
-                stopOnly()
-=======
     private fun playDirectStreamUrl(streamUrl: String, originalUrl: String, startMs: Int? = null, endMs: Int? = null, sessionId: Long) {
         runOnMainThread {
             try {
                 stopOnly()
                 if (currentSessionId != sessionId) return@runOnMainThread
->>>>>>> 6e834ed (Update Taqwahub)
                 mediaPlayer = MediaPlayer().apply {
                     setAudioAttributes(
                         android.media.AudioAttributes.Builder()
@@ -392,13 +305,10 @@ class AudioPlayerHelper(private val context: Context) {
                     )
                     setDataSource(streamUrl)
                     setOnPreparedListener {
-<<<<<<< HEAD
-=======
                         if (currentSessionId != sessionId) {
                             try { release() } catch (e: Exception) {}
                             return@setOnPreparedListener
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                         start()
                         if (startMs != null && startMs > 0) {
                             try {
@@ -410,18 +320,6 @@ class AudioPlayerHelper(private val context: Context) {
                         _currentlyPlayingUrl.value = originalUrl
                         _isAudioPlaying.value = true
                         if (endMs != null) {
-<<<<<<< HEAD
-                            scheduleStop(this, endMs)
-                        }
-                        startCompletionPolling(this)
-                    }
-                    setOnCompletionListener {
-                        stop()
-                    }
-                    setOnErrorListener { _, what, extra ->
-                        Log.e("AudioPlayerHelper", "MediaPlayer streaming error: what=$what, extra=$extra")
-                        stop()
-=======
                             scheduleStop(this, endMs, sessionId)
                         }
                         startCompletionPolling(this, sessionId)
@@ -437,20 +335,15 @@ class AudioPlayerHelper(private val context: Context) {
                         if (currentSessionId == sessionId) {
                             stop()
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                         true
                     }
                     prepareAsync()
                 }
             } catch (e: Exception) {
                 Log.e("AudioPlayerHelper", "Error playing streaming URL: $streamUrl", e)
-<<<<<<< HEAD
-                stop()
-=======
                 if (currentSessionId == sessionId) {
                     stop()
                 }
->>>>>>> 6e834ed (Update Taqwahub)
             }
         }
     }
@@ -475,13 +368,8 @@ class AudioPlayerHelper(private val context: Context) {
 
             val urlObj = URL(resolvedUrl)
             connection = urlObj.openConnection() as HttpURLConnection
-<<<<<<< HEAD
-            connection.connectTimeout = 8000
-            connection.readTimeout = 8000
-=======
             connection.connectTimeout = 6000
             connection.readTimeout = 6000
->>>>>>> 6e834ed (Update Taqwahub)
             connection.useCaches = true
             connection.connect()
 
@@ -492,11 +380,7 @@ class AudioPlayerHelper(private val context: Context) {
 
             connection.inputStream.use { input ->
                 FileOutputStream(tempFile).use { output ->
-<<<<<<< HEAD
-                    val buffer = ByteArray(4096)
-=======
                     val buffer = ByteArray(8192)
->>>>>>> 6e834ed (Update Taqwahub)
                     var bytesRead: Int
                     while (input.read(buffer).also { bytesRead = it } != -1) {
                         output.write(buffer, 0, bytesRead)
@@ -541,10 +425,7 @@ class AudioPlayerHelper(private val context: Context) {
 
     fun stop() {
         runOnMainThread {
-<<<<<<< HEAD
-=======
             currentSessionId++
->>>>>>> 6e834ed (Update Taqwahub)
             currentPlayingUrlToken = null
             stopOnly()
             _currentlyPlayingUrl.value = null

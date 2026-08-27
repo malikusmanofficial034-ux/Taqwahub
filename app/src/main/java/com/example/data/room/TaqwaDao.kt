@@ -8,12 +8,9 @@ interface TaqwaDao {
     @Query("SELECT * FROM downloaded_hadiths WHERE bookKey = :bookKey ORDER BY hadithNumber ASC")
     suspend fun getHadithsForBook(bookKey: String): List<HadithEntity>
 
-<<<<<<< HEAD
-=======
     @Query("SELECT * FROM downloaded_hadiths WHERE bookKey = :bookKey AND chapterNumber = :chapterNumber ORDER BY hadithNumber ASC")
     suspend fun getHadithsForChapter(bookKey: String, chapterNumber: Int): List<HadithEntity>
 
->>>>>>> 6e834ed (Update Taqwahub)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHadiths(hadiths: List<HadithEntity>)
 

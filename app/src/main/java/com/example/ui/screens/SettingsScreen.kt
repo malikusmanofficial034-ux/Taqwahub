@@ -1032,8 +1032,6 @@ fun SettingsScreen(viewModel: TaqwaViewModel) {
             }
         }
         
-<<<<<<< HEAD
-=======
         if (viewModel.isAdmin) {
             item {
                 Card(
@@ -1074,7 +1072,6 @@ fun SettingsScreen(viewModel: TaqwaViewModel) {
             }
         }
 
->>>>>>> 6e834ed (Update Taqwahub)
         item {
             Box(
                 modifier = Modifier

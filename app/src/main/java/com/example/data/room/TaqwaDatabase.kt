@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-<<<<<<< HEAD
-=======
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
->>>>>>> 6e834ed (Update Taqwahub)
 
 @Database(
     entities = [
@@ -18,11 +15,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         UserStatsEntity::class,
         HadithEntity::class
     ],
-<<<<<<< HEAD
-    version = 8,
-=======
     version = 11,
->>>>>>> 6e834ed (Update Taqwahub)
     exportSchema = false
 )
 abstract class TaqwaDatabase : RoomDatabase() {
@@ -32,8 +25,6 @@ abstract class TaqwaDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: TaqwaDatabase? = null
 
-<<<<<<< HEAD
-=======
         val MIGRATION_9_10 = object : Migration(9, 10) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 try {
@@ -44,7 +35,6 @@ abstract class TaqwaDatabase : RoomDatabase() {
             }
         }
 
->>>>>>> 6e834ed (Update Taqwahub)
         fun getDatabase(context: Context): TaqwaDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -52,10 +42,7 @@ abstract class TaqwaDatabase : RoomDatabase() {
                     TaqwaDatabase::class.java,
                     "taq_database"
                 )
-<<<<<<< HEAD
-=======
                 .addMigrations(MIGRATION_9_10)
->>>>>>> 6e834ed (Update Taqwahub)
                 .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance

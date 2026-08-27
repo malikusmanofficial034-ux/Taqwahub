@@ -72,8 +72,6 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
         viewModel.fetchUserBugReportsFromFirestore()
     }
 
-<<<<<<< HEAD
-=======
     DisposableEffect(Unit) {
         viewModel.hasUnreadSupportReply = false
         viewModel.saveLastSeenComplaintsTime()
@@ -83,7 +81,6 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     val imageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -227,30 +224,15 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
                         contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-<<<<<<< HEAD
-                        items(sortedBugs) { report ->
-                            Column(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(6.dp)
-                            ) {
-                                // User Message Bubble
-=======
                         sortedBugs.forEach { report ->
                             item {
->>>>>>> 6e834ed (Update Taqwahub)
                                 UserChatBubble(
                                     report = report,
                                     onImageClick = { zoomImageUrl = report.imageUrl }
                                 )
-<<<<<<< HEAD
-
-                                // Admin Reply Bubble
-                                if (report.adminReply.isNotEmpty()) {
-=======
                             }
                             if (report.adminReply.isNotEmpty()) {
                                 item {
->>>>>>> 6e834ed (Update Taqwahub)
                                     AdminChatBubble(
                                         replyText = report.adminReply,
                                         replyTimestamp = report.adminReplyTimestamp,
@@ -268,12 +250,8 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-<<<<<<< HEAD
-                    .background(Color(0xFF091C16))
-=======
                     .background(EmeraldDark)
                     .border(width = 1.dp, color = GoldPrimary.copy(alpha = 0.15f), shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
->>>>>>> 6e834ed (Update Taqwahub)
                     .navigationBarsPadding()
                     .padding(bottom = 8.dp)
             ) {
@@ -401,21 +379,12 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
                             .weight(1f)
                             .heightIn(max = 120.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-<<<<<<< HEAD
-                            focusedContainerColor = Color(0xFF133628),
-                            unfocusedContainerColor = Color(0xFF133628),
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            focusedBorderColor = GoldPrimary.copy(alpha = 0.5f),
-                            unfocusedBorderColor = Color.Transparent
-=======
                             focusedContainerColor = EmeraldCard,
                             unfocusedContainerColor = EmeraldCard,
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
                             focusedBorderColor = GoldPrimary.copy(alpha = 0.6f),
                             unfocusedBorderColor = GoldPrimary.copy(alpha = 0.15f)
->>>>>>> 6e834ed (Update Taqwahub)
                         ),
                         shape = RoundedCornerShape(20.dp),
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
@@ -472,15 +441,6 @@ fun UserComplaintsScreen(viewModel: TaqwaViewModel) {
     }
 }
 
-<<<<<<< HEAD
-@Composable
-fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
-    val sdf = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    val formattedTime = remember(report.timestamp) { sdf.format(Date(report.timestamp)) }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-=======
 private fun formatChatTimestamp(rawTs: Long): String {
     if (rawTs <= 0L) return ""
     val ts = if (rawTs < 10_000_000_000L) rawTs * 1000L else rawTs
@@ -511,24 +471,10 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 2.dp),
->>>>>>> 6e834ed (Update Taqwahub)
         horizontalArrangement = Arrangement.End
     ) {
         Box(
             modifier = Modifier
-<<<<<<< HEAD
-                .widthIn(min = 100.dp, max = 280.dp)
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 16.dp,
-                        topEnd = 2.dp,
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                )
-                .background(Color(0xFF123C2D))
-                .padding(10.dp)
-=======
                 .widthIn(min = 90.dp, max = 280.dp)
                 .clip(
                     RoundedCornerShape(
@@ -550,21 +496,15 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
                     )
                 )
                 .padding(horizontal = 10.dp, vertical = 7.dp)
->>>>>>> 6e834ed (Update Taqwahub)
         ) {
             Column {
                 // Category Badge inside bubble
                 Text(
                     text = report.type.uppercase(Locale.getDefault()),
                     color = GoldPrimary,
-<<<<<<< HEAD
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-=======
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.5.sp,
->>>>>>> 6e834ed (Update Taqwahub)
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
 
@@ -577,17 +517,10 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
                             contentDescription = "Attached screenshot",
                             modifier = Modifier
                                 .fillMaxWidth()
-<<<<<<< HEAD
-                                .heightIn(max = 180.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .clickable { onImageClick() }
-                                .padding(bottom = 6.dp),
-=======
                                 .heightIn(max = 160.dp)
                                 .clip(RoundedCornerShape(6.dp))
                                 .clickable { onImageClick() }
                                 .padding(bottom = 4.dp),
->>>>>>> 6e834ed (Update Taqwahub)
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -597,26 +530,6 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
                 Text(
                     text = report.description,
                     color = Color.White,
-<<<<<<< HEAD
-                    fontSize = 14.sp
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // Time & Status row
-                Row(
-                    modifier = Modifier.align(Alignment.End),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = formattedTime,
-                        color = Color.White.copy(alpha = 0.5f),
-                        fontSize = 9.sp
-                    )
-
-                    // Status Icon
-=======
                     fontSize = 13.5.sp,
                     lineHeight = 18.sp
                 )
@@ -636,21 +549,10 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
                     )
 
                     // WhatsApp style Status Icons
->>>>>>> 6e834ed (Update Taqwahub)
                     when (report.status) {
                         "Pending" -> Icon(
                             imageVector = Icons.Default.AccessTime,
                             contentDescription = "Pending",
-<<<<<<< HEAD
-                            tint = Color.LightGray,
-                            modifier = Modifier.size(10.dp)
-                        )
-                        "In Progress" -> Icon(
-                            imageVector = Icons.Default.Circle,
-                            contentDescription = "Active",
-                            tint = Color(0xFFFBBF24),
-                            modifier = Modifier.size(8.dp)
-=======
                             tint = Color.White.copy(alpha = 0.5f),
                             modifier = Modifier.size(11.dp)
                         )
@@ -659,17 +561,12 @@ fun UserChatBubble(report: BugReport, onImageClick: () -> Unit) {
                             contentDescription = "Active",
                             tint = Color(0xFFFBBF24),
                             modifier = Modifier.size(11.dp)
->>>>>>> 6e834ed (Update Taqwahub)
                         )
                         "Resolved" -> Icon(
                             imageVector = Icons.Default.DoneAll,
                             contentDescription = "Resolved",
                             tint = Color(0xFF34D399),
-<<<<<<< HEAD
-                            modifier = Modifier.size(12.dp)
-=======
                             modifier = Modifier.size(13.dp)
->>>>>>> 6e834ed (Update Taqwahub)
                         )
                     }
                 }
@@ -685,16 +582,6 @@ fun AdminChatBubble(
     userTimestamp: Long,
     onImageClick: () -> Unit
 ) {
-<<<<<<< HEAD
-    val sdf = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    val formattedTime = remember(replyTimestamp) {
-        val finalTime = if (replyTimestamp > 0) replyTimestamp else userTimestamp + 60000
-        sdf.format(Date(finalTime))
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-=======
     val rawTime = remember(replyTimestamp, userTimestamp) {
         if (replyTimestamp > 0L) replyTimestamp
         else if (userTimestamp > 0L) userTimestamp + 60000L
@@ -706,29 +593,10 @@ fun AdminChatBubble(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 2.dp),
->>>>>>> 6e834ed (Update Taqwahub)
         horizontalArrangement = Arrangement.Start
     ) {
         Box(
             modifier = Modifier
-<<<<<<< HEAD
-                .widthIn(min = 100.dp, max = 280.dp)
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 2.dp,
-                        topEnd = 16.dp,
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                )
-                .background(Color(0xFF0F1E19))
-                .border(1.dp, GoldPrimary.copy(alpha = 0.25f), RoundedCornerShape(topStart = 2.dp, topEnd = 16.dp, bottomStart = 16.dp, bottomEnd = 16.dp))
-                .padding(10.dp)
-        ) {
-            Column {
-                Row(
-                    modifier = Modifier.padding(bottom = 2.dp),
-=======
                 .widthIn(min = 90.dp, max = 280.dp)
                 .clip(
                     RoundedCornerShape(
@@ -754,7 +622,6 @@ fun AdminChatBubble(
             Column {
                 Row(
                     modifier = Modifier.padding(bottom = 3.dp),
->>>>>>> 6e834ed (Update Taqwahub)
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -765,15 +632,9 @@ fun AdminChatBubble(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-<<<<<<< HEAD
-                        text = "SUPPORT TEAM",
-                        color = GoldPrimary,
-                        fontSize = 10.sp,
-=======
                         text = "SUPPORT TEAM REPLY",
                         color = GoldPrimary,
                         fontSize = 9.sp,
->>>>>>> 6e834ed (Update Taqwahub)
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 0.5.sp
                     )
@@ -782,19 +643,6 @@ fun AdminChatBubble(
                 Text(
                     text = replyText,
                     color = Color.White,
-<<<<<<< HEAD
-                    fontSize = 14.sp
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = formattedTime,
-                    color = Color.White.copy(alpha = 0.5f),
-                    fontSize = 9.sp,
-                    modifier = Modifier.align(Alignment.End)
-                )
-=======
                     fontSize = 13.5.sp,
                     lineHeight = 18.sp
                 )
@@ -818,7 +666,6 @@ fun AdminChatBubble(
                         modifier = Modifier.size(13.dp)
                     )
                 }
->>>>>>> 6e834ed (Update Taqwahub)
             }
         }
     }
@@ -1207,22 +1054,6 @@ fun AdminComplaintsListScreen(viewModel: TaqwaViewModel) {
                         contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-<<<<<<< HEAD
-                        items(currentConvo.reports) { report ->
-                            UserChatBubble(
-                                report = report,
-                                onImageClick = { zoomImageUrl = report.imageUrl }
-                            )
-
-                            if (report.adminReply.isNotEmpty()) {
-                                AdminChatBubble(
-                                    replyText = report.adminReply,
-                                    replyTimestamp = report.adminReplyTimestamp,
-                                    userTimestamp = report.timestamp,
-                                    onImageClick = { zoomImageUrl = report.imageUrl }
-                                )
-                            }
-=======
                         currentConvo.reports.forEach { report ->
                             item {
                                 UserChatBubble(
@@ -1241,7 +1072,6 @@ fun AdminComplaintsListScreen(viewModel: TaqwaViewModel) {
                                     )
                                 }
                             }
->>>>>>> 6e834ed (Update Taqwahub)
                         }
                     }
 

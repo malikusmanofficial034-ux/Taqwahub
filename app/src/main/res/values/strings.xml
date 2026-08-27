@@ -1,15 +1,6 @@
-<<<<<<< HEAD
 <resources>
     <string name="app_name">TaqwaHub</string>
     <string name="zakat_title">Zakat Calculator</string>
     <string name="location_attribution_label">Taqwa Location Service</string>
     <string name="media_attribution_label">Taqwa Media Service</string>
 </resources>
-=======
-<resources>
-    <string name="app_name">TaqwaHub</string>
-    <string name="zakat_title">Zakat Calculator</string>
-    <string name="location_attribution_label">Taqwa Location Service</string>
-    <string name="media_attribution_label">Taqwa Media Service</string>
-</resources>
->>>>>>> 6e834ed (Update Taqwahub)

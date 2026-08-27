@@ -43,10 +43,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontFamily
-<<<<<<< HEAD
-=======
 import com.example.util.FontHelper
->>>>>>> 6e834ed (Update Taqwahub)
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -231,19 +228,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
 
     val profileCompletedKey = "profile_completed_${firebaseUser?.uid}"
     var profileCompletedState by remember(firebaseUser?.uid) {
-<<<<<<< HEAD
-        mutableStateOf(sharedPrefs.getBoolean(profileCompletedKey, false))
-    }
-
-    var isCheckingProfile by remember(firebaseUser?.uid) {
-        mutableStateOf(firebaseUser != null && !sharedPrefs.getBoolean(profileCompletedKey, false))
-=======
         mutableStateOf(sharedPrefs.getBoolean(profileCompletedKey, false) || userStats.name.isNotBlank() || userStats.username.isNotBlank())
     }
 
     var isCheckingProfile by remember(firebaseUser?.uid) {
         mutableStateOf(firebaseUser != null && !sharedPrefs.getBoolean(profileCompletedKey, false) && userStats.name.isBlank() && userStats.username.isBlank())
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     var justCompletedSetup by remember(firebaseUser?.uid) {
@@ -262,32 +251,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
         }
     }
 
-<<<<<<< HEAD
-    LaunchedEffect(firebaseUser) {
-        val user = firebaseUser
-        if (user != null && !profileCompletedState) {
-            isCheckingProfile = true
-            try {
-                val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                db.collection("users").document(user.uid).get()
-                    .addOnCompleteListener { task ->
-                        isCheckingProfile = false
-                        if (task.isSuccessful) {
-                            val document = task.result
-                            if (document != null && document.exists()) {
-                                val userStats = document.get("userStats")
-                                if (userStats != null) {
-                                    sharedPrefs.edit().putBoolean(profileCompletedKey, true).apply()
-                                    profileCompletedState = true
-                                    Log.d("MainActivity", "User profile detected in Firestore! Bypassing setup screen.")
-                                }
-                            }
-                        }
-                    }
-            } catch (e: Exception) {
-                isCheckingProfile = false
-                Log.e("MainActivity", "Firestore offline", e)
-=======
     LaunchedEffect(firebaseUser, userStats.username, userStats.name) {
         val user = firebaseUser
         if (user != null) {
@@ -324,7 +287,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                 }
             } else {
                 isCheckingProfile = false
->>>>>>> 6e834ed (Update Taqwahub)
             }
         } else {
             isCheckingProfile = false
@@ -450,11 +412,8 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                         loc?.let {
                             viewModel.updateCoordinates(it.latitude, it.longitude)
                         }
-<<<<<<< HEAD
-=======
                     }.addOnFailureListener { e ->
                         Log.w("MainActivity", "FusedLocationProvider lastLocation task failed gracefully: ${e.message}")
->>>>>>> 6e834ed (Update Taqwahub)
                     }
                 } catch (e: Throwable) {
                     Log.e("MainActivity", "FusedLocationProvider client access failed: ${e.message}")
@@ -938,19 +897,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                                 viewModel.currentUser = user
                                                 viewModel.setStats(
                                                     UserStatsEntity(
-<<<<<<< HEAD
-                                                        name = nameInput.ifEmpty { "Servant of Allah" },
-                                                        username = signUpUsername.trim().lowercase(),
-                                                        email = email,
-                                                        gender = if (isMale) "Male" else "Female",
-                                                        sectOrCast = sectCast.ifEmpty { "Sunni" }
-=======
                                                         name = nameInput.trim(),
                                                         username = signUpUsername.trim().lowercase(),
                                                         email = email,
                                                         gender = if (isMale) "Male" else "Female",
                                                         sectOrCast = sectCast.trim()
->>>>>>> 6e834ed (Update Taqwahub)
                                                     )
                                                 )
                                                 sharedPrefs.edit().putBoolean("profile_completed_${user?.uid}", true).apply()
@@ -1041,11 +992,7 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
         BlockedScreen(
             message = "Your account has been suspended by the administrator for violating platform policies. Please contact admin@taqwahub.com."
         )
-<<<<<<< HEAD
-    } else if (firebaseUser != null && !profileCompletedState && !isCheckingProfile) {
-=======
     } else if (firebaseUser != null && !profileCompletedState && !isCheckingProfile && userStats.name.isBlank() && userStats.username.isBlank()) {
->>>>>>> 6e834ed (Update Taqwahub)
         CompleteProfileSetupScreen(
             initialName = if (userStats.name.isNotEmpty()) userStats.name else (if (nameInput.isEmpty()) { firebaseUser.displayName ?: "" } else nameInput),
             initialEmail = if (userStats.email.isNotEmpty()) userStats.email else (if (email.isEmpty()) { firebaseUser.email ?: "" } else email),
@@ -1070,19 +1017,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                 justCompletedSetup = true
                 viewModel.setStats(
                     UserStatsEntity(
-<<<<<<< HEAD
-                        name = if (correctedName.trim().isEmpty()) "Servant of Allah" else correctedName.trim(),
-                        username = usernameVal.trim().lowercase(),
-                        email = firebaseUser.email ?: "",
-                        gender = gender,
-                        sectOrCast = if (sect.trim().isEmpty()) "Sunni" else sect.trim()
-=======
                         name = correctedName.trim(),
                         username = usernameVal.trim().lowercase(),
                         email = firebaseUser.email ?: "",
                         gender = gender,
                         sectOrCast = sect.trim()
->>>>>>> 6e834ed (Update Taqwahub)
                     )
                 )
                 sharedPrefs.edit().putBoolean(profileCompletedKey, true).apply()
@@ -1096,8 +1035,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
         }
 
         Box(modifier = Modifier.fillMaxSize().background(EmeraldBackground)) {
-<<<<<<< HEAD
-=======
             // ----------------- Graceful Fallback Ad Player Overlay -----------------
             val showAdSimulation by viewModel.showAdSimulation.collectAsState()
             if (showAdSimulation) {
@@ -1229,7 +1166,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                 }
             }
 
->>>>>>> 6e834ed (Update Taqwahub)
             // Main Application Scaffold Layout
             ModalNavigationDrawer(
             drawerState = drawerState,
@@ -1329,13 +1265,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                     )
                                 },
                                 icon = {
-<<<<<<< HEAD
-                                    Icon(
-                                        imageVector = tool.third,
-                                        contentDescription = tool.first,
-                                        tint = if (isSelected) OnGoldText else GoldPrimary.copy(alpha = 0.8f)
-                                    )
-=======
                                     val showBadge = (tool.second == "leaderboard" && viewModel.hasLeaderboardUpdate) ||
                                             (tool.second == "user_complaints" && viewModel.hasUnreadSupportReply)
                                     if (showBadge) {
@@ -1357,7 +1286,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                             tint = if (isSelected) OnGoldText else GoldPrimary.copy(alpha = 0.8f)
                                         )
                                     }
->>>>>>> 6e834ed (Update Taqwahub)
                                 },
                                 selected = isSelected,
                                 colors = NavigationDrawerItemDefaults.colors(
@@ -1454,12 +1382,8 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                         modifier = Modifier.fillMaxWidth(),
                         border = BorderStroke(width = 0.5.dp, color = GoldPrimary.copy(alpha = 0.1f))
                     ) {
-<<<<<<< HEAD
-                        Row(
-=======
                         Column(modifier = Modifier.fillMaxWidth()) {
                             Row(
->>>>>>> 6e834ed (Update Taqwahub)
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .statusBarsPadding()
@@ -1468,56 +1392,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-<<<<<<< HEAD
-                            // Left Side: Hamburg Menu & Branding
-=======
                             // Left Side: Brand Identity (Logo + Glow + Typography)
->>>>>>> 6e834ed (Update Taqwahub)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-<<<<<<< HEAD
-                                // Mobile Responsive Hamburger Toggle
-                                Box(
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(Color(0xFF064E3B).copy(alpha = 0.4f))
-                                        .border(1.dp, GoldPrimary.copy(alpha = 0.15f), RoundedCornerShape(12.dp))
-                                        .clickable {
-                                            scope.launch { drawerState.open() }
-                                        }
-                                        .testTag("drawer_open_button"),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Menu,
-                                        contentDescription = "Open Drawer",
-                                        tint = GoldPrimary,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-
-                                // Core Brand Identity (Logo + Glow + Typography)
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    TaqwaLogo(
-                                        modifier = Modifier.size(36.dp),
-                                        noText = true
-                                    )
-
-                                    Text(
-                                        text = "TaqwaHub",
-                                        color = GoldPrimary,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Black,
-                                        letterSpacing = (-0.5).sp
-                                    )
-                                }
-=======
                                 TaqwaLogo(
                                     modifier = Modifier.size(38.dp),
                                     noText = true
@@ -1531,7 +1410,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                     fontWeight = FontWeight.ExtraBold,
                                     letterSpacing = 1.sp
                                 )
->>>>>>> 6e834ed (Update Taqwahub)
                             }
 
                             // Right Side: Network Diagnostic Pill Capsule (With AI integrated trigger button)
@@ -1649,8 +1527,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         .background(Color.White.copy(alpha = 0.15f))
                                 )
 
-<<<<<<< HEAD
-=======
                                 // Streak Pill Indicator in TopBar
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
@@ -1692,7 +1568,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         .background(Color.White.copy(alpha = 0.15f))
                                 )
 
->>>>>>> 6e834ed (Update Taqwahub)
                                 Box(
                                     modifier = Modifier
                                         .size(36.dp)
@@ -1714,8 +1589,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                     )
                                 }
                             }
-<<<<<<< HEAD
-=======
                             }
                             
                             // Visual Sync Progress Bar
@@ -1739,7 +1612,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                     )
                                 }
                             }
->>>>>>> 6e834ed (Update Taqwahub)
                         }
                     }
                 },
@@ -1774,9 +1646,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         }
                                     },
                                     label = { Text(item.second, fontSize = 9.sp, fontWeight = FontWeight.Bold) },
-<<<<<<< HEAD
-                                    icon = { Icon(item.third, contentDescription = item.second) },
-=======
                                     icon = {
                                         if (item.first == "menu" && (viewModel.hasLeaderboardUpdate || viewModel.hasUnreadSupportReply)) {
                                             BadgedBox(
@@ -1790,7 +1659,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                             Icon(item.third, contentDescription = item.second)
                                         }
                                     },
->>>>>>> 6e834ed (Update Taqwahub)
                                     colors = NavigationBarItemDefaults.colors(
                                         selectedIconColor = OnGoldText,
                                         selectedTextColor = GoldPrimary,
@@ -1828,14 +1696,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                             "dashboard" -> DashboardScreen(viewModel) { destination ->
                                 viewModel.navigateToView(destination)
                             }
-<<<<<<< HEAD
-                            "leaderboard" -> com.example.ui.screens.LeaderboardScreen(viewModel) {
-                                viewModel.navigateToView("dashboard")
-                            }
-                            "quran" -> {
-                                if (appConfig.isQuranPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.quranPageBlockedMessage)
-=======
                             "leaderboard" -> {
                                 if (viewModel.isModuleLocked("leaderboard") && !isAdmin) {
                                     ModuleLockScreenModal(
@@ -1860,18 +1720,12 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     QuranReaderScreen(viewModel) { destination ->
                                         viewModel.navigateToView(destination)
                                     }
                                 }
                             }
-<<<<<<< HEAD
-                            "dua" -> {
-                                if (appConfig.isLearnPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.learnPageBlockedMessage)
-=======
                             "quran_guide" -> {
                                 com.example.ui.screens.QuranGuideScreen(viewModel) {
                                     viewModel.navigateBack()
@@ -1886,16 +1740,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     DuaLibraryScreen(viewModel)
                                 }
                             }
                             "tasks" -> {
-<<<<<<< HEAD
-                                if (appConfig.isToolsPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.toolsPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("tasks") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("tasks"),
@@ -1904,7 +1753,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     TaskTrackerScreen(viewModel) { destination ->
                                         viewModel.navigateToView(destination)
@@ -1912,10 +1760,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                 }
                             }
                             "hadith" -> {
-<<<<<<< HEAD
-                                if (appConfig.isLearnPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.learnPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("hadith") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("hadith"),
@@ -1924,17 +1768,12 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     HadithExplorerScreen(viewModel)
                                 }
                             }
                             "settings" -> com.example.ui.screens.SettingsScreen(viewModel)
                             "tasbeeh" -> {
-<<<<<<< HEAD
-                                if (appConfig.isToolsPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.toolsPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("tasbeeh") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("tasbeeh"),
@@ -1943,16 +1782,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     TasbeehCounterScreen(viewModel)
                                 }
                             }
                             "names" -> {
-<<<<<<< HEAD
-                                if (appConfig.isLearnPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.learnPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("names") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("names"),
@@ -1961,16 +1795,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     NamesOfAllahScreen(viewModel)
                                 }
                             }
                             "zakat" -> {
-<<<<<<< HEAD
-                                if (appConfig.isToolsPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.toolsPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("zakat") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("zakat"),
@@ -1979,16 +1808,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     ZakatCalculatorScreen(viewModel)
                                 }
                             }
                             "qibla" -> {
-<<<<<<< HEAD
-                                if (appConfig.isToolsPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.toolsPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("qibla") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("qibla"),
@@ -1997,16 +1821,11 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     QiblaFinderScreen(viewModel)
                                 }
                             }
                             "calendar" -> {
-<<<<<<< HEAD
-                                if (appConfig.isToolsPageLocked && !isAdmin) {
-                                    BlockedScreen(appConfig.toolsPageBlockedMessage)
-=======
                                 if (viewModel.isModuleLocked("calendar") && !isAdmin) {
                                     ModuleLockScreenModal(
                                         moduleTitle = viewModel.getModuleTitle("calendar"),
@@ -2015,15 +1834,10 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                         isAdmin = isAdmin,
                                         onReturnHome = { viewModel.navigateToView("dashboard") }
                                     )
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     IslamicCalendarScreen(viewModel)
                                 }
                             }
-<<<<<<< HEAD
-                             "donate" -> com.example.ui.screens.DonateScreen(viewModel)
-                            "user_complaints" -> UserComplaintsScreen(viewModel)
-=======
                             "donate" -> {
                                 if (viewModel.isModuleLocked("donate") && !isAdmin) {
                                     ModuleLockScreenModal(
@@ -2050,7 +1864,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                                     UserComplaintsScreen(viewModel)
                                 }
                             }
->>>>>>> 6e834ed (Update Taqwahub)
                             "admin_complaints" -> {
                                 if (viewModel.isAdmin) {
                                     AdminComplaintsListScreen(viewModel)
@@ -2102,8 +1915,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                     showDownloadDialog = false
                 }
             }
-<<<<<<< HEAD
-=======
 
             // Duolingo-Grade Streak Details & Shields Dialog Overlay
             if (viewModel.showStreakModal) {
@@ -2122,7 +1933,6 @@ fun MainAppLayout(viewModel: TaqwaViewModel) {
                     onDismiss = { viewModel.dismissShieldCelebration() }
                 )
             }
->>>>>>> 6e834ed (Update Taqwahub)
         }
 
         if (!hasSeenBismillahWelcome) {
@@ -2268,15 +2078,10 @@ fun getFriendlyAuthErrorMessage(e: Throwable): String {
             "The email format seems incorrect. Please clarify your email name@domain.com."
         message.contains("USER_NOT_FOUND", ignoreCase = true) || message.contains("no user record", ignoreCase = true) ->
             "No account found with this email. Please check spelling or register via SIGN UP first."
-<<<<<<< HEAD
-        message.contains("WRONG_PASSWORD", ignoreCase = true) || message.contains("wrong password", ignoreCase = true) ->
-            "Incorrect password. If you forgot your password, please tap on 'Forgot Password?' to reset."
-=======
         message.contains("WRONG_PASSWORD", ignoreCase = true) || message.contains("wrong password", ignoreCase = true) ||
         message.contains("INVALID_LOGIN_CREDENTIALS", ignoreCase = true) || message.contains("supplied auth credential is incorrect", ignoreCase = true) ||
         message.contains("credential is incorrect", ignoreCase = true) || message.contains("INVALID_CREDENTIAL", ignoreCase = true) ->
             "Incorrect email or password. Please verify your credentials or tap 'Forgot Password' to reset."
->>>>>>> 6e834ed (Update Taqwahub)
         message.contains("network", ignoreCase = true) || message.contains("timed out", ignoreCase = true) || message.contains("connection", ignoreCase = true) ->
             "Spiritual link disrupted! Please verify your internet or network connection."
         message.contains("API key", ignoreCase = true) ->

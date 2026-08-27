@@ -13,24 +13,16 @@ object HadithBookService {
 
     data class DownloadedHadith(
         val hadithNumber: Int,
-<<<<<<< HEAD
-=======
         val bookNumber: Int = 1,
         val chapterNumber: Int = 1,
         val chapterNameEng: String = "General",
         val chapterNameAra: String = "عام",
         val chapterNameUrd: String = "عام",
->>>>>>> 6e834ed (Update Taqwahub)
         val arabic: String,
         val english: String,
         val urdu: String,
         val narrator: String,
         val chapter: String,
-<<<<<<< HEAD
-        val source: String
-    )
-
-=======
         val grade: String = "Sahih",
         val source: String
     )
@@ -63,7 +55,6 @@ object HadithBookService {
             .trim()
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     // Book key to display name with approximate counts
     val supportedBooks = listOf(
         "bukhari" to "1. Sahih al-Bukhari (~7563)",
@@ -218,11 +209,6 @@ object HadithBookService {
         val hadithNumStr: String,
         val hadithNumInt: Int,
         val text: String,
-<<<<<<< HEAD
-        val chapter: String
-    )
-
-=======
         val chapterNumber: Int,
         val chapterName: String,
         val grade: String
@@ -263,7 +249,6 @@ object HadithBookService {
         return map
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     private fun parseHadithTextMap(file: File): Map<String, String> {
         val map = mutableMapOf<String, String>()
         if (!file.exists() || file.length() < 100L) return map
@@ -307,11 +292,7 @@ object HadithBookService {
                             }
                             "text" -> {
                                 if (reader.peek() == android.util.JsonToken.STRING) {
-<<<<<<< HEAD
-                                    textVal = reader.nextString()
-=======
                                     textVal = sanitizeText(reader.nextString())
->>>>>>> 6e834ed (Update Taqwahub)
                                 } else {
                                     reader.skipValue()
                                 }
@@ -327,95 +308,12 @@ object HadithBookService {
                 reader.endArray()
             }
             reader.close()
-<<<<<<< HEAD
-        } catch (e: java.lang.Exception) {
-=======
         } catch (e: Exception) {
->>>>>>> 6e834ed (Update Taqwahub)
             Log.e("HadithBookService", "Error parsing map for file ${file.name}", e)
         }
         return map
     }
 
-<<<<<<< HEAD
-    private fun parseEnglishHadiths(file: File): List<EngHadithTemp> {
-        val list = mutableListOf<EngHadithTemp>()
-        if (!file.exists() || file.length() < 100L) return list
-        try {
-            val reader = android.util.JsonReader(file.reader())
-            reader.beginObject()
-            var hadithsFound = false
-            while (reader.hasNext()) {
-                if (reader.nextName() == "hadiths") {
-                    hadithsFound = true
-                    reader.beginArray()
-                    break
-                } else {
-                    reader.skipValue()
-                }
-            }
-            if (hadithsFound) {
-                while (reader.hasNext()) {
-                    var hadithNumStr = ""
-                    var hadithNumInt = 0
-                    var textVal = ""
-                    var chapterName = "Book 1"
-                    reader.beginObject()
-                    while (reader.hasNext()) {
-                        when (reader.nextName()) {
-                            "hadithnumber" -> {
-                                val token = reader.peek()
-                                if (token == android.util.JsonToken.NUMBER) {
-                                    val num = reader.nextDouble()
-                                    hadithNumInt = num.toInt()
-                                    hadithNumStr = if (num % 1.0 == 0.0) num.toInt().toString() else num.toString()
-                                } else if (token == android.util.JsonToken.STRING) {
-                                    val s = reader.nextString()
-                                    val d = s.toDoubleOrNull()
-                                    hadithNumInt = d?.toInt() ?: 0
-                                    hadithNumStr = if (d != null && d % 1.0 == 0.0) d.toInt().toString() else s
-                                } else {
-                                    reader.skipValue()
-                                }
-                            }
-                            "text" -> {
-                                if (reader.peek() == android.util.JsonToken.STRING) {
-                                    textVal = reader.nextString()
-                                } else {
-                                    reader.skipValue()
-                                }
-                            }
-                            "reference" -> {
-                                reader.beginObject()
-                                while (reader.hasNext()) {
-                                    if (reader.nextName() == "book") {
-                                        val token = reader.peek()
-                                        chapterName = if (token == android.util.JsonToken.NUMBER) {
-                                            "Book ${reader.nextInt()}"
-                                        } else if (token == android.util.JsonToken.STRING) {
-                                            reader.nextString()
-                                        } else {
-                                            reader.skipValue()
-                                            "Book 1"
-                                        }
-                                    } else {
-                                        reader.skipValue()
-                                    }
-                                }
-                                reader.endObject()
-                            }
-                            else -> reader.skipValue()
-                        }
-                    }
-                    reader.endObject()
-                    if (hadithNumStr.isNotEmpty()) {
-                        list.add(EngHadithTemp(hadithNumStr, hadithNumInt, textVal, chapterName))
-                    }
-                }
-                reader.endArray()
-            }
-            reader.close()
-=======
     private fun parseEnglishHadiths(file: File, defaultBookName: String): List<EngHadithTemp> {
         val list = mutableListOf<EngHadithTemp>()
         if (!file.exists() || file.length() < 100L) return list
@@ -464,7 +362,6 @@ object HadithBookService {
                     list.add(EngHadithTemp(hadithNumStr, hadithNumInt, cleanedText, chapterNum, chapterName, grade))
                 }
             }
->>>>>>> 6e834ed (Update Taqwahub)
         } catch (e: Exception) {
             Log.e("HadithBookService", "Error parsing English file", e)
         }
@@ -485,13 +382,6 @@ object HadithBookService {
                         return@withContext cached.map {
                             DownloadedHadith(
                                 hadithNumber = it.hadithNumber,
-<<<<<<< HEAD
-                                arabic = it.arabic,
-                                english = it.english,
-                                urdu = it.urdu,
-                                narrator = it.narrator,
-                                chapter = it.chapter,
-=======
                                 bookNumber = it.bookNumber,
                                 chapterNumber = it.chapterNumber,
                                 chapterNameEng = sanitizeText(it.chapterNameEng),
@@ -503,7 +393,6 @@ object HadithBookService {
                                 narrator = sanitizeText(it.narrator),
                                 chapter = sanitizeText(it.chapter),
                                 grade = if (it.grade.isBlank()) "Sahih" else it.grade,
->>>>>>> 6e834ed (Update Taqwahub)
                                 source = it.source
                             )
                         }
@@ -522,15 +411,11 @@ object HadithBookService {
                     return@withContext emptyList()
                 }
 
-<<<<<<< HEAD
-                val engList = parseEnglishHadiths(engFile)
-=======
                 val engSections = parseMetadataSections(engFile)
                 val araSections = parseMetadataSections(araFile)
                 val urdSections = parseMetadataSections(urdFile)
 
                 val engList = parseEnglishHadiths(engFile, bookName)
->>>>>>> 6e834ed (Update Taqwahub)
                 val araMap = parseHadithTextMap(araFile)
                 val urdMap = parseHadithTextMap(urdFile)
 
@@ -539,15 +424,12 @@ object HadithBookService {
                     val araText = araMap[eng.hadithNumStr] ?: ""
                     val urdText = urdMap[eng.hadithNumStr] ?: ""
 
-<<<<<<< HEAD
-=======
                     // Chapter details
                     val chNum = eng.chapterNumber
                     val chNameEng = engSections[chNum]?.first ?: "Book $chNum"
                     val chNameAra = araSections[chNum]?.first ?: "كتاب $chNum"
                     val chNameUrd = urdSections[chNum]?.first ?: "باب $chNum"
 
->>>>>>> 6e834ed (Update Taqwahub)
                     // Extract Narrator
                     var narrator = "Unknown"
                     var cleanedEngText = eng.text
@@ -561,13 +443,6 @@ object HadithBookService {
                     resultList.add(
                         DownloadedHadith(
                             hadithNumber = eng.hadithNumInt,
-<<<<<<< HEAD
-                            arabic = araText,
-                            english = cleanedEngText,
-                            urdu = urdText,
-                            narrator = narrator,
-                            chapter = eng.chapter,
-=======
                             bookNumber = 1,
                             chapterNumber = chNum,
                             chapterNameEng = sanitizeText(chNameEng),
@@ -579,7 +454,6 @@ object HadithBookService {
                             narrator = sanitizeText(narrator),
                             chapter = sanitizeText(chNameEng),
                             grade = eng.grade,
->>>>>>> 6e834ed (Update Taqwahub)
                             source = bookName
                         )
                     )
@@ -591,24 +465,17 @@ object HadithBookService {
                         com.example.data.room.HadithEntity(
                             bookKey = bookKey,
                             hadithNumber = it.hadithNumber,
-<<<<<<< HEAD
-=======
                             bookNumber = it.bookNumber,
                             chapterNumber = it.chapterNumber,
                             chapterNameEng = it.chapterNameEng,
                             chapterNameAra = it.chapterNameAra,
                             chapterNameUrd = it.chapterNameUrd,
->>>>>>> 6e834ed (Update Taqwahub)
                             arabic = it.arabic,
                             english = it.english,
                             urdu = it.urdu,
                             narrator = it.narrator,
-<<<<<<< HEAD
-                            chapter = it.chapter,
-=======
                             chapter = it.chapterNameEng,
                             grade = it.grade,
->>>>>>> 6e834ed (Update Taqwahub)
                             source = it.source
                         )
                     }
@@ -617,11 +484,7 @@ object HadithBookService {
                         db.taqwaDao().insertHadiths(chunk)
                     }
 
-<<<<<<< HEAD
-                    // Delete the large temporary files immediately to keep storage minimal!
-=======
                     // Delete temporary json files
->>>>>>> 6e834ed (Update Taqwahub)
                     try {
                         engFile.delete()
                         araFile.delete()
@@ -640,8 +503,6 @@ object HadithBookService {
             }
         }
     }
-<<<<<<< HEAD
-=======
 
     fun extractChapters(hadiths: List<DownloadedHadith>): List<HadithChapter> {
         if (hadiths.isEmpty()) return emptyList()
@@ -661,5 +522,4 @@ object HadithBookService {
             }
             .sortedBy { it.chapterNumber }
     }
->>>>>>> 6e834ed (Update Taqwahub)
 }

@@ -32,11 +32,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.async
-<<<<<<< HEAD
-=======
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
->>>>>>> 6e834ed (Update Taqwahub)
 import java.util.*
 import java.text.SimpleDateFormat
 import java.io.File
@@ -45,18 +42,13 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-<<<<<<< HEAD
-=======
 import com.google.firebase.firestore.DocumentSnapshot
->>>>>>> 6e834ed (Update Taqwahub)
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.provider.Settings
 import android.content.Context
-<<<<<<< HEAD
-=======
 import android.app.Activity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdError
@@ -65,7 +57,6 @@ import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.FullScreenContentCallback
->>>>>>> 6e834ed (Update Taqwahub)
 import androidx.glance.appwidget.updateAll
 
 enum class TaqwaNetworkType {
@@ -106,11 +97,7 @@ data class AppConfig(
     val lockedWordSurahIds: String = "",
     val wordSurahBlockedMessage: String = "Word by Word audio is currently blocked by administrator.",
     
-<<<<<<< HEAD
-    // Pages Blocking
-=======
     // Pages Blocking (Legacy / Category)
->>>>>>> 6e834ed (Update Taqwahub)
     val isQuranPageLocked: Boolean = false,
     val quranPageBlockedMessage: String = "The Quran page is currently blocked.",
     
@@ -119,8 +106,6 @@ data class AppConfig(
     
     val isLearnPageLocked: Boolean = false,
     val learnPageBlockedMessage: String = "The Learn page is currently blocked.",
-<<<<<<< HEAD
-=======
 
     // Module Security & Visibility Control Matrix
     // 1. Hadith
@@ -194,7 +179,6 @@ data class AppConfig(
     val isDonateHidden: Boolean = false,
     val donateLockReason: String = "Support & Donate gateway is temporarily offline.",
     val donateLockCategory: String = "server_maintenance",
->>>>>>> 6e834ed (Update Taqwahub)
     
     // Feature/Card Blocking
     val isPrayerTimesCardLocked: Boolean = false,
@@ -255,10 +239,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val audioPlayerHelper = com.example.util.AudioPlayerHelper(application)
-<<<<<<< HEAD
-=======
     val wordAudioPlayerHelper = com.example.util.AudioPlayerHelper(application)
->>>>>>> 6e834ed (Update Taqwahub)
 
     // Authentication State
     var currentUser by mutableStateOf<com.google.firebase.auth.FirebaseUser?>(
@@ -271,17 +252,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     )
 
     private var currentUserDocListener: com.google.firebase.firestore.ListenerRegistration? = null
-<<<<<<< HEAD
-
-    var adminEmails by mutableStateOf<List<String>>(listOf("kb1747038@gmail.com"))
-    var superAdminEmails by mutableStateOf<List<String>>(listOf("kb1747038@gmail.com"))
-
-    val isSuperAdmin: Boolean
-        get() {
-            val email = currentUser?.email?.lowercase()?.trim()
-            if (email == null) return true // Fallback to grant access during guest/offline/dev mode testing
-            return superAdminEmails.any { it.lowercase().trim() == email } || email == "kb1747038@gmail.com"
-=======
     private var appConfigListenerRegistration: com.google.firebase.firestore.ListenerRegistration? = null
     private var adminsListenerRegistration: com.google.firebase.firestore.ListenerRegistration? = null
 
@@ -542,22 +512,15 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             if (email.isBlank()) return false
             if (email == "kb1747038@gmail.com") return true
             return superAdminEmails.any { it.lowercase().trim() == email }
->>>>>>> 6e834ed (Update Taqwahub)
         }
 
     val isAdmin: Boolean
         get() {
-<<<<<<< HEAD
-            val email = currentUser?.email?.lowercase()?.trim()
-            if (email == null) return true // Fallback to grant access during guest/offline/dev mode testing
-            return adminEmails.any { it.lowercase().trim() == email } || isSuperAdmin
-=======
             val email = authenticatedFirebaseEmail
             if (email.isBlank()) return false
             if (email == "kb1747038@gmail.com") return true
             if (isSuperAdmin) return true
             return adminEmails.any { it.lowercase().trim() == email }
->>>>>>> 6e834ed (Update Taqwahub)
         }
 
     var isGuestEnabled by mutableStateOf(false)
@@ -567,8 +530,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     var hasCompletedInitialSync by mutableStateOf(false)
         private set
 
-<<<<<<< HEAD
-=======
     private var debouncedSyncJob: kotlinx.coroutines.Job? = null
 
     // Thread-safe in-memory buffers to accumulate achievements earned during an active remote pull fetch
@@ -578,7 +539,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     private val pendingCompletedSurahsBuffer = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
     private val pendingTasbeehBuffer = java.util.concurrent.atomic.AtomicInteger(0)
 
->>>>>>> 6e834ed (Update Taqwahub)
     private val _networkStatus = MutableStateFlow(TaqwaNetworkStatusInfo())
     val networkStatus: StateFlow<TaqwaNetworkStatusInfo> = _networkStatus.asStateFlow()
     
@@ -597,8 +557,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     private val _prayerTimes = MutableStateFlow<AladhanTimings?>(null)
     val prayerTimes: StateFlow<AladhanTimings?> = _prayerTimes.asStateFlow()
 
-<<<<<<< HEAD
-=======
     // 15-second reactive ticker for dynamic prayer locking/unlocking transitions
     val prayerTicker: StateFlow<Long> = kotlinx.coroutines.flow.flow {
         while (true) {
@@ -607,7 +565,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }.stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000), System.currentTimeMillis())
 
->>>>>>> 6e834ed (Update Taqwahub)
     // Alarm Settings State variables (OFF by default for Play Policy compliance and user choice)
     var isPrayerAlarmEnabled by mutableStateOf(false)
     var isFajrAlarmEnabled by mutableStateOf(false)
@@ -735,11 +692,8 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     var isHadithBookDownloading by mutableStateOf(false)
     var isHadithBookLoading by mutableStateOf(false)
     var activeHadithList by mutableStateOf<List<com.example.data.HadithBookService.DownloadedHadith>>(emptyList())
-<<<<<<< HEAD
-=======
     var activeHadithChapters by mutableStateOf<List<com.example.data.HadithBookService.HadithChapter>>(emptyList())
     var selectedHadithChapterNumber by mutableStateOf<Int?>(null)
->>>>>>> 6e834ed (Update Taqwahub)
     var currentHadithDownloadProgress by mutableStateOf<Float?>(null)
 
     fun selectHadithBook(bookKey: String, bookName: String) {
@@ -749,14 +703,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             activeHadithBookDownloaded = isDownloaded
             if (activeHadithBookKey != bookKey || activeHadithList.isEmpty()) {
                 activeHadithBookKey = bookKey
-<<<<<<< HEAD
-                if (isDownloaded) {
-                    isHadithBookLoading = true
-                    activeHadithList = com.example.data.HadithBookService.loadBook(app, bookKey, bookName)
-                    isHadithBookLoading = false
-                } else {
-                    activeHadithList = emptyList()
-=======
                 selectedHadithChapterNumber = null
                 if (isDownloaded) {
                     isHadithBookLoading = true
@@ -767,7 +713,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 } else {
                     activeHadithList = emptyList()
                     activeHadithChapters = emptyList()
->>>>>>> 6e834ed (Update Taqwahub)
                 }
             } else {
                 activeHadithBookKey = bookKey
@@ -775,13 +720,10 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-=======
     fun selectHadithChapter(chapterNumber: Int?) {
         selectedHadithChapterNumber = chapterNumber
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun downloadHadithBook(bookKey: String, bookName: String) {
         viewModelScope.launch {
             isHadithBookDownloading = true
@@ -791,14 +733,10 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 com.example.data.HadithBookService.downloadBook(app, bookKey)
                 activeHadithBookDownloaded = true
                 isHadithBookLoading = true
-<<<<<<< HEAD
-                activeHadithList = com.example.data.HadithBookService.loadBook(app, bookKey, bookName)
-=======
                 selectedHadithChapterNumber = null
                 val loaded = com.example.data.HadithBookService.loadBook(app, bookKey, bookName)
                 activeHadithList = loaded
                 activeHadithChapters = com.example.data.HadithBookService.extractChapters(loaded)
->>>>>>> 6e834ed (Update Taqwahub)
             } catch (e: Exception) {
                 Log.e("TaqwaViewModel", "Error downloading book: $bookKey", e)
             } finally {
@@ -812,10 +750,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     var dynamicHadithList by mutableStateOf<List<Hadith>>(emptyList())
 
     // Dynamic Dua list state for custom additions and removals
-<<<<<<< HEAD
-=======
     private val duaSyncMutex = Mutex()
->>>>>>> 6e834ed (Update Taqwahub)
     var dynamicDuaList by mutableStateOf<List<Dua>>(emptyList())
     var isDuasLoading by mutableStateOf(false)
     var duasError by mutableStateOf<String?>(null)
@@ -893,72 +828,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             isDuasLoading = true
             duasError = null
             try {
-<<<<<<< HEAD
-                val list = mutableListOf<Dua>()
-                // 1. Add static built-in duas
-                list.addAll(IslamicData.duas)
-                
-                // 1.5 Load from massive assets file
-                try {
-                    val app = getApplication<Application>()
-                    val inputStream = app.assets.open("duas.json")
-                    val size = inputStream.available()
-                    val buffer = ByteArray(size)
-                    inputStream.read(buffer)
-                    inputStream.close()
-                    val jsonStr = String(buffer, Charsets.UTF_8)
-                    val duaAdapter = localMoshi.adapter<List<Dua>>(
-                        Types.newParameterizedType(List::class.java, Dua::class.java)
-                    )
-                    val assetDuas = duaAdapter.fromJson(jsonStr)
-                    if (assetDuas != null) {
-                        val existingIds = list.map { it.id }.toSet()
-                        val toAdd = assetDuas.filter { it.id !in existingIds }
-                        list.addAll(toAdd)
-                    }
-                } catch (e: Exception) {
-                    Log.e("TaqwaViewModel", "Error loading duas from assets: ${e.message}")
-                }
-
-                // 2. Load custom ones from local filesDir
-                try {
-                    val app = getApplication<Application>()
-                    val customFile = File(app.filesDir, "duas_custom.json")
-                    if (customFile.exists()) {
-                        val customJson = customFile.readText()
-                        val customAdapter = localMoshi.adapter<List<Dua>>(
-                            Types.newParameterizedType(List::class.java, Dua::class.java)
-                        )
-                        val loadedCustom = customAdapter.fromJson(customJson)
-                        if (loadedCustom != null) {
-                            val existingIds = list.map { it.id }.toSet()
-                            val partition = loadedCustom.filter { it.id !in existingIds }
-                            list.addAll(partition)
-                        }
-                    }
-                } catch (e: Throwable) {
-                    Log.e("TaqwaViewModel", "Failed to load cached custom duas: ${e.message}")
-                }
-
-                launch(Dispatchers.Main) {
-                    dynamicDuaList = list
-                    if (list.isEmpty()) {
-                        duasError = "Unable to load supplications. Please check your network connection."
-                    }
-                }
-
-                // 3. Try live fetch
-                fetchDuasFromFirestore()
-            } catch (e: Exception) {
-                Log.e("TaqwaViewModel", "Error in loadDuas: ${e.message}", e)
-                launch(Dispatchers.Main) {
-                    if (dynamicDuaList.isEmpty()) {
-                        duasError = "Unable to load supplications. Please check your internet connection."
-                    }
-                }
-            } finally {
-                launch(Dispatchers.Main) {
-=======
                 duaSyncMutex.withLock {
                     val list = mutableListOf<Dua>()
                     // Load custom/admin Duas from local cache
@@ -990,7 +859,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 Log.e("TaqwaViewModel", "Error in loadDuas: ${e.message}", e)
             } finally {
                 withContext(Dispatchers.Main) {
->>>>>>> 6e834ed (Update Taqwahub)
                     isDuasLoading = false
                 }
             }
@@ -1053,15 +921,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                 }
                             }
                             
-<<<<<<< HEAD
-                            saveCustomDuasLocally(remoteDuas)
-
-                            viewModelScope.launch(Dispatchers.Main) {
-                                val baseList = IslamicData.duas.toMutableList()
-                                val remoteIds = remoteDuas.map { it.id }.toSet()
-                                val filteredBaseList = baseList.filter { it.id !in remoteIds }
-                                dynamicDuaList = filteredBaseList + remoteDuas
-=======
                             viewModelScope.launch(Dispatchers.IO) {
                                 duaSyncMutex.withLock {
                                     saveCustomDuasLocally(remoteDuas)
@@ -1069,7 +928,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                         dynamicDuaList = remoteDuas
                                     }
                                 }
->>>>>>> 6e834ed (Update Taqwahub)
                             }
                         }
                     }
@@ -1169,41 +1027,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-    fun fetchAnnouncementsFromFirestore() {
-        if (networkStatus.value.type == TaqwaNetworkType.NONE) return
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val db = FirebaseFirestore.getInstance()
-                db.collection("announcements").get()
-                    .addOnSuccessListener { snapshot ->
-                        if (snapshot != null) {
-                            val remoteList = mutableListOf<Announcement>()
-                            for (doc in snapshot.documents) {
-                                try {
-                                    val id = doc.getString("id") ?: doc.id
-                                    val title = doc.getString("title") ?: ""
-                                    val message = doc.getString("message") ?: ""
-                                    val type = doc.getString("type") ?: "Announcement"
-                                    val timestamp = doc.getLong("timestamp") ?: System.currentTimeMillis()
-                                    
-                                    remoteList.add(Announcement(id, title, message, type, timestamp))
-                                } catch (e: Exception) {
-                                    Log.e("TaqwaViewModel", "Error parsing remote announcement", e)
-                                }
-                            }
-                            
-                            saveAnnouncementsLocally(remoteList)
-
-                            viewModelScope.launch(Dispatchers.Main) {
-                                announcementsList = remoteList.sortedByDescending { it.timestamp }
-                            }
-                        }
-                    }
-            } catch (e: Exception) {
-                Log.e("TaqwaViewModel", "Firestore fetch announcements failed: ${e.message}")
-            }
-=======
     private var announcementsListener: com.google.firebase.firestore.ListenerRegistration? = null
 
     fun fetchAnnouncementsFromFirestore() {
@@ -1241,7 +1064,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 }
         } catch (e: Exception) {
             Log.e("TaqwaViewModel", "Firestore fetch announcements failed: ${e.message}")
->>>>>>> 6e834ed (Update Taqwahub)
         }
     }
 
@@ -1540,10 +1362,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                 }
                             }
                             
-<<<<<<< HEAD
-                            viewModelScope.launch(Dispatchers.Main) {
-                                userBugReportsList = remoteReports.sortedByDescending { it.timestamp }
-=======
                             val lastSeen = getLastSeenComplaintsTime()
                             var unreadReplyFound = false
                             for (report in remoteReports) {
@@ -1557,7 +1375,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                 if (currentView != "user_complaints") {
                                     hasUnreadSupportReply = unreadReplyFound
                                 }
->>>>>>> 6e834ed (Update Taqwahub)
                             }
                         }
                     }
@@ -1687,8 +1504,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-=======
     fun updateDua(dua: Dua, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -1718,7 +1533,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun deleteCustomDua(duaId: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -1854,9 +1668,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         val database = (application as TaqwaApplication).database
-<<<<<<< HEAD
-        repository = TaqwaRepository(database.taqwaDao())
-=======
         repository = TaqwaRepository(database.taqwaDao(), application.cacheDir)
         
         // Background prefetch popular Surahs (Al-Fatihah, Yaseen, Al-Mulk, etc.) for instant loading
@@ -1886,7 +1697,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 Log.e("TaqwaViewModel", "Error checking for wiped local database on startup", e)
             }
         }
->>>>>>> 6e834ed (Update Taqwahub)
         
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -1952,8 +1762,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         listenToAudioOverrides()
         
         viewModelScope.launch {
-<<<<<<< HEAD
-=======
             // Ensure streak shields are migrated to new 2-buffer ad system with default 0 of 2
             try {
                 val prefs = getApplication<Application>().getSharedPreferences("taqwahub_sync", android.content.Context.MODE_PRIVATE)
@@ -1983,7 +1791,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 Log.e("TaqwaViewModel", "Error migrating streak buffer state", e)
             }
 
->>>>>>> 6e834ed (Update Taqwahub)
             repository.checkAndInitializeTasks()
             repository.checkDailyReset()
             fetchLiveRates()
@@ -2007,10 +1814,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 currentUser = user
                 if (user != null) {
                     Log.d("TaqwaViewModel", "AuthStateListener: Current user is ${user.email}. Triggering automatic sync...")
-<<<<<<< HEAD
-=======
                     listenToAppConfig() // Ensure config and admin listeners are refreshed with the newly authenticated state!
->>>>>>> 6e834ed (Update Taqwahub)
                     triggerFirebaseSync(forcePull = wasLoggedOut)
                     fetchTotalUsersCount()
                     fetchDuasFromFirestore()
@@ -2090,11 +1894,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
             try {
                 val syncPrefs = getApplication<Application>().getSharedPreferences("taqwahub_sync", android.content.Context.MODE_PRIVATE)
-<<<<<<< HEAD
-                syncPrefs.edit().clear().apply()
-=======
                 syncPrefs.edit().clear().putBoolean("streak_buffer_v2_migrated", true).apply()
->>>>>>> 6e834ed (Update Taqwahub)
             } catch (e: Exception) {
                 Log.e("TaqwaViewModel", "Failed to clear taqwahub_sync", e)
             }
@@ -2266,8 +2066,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             _navigationStack.add(currentView)
             currentView = view
         }
-<<<<<<< HEAD
-=======
         if (view == "leaderboard") {
             hasLeaderboardUpdate = false
         }
@@ -2275,14 +2073,11 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             hasUnreadSupportReply = false
             saveLastSeenComplaintsTime()
         }
->>>>>>> 6e834ed (Update Taqwahub)
     }
     
     fun navigateBack(): Boolean {
         if (_navigationStack.isNotEmpty()) {
             currentView = _navigationStack.removeAt(_navigationStack.size - 1)
-<<<<<<< HEAD
-=======
             if (currentView == "leaderboard") {
                 hasLeaderboardUpdate = false
             }
@@ -2290,18 +2085,14 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 hasUnreadSupportReply = false
                 saveLastSeenComplaintsTime()
             }
->>>>>>> 6e834ed (Update Taqwahub)
             return true
         }
         return false
     }
 
-<<<<<<< HEAD
-=======
     val showAdSimulation = MutableStateFlow(false)
     var adSimulationCallback: (() -> Unit)? = null
 
->>>>>>> 6e834ed (Update Taqwahub)
     // Database flow streams
     private val _smartTaskCompletedFlow = MutableSharedFlow<TaskEntity>(replay = 0, extraBufferCapacity = 1)
     val smartTaskCompletedFlow = _smartTaskCompletedFlow.asSharedFlow()
@@ -2316,9 +2107,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val stats: StateFlow<UserStatsEntity> = repository.userStatsFlow
-<<<<<<< HEAD
-        .map { it ?: UserStatsEntity() }
-=======
         .map { entity ->
             val s = entity ?: UserStatsEntity()
             s.copy(
@@ -2327,7 +2115,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 maxShields = 2
             )
         }
->>>>>>> 6e834ed (Update Taqwahub)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserStatsEntity())
 
     // Geolocation details for Qibla & Prayer Times
@@ -2342,18 +2129,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-<<<<<<< HEAD
-                val timings = repository.fetchPrayerTimes(userLatitude, userLongitude)
-                if (timings != null) {
-                    _prayerTimes.value = timings
-                    com.example.widget.WidgetHelper.savePrayerTimes(getApplication(), timings)
-                    com.example.widget.PrayerWidget().updateAll(getApplication())
-                } else {
-                    _prayerTimes.value = com.example.data.api.AladhanTimings("", "", "", "", "", "")
-                }
-            } catch (e: Exception) {
-                _prayerTimes.value = com.example.data.api.AladhanTimings("", "", "", "", "", "")
-=======
                 val result = repository.fetchPrayerTimes(userLatitude, userLongitude)
                 if (result != null) {
                     val timings = result.first
@@ -2382,7 +2157,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 } else {
                     _prayerTimes.value = com.example.data.api.AladhanTimings("", "", "", "", "", "")
                 }
->>>>>>> 6e834ed (Update Taqwahub)
             }
         }
     }
@@ -2481,8 +2255,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     // Toggle Task complete
     fun toggleMainTask(taskId: String, isCompleted: Boolean) {
         viewModelScope.launch {
-<<<<<<< HEAD
-=======
             if (isSyncingData) {
                 val tasks = repository.taqwaDao.getAllTasksDirect()
                 val t = tasks.find { it.id == taskId }
@@ -2497,7 +2269,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                     pendingCompletedTasksBuffer.remove(taskId)
                 }
             }
->>>>>>> 6e834ed (Update Taqwahub)
             repository.toggleTaskCompletion(taskId, isCompleted)
             repository.checkDailyReset() // check resets periodically
             repository.checkAndLogMissedPrayers() // evaluate dynamic misses
@@ -2506,11 +2277,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getTaskTimingStatus(title: String, isCompleted: Boolean): TaskTimingStatus {
-<<<<<<< HEAD
-        val isPrayer = title in listOf("Offer Fajr Namaz", "Offer Dhuhr Namaz", "Offer Asr Namaz", "Offer Maghrib Namaz", "Offer Isha Namaz")
-=======
         val isPrayer = title in listOf("Offer Fajr Namaz", "Offer Dhuhr Namaz", "Offer Asr Namaz", "Offer Maghrib Namaz", "Offer Isha Namaz", "Offer Jummah Prayer")
->>>>>>> 6e834ed (Update Taqwahub)
         if (!isPrayer) {
             return TaskTimingStatus(isLockedAdvance = false, isMissed = false)
         }
@@ -2525,11 +2292,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
         val startStr = when (title) {
             "Offer Fajr Namaz" -> f
-<<<<<<< HEAD
-            "Offer Dhuhr Namaz" -> d
-=======
             "Offer Dhuhr Namaz", "Offer Jummah Prayer" -> d
->>>>>>> 6e834ed (Update Taqwahub)
             "Offer Asr Namaz" -> a
             "Offer Maghrib Namaz" -> m
             "Offer Isha Namaz" -> i
@@ -2537,11 +2300,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
         val endStr = when (title) {
             "Offer Fajr Namaz" -> s
-<<<<<<< HEAD
-            "Offer Dhuhr Namaz" -> a
-=======
             "Offer Dhuhr Namaz", "Offer Jummah Prayer" -> a
->>>>>>> 6e834ed (Update Taqwahub)
             "Offer Asr Namaz" -> m
             "Offer Maghrib Namaz" -> i
             "Offer Isha Namaz" -> f
@@ -2549,12 +2308,8 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         val rangeList = repository.getPrayerRanges(prayerTimes.value)
-<<<<<<< HEAD
-        val range = rangeList.find { it.taskTitle == title } ?: return TaskTimingStatus(isLockedAdvance = false, isMissed = false)
-=======
         val range = rangeList.find { it.taskTitle == title || (title == "Offer Jummah Prayer" && it.taskTitle == "Offer Dhuhr Namaz") } 
             ?: return TaskTimingStatus(isLockedAdvance = false, isMissed = false)
->>>>>>> 6e834ed (Update Taqwahub)
 
         val now = java.util.Date()
         val isLockedAdvance = now < range.start
@@ -2563,13 +2318,8 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         val (startFormatted, endFormatted) = try {
             val sdf24 = SimpleDateFormat("HH:mm", Locale.US)
             val sdf12 = SimpleDateFormat("h:mm a", Locale.US)
-<<<<<<< HEAD
-            val sObj = sdf24.parse(startStr.replace(Regex("\\s\\(.*?\\)"), ""))
-            val eObj = sdf24.parse(endStr.replace(Regex("\\s\\(.*?\\)"), ""))
-=======
             val sObj = sdf24.parse(startStr.replace(Regex("\\s\\(.*?\\)"), "").trim())
             val eObj = sdf24.parse(endStr.replace(Regex("\\s\\(.*?\\)"), "").trim())
->>>>>>> 6e834ed (Update Taqwahub)
             Pair(
                 if (sObj != null) sdf12.format(sObj) else startStr,
                 if (eObj != null) sdf12.format(eObj) else endStr
@@ -2642,88 +2392,9 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-    private suspend fun incrementSmartActivityProgress(
-        activityType: String,
-        categoryKeywords: List<String>,
-        titleKeywords: List<String>
-    ) {
-        val allTasks = repository.getAllTasksDirect()
-        val todayStr = repository.getPakistanDateString()
-        var updatedAny = false
-        
-        allTasks.filter { it.isAuto && !it.completed }.forEach { task ->
-            // Skip high precision tasks that are updated via updateAutoTaskProgress to prevent duplicate increment
-            if (task.autoType == activityType) {
-                return@forEach
-            }
-
-            val titleLower = task.title.lowercase()
-            val descLower = task.description.lowercase()
-            val catLower = task.category.lowercase()
-            
-            val matchesCategory = categoryKeywords.any { catLower.contains(it) }
-            val matchesTitle = titleKeywords.any { titleLower.contains(it) || descLower.contains(it) }
-            
-            if (matchesCategory || matchesTitle) {
-                val target = if (task.isAuto && task.autoTarget > 0) {
-                    task.autoTarget
-                } else {
-                    1
-                }
-                
-                val newProgress = task.autoProgress + 1
-                if (newProgress >= target) {
-                    val completedTask = task.copy(autoProgress = target, completed = true)
-                    repository.taqwaDao.insertTask(completedTask)
-                    
-                    val allTimeId = "${task.id}_${todayStr}"
-                    val log = com.example.data.room.AllTimeTaskEntity(
-                        id = allTimeId,
-                        taskId = task.id,
-                        title = task.title,
-                        category = task.category,
-                        date = todayStr,
-                        completedAt = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US).apply {
-                            timeZone = java.util.TimeZone.getTimeZone("UTC")
-                        }.format(java.util.Date())
-                    )
-                    repository.taqwaDao.insertAllTimeTask(log)
-                    
-                    val currentStatsEntity = repository.taqwaDao.getUserStatsDirect() ?: com.example.data.room.UserStatsEntity()
-                    repository.taqwaDao.insertUserStats(
-                        currentStatsEntity.copy(
-                            totalTasksCompleted = currentStatsEntity.totalTasksCompleted + 1,
-                            totalXp = currentStatsEntity.totalXp + task.points,
-                            weeklyXp = currentStatsEntity.weeklyXp + task.points
-                        )
-                    )
-                    
-                    updatedAny = true
-                    viewModelScope.launch(Dispatchers.Main) {
-                        _smartTaskCompletedFlow.emit(completedTask)
-                    }
-                } else {
-                    val updatedTask = task.copy(autoProgress = newProgress, isAuto = true, autoTarget = target)
-                    repository.taqwaDao.insertTask(updatedTask)
-                }
-            }
-        }
-        
-        if (updatedAny) {
-            repository.recalculateAndSaveStreak()
-        }
-    }
-
     fun incrementDuaRead() {
         viewModelScope.launch {
             repository.updateAutoTaskProgress("DUA", 1)
-            incrementSmartActivityProgress("DUA", listOf("dua", "duas", "supplication"), listOf("dua", "supplication", "read", "recite"))
-=======
-    fun incrementDuaRead() {
-        viewModelScope.launch {
-            repository.updateAutoTaskProgress("DUA", 1)
->>>>>>> 6e834ed (Update Taqwahub)
             markLocalUpdateAndSync()
         }
     }
@@ -2731,10 +2402,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     fun incrementHadithRead() {
         viewModelScope.launch {
             repository.updateAutoTaskProgress("HADITH", 1)
-<<<<<<< HEAD
-            incrementSmartActivityProgress("HADITH", listOf("hadith"), listOf("hadith", "prophet", "saying", "read"))
-=======
->>>>>>> 6e834ed (Update Taqwahub)
             markLocalUpdateAndSync()
         }
     }
@@ -2742,10 +2409,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     fun incrementNameRead() {
         viewModelScope.launch {
             repository.updateAutoTaskProgress("99_NAMES", 1)
-<<<<<<< HEAD
-            incrementSmartActivityProgress("99_NAMES", listOf("names", "allah"), listOf("name", "allah", "asma", "recite", "99"))
-=======
->>>>>>> 6e834ed (Update Taqwahub)
             markLocalUpdateAndSync()
         }
     }
@@ -2759,98 +2422,31 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 val allTasks = repository.getAllTasksDirect()
                 var updatedAny = false
                 val todayStr = repository.getPakistanDateString()
-<<<<<<< HEAD
-                
-                // Smart Background Activities Evaluator
-                allTasks.filter { it.isAuto && !it.completed }.forEach { task ->
-                    val titleLower = task.title.lowercase()
-                    val descLower = task.description.lowercase()
-                    val catLower = task.category.lowercase()
-=======
                 val existingLogs = repository.taqwaDao.getAllTimeTasksDirect()
                 
                 // Smart Background Activities Evaluator
                 allTasks.filter { it.isAuto && !it.completed }.forEach { task ->
->>>>>>> 6e834ed (Update Taqwahub)
                     val routeLower = task.actionRoute.trim().lowercase()
                     
                     var progressIncrement = 0
                     
-<<<<<<< HEAD
-                    // --- 1. HIGH-PRECISION SECTIONS (Managed explicitly via dedicated anti-cheat UI triggers) ---
-                    // "SURAH", "TASBEEH", "DUA", "HADITH", and "99_NAMES" auto-tasks are strictly and safely completed via
-                    // explicit user engagement hooks and anti-cheat reader loops to prevent duplicate DB writes and race conditions.
-                    val isHighPrecisionAuto = task.autoType in listOf("SURAH", "TASBEEH", "DUA", "HADITH", "99_NAMES")
-                    
-                    // --- 2. GENERAL / COMPASS / PRAYER ACTIVITY ROUTE (Fallback tracker) ---
-=======
                     // High-precision actions (SURAH, TASBEEH, DUA, HADITH, 99_NAMES) are tracked via real user events
                     val isHighPrecisionAuto = task.autoType in listOf("SURAH", "TASBEEH", "DUA", "HADITH", "99_NAMES")
                     
                     // General / Compass / Prayer activity route fallback tracker (timer-based)
->>>>>>> 6e834ed (Update Taqwahub)
                     if (!isHighPrecisionAuto && routeLower.isNotEmpty() && routeLower == view) {
                         progressIncrement = 1
                     }
                     
-<<<<<<< HEAD
-                    // Execute auto progress matching
-                    if (progressIncrement > 0) {
-                        val target = if (task.isAuto && task.autoTarget > 0) {
-                            task.autoTarget
-                        } else {
-                            // Smart target auto-resolution (seconds of focused activity)
-                            when {
-                                titleLower.contains("mulk") -> 30
-                                titleLower.contains("kahf") -> 45
-                                titleLower.contains("yaseen") -> 40
-                                titleLower.contains("baqarah") -> 60
-                                titleLower.contains("quran") -> 20
-                                titleLower.contains("subhanallah") -> 30
-                                titleLower.contains("astaghfirullah") -> 30
-                                titleLower.contains("tasbeeh") -> 15
-                                titleLower.contains("dhikr") -> 15
-                                titleLower.contains("dua") -> 10
-                                titleLower.contains("hadith") -> 10
-                                titleLower.contains("names") -> 10
-                                else -> 15
-                            }
-                        }
-                        
-                        val newProgress = task.autoProgress + progressIncrement
-=======
                     if (progressIncrement > 0) {
                         val target = if (task.autoTarget > 0) task.autoTarget else 15
                         val newProgress = task.autoProgress + progressIncrement
                         
->>>>>>> 6e834ed (Update Taqwahub)
                         if (newProgress >= target) {
                             val completedTask = task.copy(autoProgress = target, completed = true)
                             repository.taqwaDao.insertTask(completedTask)
                             
                             val allTimeId = "${task.id}_${todayStr}"
-<<<<<<< HEAD
-                            val log = com.example.data.room.AllTimeTaskEntity(
-                                id = allTimeId,
-                                taskId = task.id,
-                                title = task.title,
-                                category = task.category,
-                                date = todayStr,
-                                completedAt = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US).apply {
-                                    timeZone = java.util.TimeZone.getTimeZone("UTC")
-                                }.format(java.util.Date())
-                            )
-                            repository.taqwaDao.insertAllTimeTask(log)
-                            
-                            val currentStats = repository.taqwaDao.getUserStatsDirect() ?: com.example.data.room.UserStatsEntity()
-                            repository.taqwaDao.insertUserStats(
-                                currentStats.copy(
-                                    totalTasksCompleted = currentStats.totalTasksCompleted + 1,
-                                    totalXp = currentStats.totalXp + task.points,
-                                    weeklyXp = currentStats.weeklyXp + task.points
-                                )
-                            )
-=======
                             val alreadyLogged = existingLogs.any { it.id == allTimeId && it.completedAt != "MISSED" }
 
                             if (!alreadyLogged) {
@@ -2875,7 +2471,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                     )
                                 )
                             }
->>>>>>> 6e834ed (Update Taqwahub)
                             
                             updatedAny = true
                             viewModelScope.launch(Dispatchers.Main) {
@@ -2964,13 +2559,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-    fun accumulateSurahTime(surahId: Int, seconds: Long, totalVerses: Int) {
-        val prefs = getProgressPrefs()
-        val current = prefs.getLong("time_$surahId", 0L)
-        val newVal = current + seconds
-        prefs.edit().putLong("time_$surahId", newVal).apply()
-=======
     var activeSurahReadingSeconds by mutableStateOf(0L)
         private set
 
@@ -3016,7 +2604,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         val newDaily = currentDaily + seconds
         prefs.edit().putLong("daily_time_${todayStr}_$surahId", newDaily).apply()
         activeSurahReadingSeconds = newDaily
->>>>>>> 6e834ed (Update Taqwahub)
         
         val visitedStr = prefs.getString("visited_$surahId", "") ?: ""
         val visitedSet = visitedStr.split(",")
@@ -3024,13 +2611,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             .mapNotNull { it.toIntOrNull() }
             .toSet()
             
-<<<<<<< HEAD
-        checkAndTriggerAutoCompletion(surahId, totalVerses, visitedSet)
-        
-        // Update any active daily Surah auto-tasks progress in real-time
-        viewModelScope.launch {
-            repository.updateAutoTaskProgress("SURAH", seconds.toInt(), surahId)
-=======
         val dailyVisitedStr = prefs.getString("daily_visited_${todayStr}_$surahId", "") ?: ""
         val dailyVisitedSet = dailyVisitedStr.split(",")
             .filter { it.isNotEmpty() }
@@ -3082,33 +2662,20 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 markLocalUpdateAndSync()
             }
->>>>>>> 6e834ed (Update Taqwahub)
         }
     }
 
     fun addVisitedVerses(surahId: Int, verseNumbers: Set<Int>, totalVerses: Int) {
         if (verseNumbers.isEmpty() || totalVerses <= 0) return
         val prefs = getProgressPrefs()
-<<<<<<< HEAD
-=======
         val todayStr = repository.getPakistanDateString()
         
         // 1. Lifetime visited
->>>>>>> 6e834ed (Update Taqwahub)
         val visitedStr = prefs.getString("visited_$surahId", "") ?: ""
         val visitedSet = visitedStr.split(",")
             .filter { it.isNotEmpty() }
             .mapNotNull { it.toIntOrNull() }
             .toMutableSet()
-<<<<<<< HEAD
-        
-        val newlyAdded = visitedSet.addAll(verseNumbers)
-        if (newlyAdded) {
-            val newVisitedStr = visitedSet.joinToString(",")
-            prefs.edit().putString("visited_$surahId", newVisitedStr).apply()
-            
-            checkAndTriggerAutoCompletion(surahId, totalVerses, visitedSet)
-=======
         val newlyAddedLifetime = visitedSet.addAll(verseNumbers)
         if (newlyAddedLifetime) {
             prefs.edit().putString("visited_$surahId", visitedSet.joinToString(",")).apply()
@@ -3143,7 +2710,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 markLocalUpdateAndSync()
             }
->>>>>>> 6e834ed (Update Taqwahub)
         }
     }
 
@@ -3153,20 +2719,12 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         if (isCompletedAlready) return
         
         val accumulatedTime = prefs.getLong("time_$surahId", 0L)
-<<<<<<< HEAD
-        val minTimeRequired = (totalVerses * 1.5).toLong().coerceIn(10L, 600L)
-=======
         val req = repository.getSurahReadingRequirement(surahId, totalVerses)
->>>>>>> 6e834ed (Update Taqwahub)
         
         val percentageVisited = if (totalVerses > 0) visitedSet.size.toDouble() / totalVerses else 0.0
         val visitedLastVerse = visitedSet.contains(totalVerses)
         
-<<<<<<< HEAD
-        if (accumulatedTime >= minTimeRequired && percentageVisited >= 0.90 && visitedLastVerse) {
-=======
         if (accumulatedTime >= req.requiredReadingSeconds && visitedSet.size >= req.requiredAyahs && visitedLastVerse) {
->>>>>>> 6e834ed (Update Taqwahub)
             prefs.edit().putBoolean("completed_$surahId", true).apply()
             
             viewModelScope.launch {
@@ -3178,14 +2736,11 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 
                 val idStr = surahId.toString()
                 if (!completedSet.contains(idStr)) {
-<<<<<<< HEAD
-=======
                     if (isSyncingData) {
                         pendingXpBuffer.addAndGet(25)
                         pendingWeeklyXpBuffer.addAndGet(25)
                         pendingCompletedSurahsBuffer.add(idStr)
                     }
->>>>>>> 6e834ed (Update Taqwahub)
                     completedSet.add(idStr)
                     val xpChange = 25
                     val newXp = currentStats.totalXp + xpChange
@@ -3233,26 +2788,20 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             val newWeeklyXp: Int
 
             if (wasCompleted) {
-<<<<<<< HEAD
-=======
                 if (isSyncingData) {
                     pendingXpBuffer.addAndGet(-xpChange)
                     pendingWeeklyXpBuffer.addAndGet(-xpChange)
                     pendingCompletedSurahsBuffer.remove(idStr)
                 }
->>>>>>> 6e834ed (Update Taqwahub)
                 completedSet.remove(idStr)
                 newXp = (currentStats.totalXp - xpChange).coerceAtLeast(0)
                 newWeeklyXp = (currentStats.weeklyXp - xpChange).coerceAtLeast(0)
             } else {
-<<<<<<< HEAD
-=======
                 if (isSyncingData) {
                     pendingXpBuffer.addAndGet(xpChange)
                     pendingWeeklyXpBuffer.addAndGet(xpChange)
                     pendingCompletedSurahsBuffer.add(idStr)
                 }
->>>>>>> 6e834ed (Update Taqwahub)
                 completedSet.add(idStr)
                 newXp = currentStats.totalXp + xpChange
                 newWeeklyXp = currentStats.weeklyXp + xpChange
@@ -3272,8 +2821,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
     fun incrementPodiumCount(place: Int) {
         viewModelScope.launch {
-<<<<<<< HEAD
-=======
             if (isSyncingData) {
                 val extraXp = when (place) {
                     1 -> 100
@@ -3284,7 +2831,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 pendingXpBuffer.addAndGet(extraXp)
                 pendingWeeklyXpBuffer.addAndGet(extraXp)
             }
->>>>>>> 6e834ed (Update Taqwahub)
             val currentStats = repository.getUserStats()
             val updatedStats = when (place) {
                 1 -> currentStats.copy(firstPlaceCount = currentStats.firstPlaceCount + 1, totalXp = currentStats.totalXp + 100)
@@ -3372,12 +2918,9 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
     fun incrementTasbeeh() {
         viewModelScope.launch {
-<<<<<<< HEAD
-=======
             if (isSyncingData) {
                 pendingTasbeehBuffer.incrementAndGet()
             }
->>>>>>> 6e834ed (Update Taqwahub)
             val currentStats = repository.getUserStats()
             val newCount = currentStats.tasbeehCount + 1
             repository.saveUserStats(currentStats.copy(tasbeehCount = newCount))
@@ -3464,11 +3007,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             if (updatedAny) {
                 repository.recalculateAndSaveStreak()
             }
-<<<<<<< HEAD
-            markLocalUpdateAndSync()
-=======
             markLocalUpdateAndSyncDebounced()
->>>>>>> 6e834ed (Update Taqwahub)
         }
     }
 
@@ -3623,8 +3162,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-<<<<<<< HEAD
-=======
     private data class SurahSessionCache(
         val verses: List<com.example.data.api.QuranVerse>,
         val translations: Map<String, Pair<String, String>>,
@@ -3683,14 +3220,11 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun selectChapter(surahId: Int) {
         val surah = IslamicData.surahs.find { it.id == surahId }
         selectedSurah = surah ?: islamicSurahFallback(surahId)
         
         viewModelScope.launch {
-<<<<<<< HEAD
-=======
             val cacheKey = "${surahId}_$selectedReciterId"
 
             // 0. Immediate In-Memory Cache Check (0ms instantaneous rendering)
@@ -3711,7 +3245,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
 
->>>>>>> 6e834ed (Update Taqwahub)
             isVersesLoading = true
             versesError = null
             activeVerses = emptyList()
@@ -3726,10 +3259,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 var verses = emptyList<com.example.data.api.QuranVerse>()
                 var translations = emptyList<com.example.data.api.TranslationVerse>()
                 var audioFiles = emptyList<com.example.data.api.AudioFile>()
-<<<<<<< HEAD
-=======
                 var loadedFromDisk = false
->>>>>>> 6e834ed (Update Taqwahub)
 
                 // 1. Try loading from local offline storage first if files exist
                 val dir = getDownloadsDir()
@@ -3749,16 +3279,11 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                             Types.newParameterizedType(List::class.java, com.example.data.api.TranslationVerse::class.java)
                         ).fromJson(transJson)
                         
-<<<<<<< HEAD
-                        if (loadedVerses != null) verses = loadedVerses
-                        if (loadedTrans != null) translations = loadedTrans
-=======
                         if (!loadedVerses.isNullOrEmpty()) {
                             verses = loadedVerses
                             loadedFromDisk = true
                         }
                         if (!loadedTrans.isNullOrEmpty()) translations = loadedTrans
->>>>>>> 6e834ed (Update Taqwahub)
                         
                         if (audioFileConf.exists()) {
                             val audioJson = audioFileConf.readText()
@@ -3767,21 +3292,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                             ).fromJson(audioJson)
                             if (loadedAudio != null) audioFiles = loadedAudio
                         }
-<<<<<<< HEAD
-                        Log.d("TaqwaViewModel", "Successfully loaded downloaded Surah $surahId offline.")
-                    } catch (e: Exception) {
-                        Log.e("TaqwaViewModel", "Error parsing offline surah $surahId: ${e.message}", e)
-                    }
-                }
-
-                // 2. Fetch from network API if not saved or empty
-                if (verses.isEmpty() || translations.isEmpty()) {
-                    verses = repository.fetchVerses(surahId, selectedReciterId)
-                    translations = repository.fetchTranslations(surahId)
-                    audioFiles = repository.fetchRecitation(surahId, selectedReciterId)
-                } else if (audioFiles.isEmpty() || selectedReciterId != 7) {
-                    // Fetch audio files separately if they are missing or if we selected a non-default reciter
-=======
                         Log.d("TaqwaViewModel", "Successfully loaded Surah $surahId from local disk cache.")
                     } catch (e: Exception) {
                         Log.e("TaqwaViewModel", "Error parsing local surah $surahId: ${e.message}", e)
@@ -3824,26 +3334,17 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                         }
                     }
                 } else if (audioFiles.isEmpty() || selectedReciterId != 7) {
->>>>>>> 6e834ed (Update Taqwahub)
                     audioFiles = repository.fetchRecitation(surahId, selectedReciterId)
                 }
 
                 // Convert translations list to easy-lookup map
                 val transMap = mutableMapOf<String, Pair<String, String>>()
                 translations.forEach { tv ->
-<<<<<<< HEAD
-                    // Prefer Muhsin Khan (17), Saheeh International (20), and Yusuf Ali (22) for utmost accuracy
-=======
->>>>>>> 6e834ed (Update Taqwahub)
                     val englishRaw = tv.translations.find { it.resource_id in listOf(17, 20, 22) }?.text
                         ?: tv.translations.find { it.resource_id == 131 }?.text
                         ?: tv.translations.firstOrNull()?.text ?: ""
                     val urduRaw = tv.translations.find { it.resource_id in listOf(158, 97, 151, 156) }?.text ?: ""
                     
-<<<<<<< HEAD
-                    // Remove HTML tags (e.g. <sup>, <br>, <i>) that cause distorted "code lines"
-=======
->>>>>>> 6e834ed (Update Taqwahub)
                     val cleanEnglishRaw = englishRaw.replace(Regex("<sup.*?>.*?</sup>"), "").replace(Regex("<.*?>"), "")
                     val cleanUrduRaw = urduRaw.replace(Regex("<sup.*?>.*?</sup>"), "").replace(Regex("<.*?>"), "")
                     
@@ -3857,10 +3358,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 val durationMap = mutableMapOf<String, Int>()
                 val segmentMap = mutableMapOf<String, List<List<Int>>>()
 
-<<<<<<< HEAD
-                // Extract from verses first (since verses/by_chapter contains precise segment timings)
-=======
->>>>>>> 6e834ed (Update Taqwahub)
                 verses.forEach { v ->
                     v.audio?.let { va ->
                         va.url?.let { audioMap[v.verse_key] = it }
@@ -3872,24 +3369,16 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
 
-<<<<<<< HEAD
-                // Overlay/fallback with fetched audioFiles
-                audioFiles.forEach { af ->
-                    audioMap[af.verse_key] = af.url
-=======
                 audioFiles.forEach { af ->
                     if (af.url.isNotEmpty()) {
                         audioMap[af.verse_key] = af.url
                     }
->>>>>>> 6e834ed (Update Taqwahub)
                     if (af.duration != null && af.duration > 0) {
                         durationMap[af.verse_key] = af.duration
                     }
                     af.segments?.let { segmentMap[af.verse_key] = it }
                 }
 
-<<<<<<< HEAD
-=======
                 verses.forEach { v ->
                     if (audioMap[v.verse_key].isNullOrEmpty()) {
                         audioMap[v.verse_key] = getVerseAudioUrl(v.verse_key, selectedReciterId)
@@ -3907,17 +3396,12 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }
 
->>>>>>> 6e834ed (Update Taqwahub)
                 activeVerses = verses
                 activeTranslations = transMap
                 activeVerseAudioUrls = audioMap
                 activeVerseDurations = durationMap
                 activeVerseSegments = segmentMap
 
-<<<<<<< HEAD
-                if (verses.isEmpty()) {
-                    versesError = "This Surah has not been downloaded for offline reading. Connect to the internet to load verses."
-=======
                 val initialPrefetch = verses.take(5).mapNotNull { audioMap[it.verse_key] }
                 if (initialPrefetch.isNotEmpty()) {
                     audioPlayerHelper.prefetch(initialPrefetch)
@@ -3925,7 +3409,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
 
                 if (verses.isEmpty()) {
                     versesError = "Unable to load verses. Connect to the internet to load Surah."
->>>>>>> 6e834ed (Update Taqwahub)
                 }
             } catch (e: Exception) {
                 Log.e("TaqwaViewModel", "Error fetching surah $surahId: ${e.message}", e)
@@ -4011,55 +3494,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         return list
     }
 
-<<<<<<< HEAD
-    fun selectReciter(surahId: Int, reciterId: Int) {
-        audioPlayerHelper.stop()
-        selectedReciterId = reciterId
-        viewModelScope.launch {
-            try {
-                isVersesLoading = true
-                val loadedVerses = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                    repository.fetchVerses(surahId, reciterId)
-                }
-                
-                val audioMap = mutableMapOf<String, String>()
-                val durationMap = mutableMapOf<String, Int>()
-                val segmentMap = mutableMapOf<String, List<List<Int>>>()
-                
-                loadedVerses.forEach { v ->
-                    v.audio?.let { va ->
-                        va.url?.let { audioMap[v.verse_key] = it }
-                        va.segments?.let { segments ->
-                            segmentMap[v.verse_key] = segments
-                            val lastSegEndMs = segments.lastOrNull()?.getOrNull(3) ?: 0
-                            durationMap[v.verse_key] = (lastSegEndMs / 1000).coerceAtLeast(1)
-                        }
-                    }
-                }
-                
-                val audioFiles = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                    repository.fetchRecitation(surahId, reciterId)
-                }
-                audioFiles.forEach { af ->
-                    audioMap[af.verse_key] = af.url
-                    if (af.duration != null && af.duration > 0) {
-                        durationMap[af.verse_key] = af.duration
-                    }
-                    af.segments?.let { segmentMap[af.verse_key] = it }
-                }
-                
-                if (loadedVerses.isNotEmpty()) {
-                    activeVerses = loadedVerses
-                }
-                
-                activeVerseAudioUrls = audioMap
-                activeVerseDurations = durationMap
-                activeVerseSegments = segmentMap
-            } catch (e: Exception) {
-                Log.e("TaqwaViewModel", "Failed to load recitation for reciter $reciterId: ${e.message}")
-            } finally {
-                isVersesLoading = false
-=======
     fun getReciterSlug(reciterId: Int): String {
         return when (reciterId) {
             7 -> "Alafasy_128kbps"
@@ -4120,7 +3554,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } catch (e: Exception) {
                 Log.e("TaqwaViewModel", "Background recitation details fetch: ${e.message}")
->>>>>>> 6e834ed (Update Taqwahub)
             }
         }
     }
@@ -4132,11 +3565,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         }
         val override = audioOverrides["word_${word.id}"]
         if (override != null) {
-<<<<<<< HEAD
-            audioPlayerHelper.playAudio(url = override, playbackToken = override)
-=======
             wordAudioPlayerHelper.playAudio(url = override, playbackToken = override)
->>>>>>> 6e834ed (Update Taqwahub)
             return
         }
 
@@ -4153,11 +3582,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         val directUrl = String.format("wbw/%03d_%03d_%03d.mp3", sNum, aNum, wNum)
 
         android.util.Log.d("TaqwaViewModel", "Playing clean individual pre-recorded word audio for $verseKey word $wNum: $directUrl")
-<<<<<<< HEAD
-        audioPlayerHelper.playAudio(url = directUrl, playbackToken = token)
-=======
         wordAudioPlayerHelper.playAudio(url = directUrl, playbackToken = token)
->>>>>>> 6e834ed (Update Taqwahub)
 
         // Preload next 5 contiguous word files in the background to ensure instantaneous taps
         val nextWordUrls = mutableListOf<String>()
@@ -4165,11 +3590,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             val nextDirectUrl = String.format("wbw/%03d_%03d_%03d.mp3", sNum, aNum, wNum + i)
             nextWordUrls.add(nextDirectUrl)
         }
-<<<<<<< HEAD
-        audioPlayerHelper.prefetch(nextWordUrls)
-=======
         wordAudioPlayerHelper.prefetch(nextWordUrls)
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     fun downloadSurahOffline(surahId: Int) {
@@ -4526,8 +3947,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
     var globalLeaderboard by mutableStateOf<List<UserStatsEntity>>(emptyList())
         private set
 
-<<<<<<< HEAD
-=======
     var hasLeaderboardUpdate by mutableStateOf(false)
     var hasUnreadSupportReply by mutableStateOf(false)
 
@@ -4541,7 +3960,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putLong("last_seen_complaints_time", System.currentTimeMillis()).apply()
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun listenToLeaderboard() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -4573,26 +3991,15 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                     tasbeehCount = (statsMap["tasbeehCount"] as? Long)?.toInt() ?: 0,
                                     lastResetDate = statsMap["lastResetDate"] as? String ?: "",
                                     currentStreak = (statsMap["currentStreak"] as? Long)?.toInt() ?: 0,
-<<<<<<< HEAD
-                                    streakChancesLeft = (statsMap["streakChancesLeft"] as? Long)?.toInt() ?: 2,
-=======
                                     streakChancesLeft = ((statsMap["streakShields"] as? Long)?.toInt() ?: ((statsMap["streakChancesLeft"] as? Long)?.toInt() ?: 0)).coerceIn(0, 2),
->>>>>>> 6e834ed (Update Taqwahub)
                                     longestStreak = (statsMap["longestStreak"] as? Long)?.toInt() ?: 0,
                                     totalXp = (statsMap["totalXp"] as? Long)?.toInt() ?: 0,
                                     weeklyXp = activeWeeklyXp,
                                     lastActiveWeekOfYear = rawLastActiveWeek,
-<<<<<<< HEAD
-                                    name = statsMap["name"] as? String ?: "Servant of Allah",
-                                    username = statsMap["username"] as? String ?: "",
-                                    gender = statsMap["gender"] as? String ?: "Male",
-                                    sectOrCast = statsMap["sectOrCast"] as? String ?: "Sunni",
-=======
                                     name = (statsMap["name"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("name") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("displayName") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                     username = (statsMap["username"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("username") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                     gender = (statsMap["gender"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("gender") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sectGender") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                     sectOrCast = (statsMap["sectOrCast"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sectOrCast") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sect") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("cast") as? String)?.takeIf { it.isNotBlank() } ?: "",
->>>>>>> 6e834ed (Update Taqwahub)
                                     email = statsMap["email"] as? String ?: "",
                                     completedSurahs = statsMap["completedSurahs"] as? String ?: "",
                                     firstPlaceCount = (statsMap["firstPlaceCount"] as? Long)?.toInt() ?: 0,
@@ -4610,12 +4017,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                             }
                         }
                         // Sort by weeklyXp descending, if weeklyXp is tied, sort by totalXp descending
-<<<<<<< HEAD
-                        globalLeaderboard = board.sortedWith(
-                            compareByDescending<UserStatsEntity> { it.weeklyXp }
-                                .thenByDescending { it.totalXp }
-                        )
-=======
                         val sortedBoard = board.sortedWith(
                             compareByDescending<UserStatsEntity> { it.weeklyXp }
                                 .thenByDescending { it.totalXp }
@@ -4624,7 +4025,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                         if (currentView != "leaderboard") {
                             hasLeaderboardUpdate = true
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                     }
                 }
             } catch (e: Throwable) {
@@ -4645,48 +4045,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                     return@addSnapshotListener
                 }
                 if (snapshot != null && snapshot.exists()) {
-<<<<<<< HEAD
-                    val remoteLastUpdated = snapshot.getLong("lastUpdatedAt") ?: 0L
-                    val sharedPrefs = getApplication<Application>().getSharedPreferences("taqwahub_sync", android.content.Context.MODE_PRIVATE)
-                    val localLastUpdated = sharedPrefs.getLong("last_local_update", 0L)
-                    
-                    if (remoteLastUpdated > localLastUpdated) {
-                        Log.d("TaqwaViewModel", "Realtime update: Remote user doc is newer. Pulling remote data down to Room...")
-                        viewModelScope.launch(Dispatchers.IO) {
-                            try {
-                                val remoteStatsMap = snapshot.get("userStats") as? Map<String, Any>
-                                if (remoteStatsMap != null) {
-                                    val stats = UserStatsEntity(
-                                        id = 1,
-                                        totalTasksCompleted = (remoteStatsMap["totalTasksCompleted"] as? Long)?.toInt() ?: 0,
-                                        daysActive = (remoteStatsMap["daysActive"] as? Long)?.toInt() ?: 1,
-                                        quranProgress = (remoteStatsMap["quranProgress"] as? Long)?.toInt() ?: 0,
-                                        lastReadSurah = (remoteStatsMap["lastReadSurah"] as? Long)?.toInt() ?: 1,
-                                        lastReadVerse = (remoteStatsMap["lastReadVerse"] as? Long)?.toInt() ?: 1,
-                                        lastReadVerseKey = remoteStatsMap["lastReadVerseKey"] as? String ?: "1:1",
-                                        tasbeehCount = (remoteStatsMap["tasbeehCount"] as? Long)?.toInt() ?: 0,
-                                        lastResetDate = remoteStatsMap["lastResetDate"] as? String ?: "",
-                                        currentStreak = (remoteStatsMap["currentStreak"] as? Long)?.toInt() ?: 0,
-                                        streakChancesLeft = (remoteStatsMap["streakChancesLeft"] as? Long)?.toInt() ?: 2,
-                                        longestStreak = (remoteStatsMap["longestStreak"] as? Long)?.toInt() ?: 0,
-                                        totalXp = (remoteStatsMap["totalXp"] as? Long)?.toInt() ?: 0,
-                                        weeklyXp = (remoteStatsMap["weeklyXp"] as? Long)?.toInt() ?: 0,
-                                        lastActiveWeekOfYear = (remoteStatsMap["lastActiveWeekOfYear"] as? Long)?.toInt() ?: 0,
-                                        name = remoteStatsMap["name"] as? String ?: "Servant of Allah",
-                                        username = remoteStatsMap["username"] as? String ?: "",
-                                        gender = remoteStatsMap["gender"] as? String ?: "Male",
-                                        sectOrCast = remoteStatsMap["sectOrCast"] as? String ?: "Sunni",
-                                        email = remoteStatsMap["email"] as? String ?: (user.email ?: ""),
-                                        completedSurahs = remoteStatsMap["completedSurahs"] as? String ?: "",
-                                        firstPlaceCount = (remoteStatsMap["firstPlaceCount"] as? Long)?.toInt() ?: 0,
-                                        secondPlaceCount = (remoteStatsMap["secondPlaceCount"] as? Long)?.toInt() ?: 0,
-                                        thirdPlaceCount = (remoteStatsMap["thirdPlaceCount"] as? Long)?.toInt() ?: 0,
-                                        isBlocked = remoteStatsMap["isBlocked"] as? Boolean ?: false,
-                                        isVerified = remoteStatsMap["isVerified"] as? Boolean ?: false,
-                                        profilePictureBase64 = remoteStatsMap["profilePictureBase64"] as? String ?: "",
-                                        lastWeekXp = (remoteStatsMap["lastWeekXp"] as? Long)?.toInt() ?: 0,
-                                        lastWeekCode = (remoteStatsMap["lastWeekCode"] as? Long)?.toInt() ?: 0
-=======
                     viewModelScope.launch(Dispatchers.IO) {
                         try {
                             if (isSyncingData) {
@@ -4810,17 +4168,12 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                         activeDates = remoteStatsMap?.get("activeDates") as? String ?: (currentLocalStats?.activeDates ?: ""),
                                         lastShieldUsedDate = remoteStatsMap?.get("lastShieldUsedDate") as? String ?: (currentLocalStats?.lastShieldUsedDate ?: ""),
                                         streakRepairsAvailable = (remoteStatsMap?.get("streakRepairsAvailable") as? Long)?.toInt() ?: (currentLocalStats?.streakRepairsAvailable ?: 1)
->>>>>>> 6e834ed (Update Taqwahub)
                                     )
                                     repository.taqwaDao.insertUserStats(stats)
                                 }
 
                                 val remoteTasksList = snapshot.get("tasks") as? List<Map<String, Any>>
-<<<<<<< HEAD
-                                if (remoteTasksList != null) {
-=======
                                 if (remoteTasksList != null && remoteTasksList.isNotEmpty()) {
->>>>>>> 6e834ed (Update Taqwahub)
                                     val tasks = remoteTasksList.map {
                                         TaskEntity(
                                             id = it["id"] as? String ?: "",
@@ -4836,10 +4189,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                             autoType = it["autoType"] as? String ?: "",
                                             autoTarget = (it["autoTarget"] as? Long)?.toInt() ?: 0,
                                             autoProgress = (it["autoProgress"] as? Long)?.toInt() ?: 0,
-<<<<<<< HEAD
-=======
                                             targetSurahNumber = (it["targetSurahNumber"] as? Long)?.toInt(),
->>>>>>> 6e834ed (Update Taqwahub)
                                             actionRoute = it["actionRoute"] as? String ?: ""
                                         )
                                     }.filter { it.id.isNotEmpty() }
@@ -4869,11 +4219,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                     }
                                 }
 
-<<<<<<< HEAD
-                                val remoteAllTimeList = snapshot.get("allTimeTasks") as? List<Map<String, Any>>
-=======
                                  val remoteAllTimeList = snapshot.get("allTimeTasks") as? List<Map<String, Any>>
->>>>>>> 6e834ed (Update Taqwahub)
                                 if (remoteAllTimeList != null) {
                                     val allTimeDb = repository.taqwaDao.getAllTimeTasksDirect()
                                     allTimeDb.forEach { repository.taqwaDao.deleteAllTimeTaskById(it.id) }
@@ -4888,10 +4234,7 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                         )
                                         repository.taqwaDao.insertAllTimeTask(info)
                                     }
-<<<<<<< HEAD
-=======
                                     repository.recalculateAndSaveStreak()
->>>>>>> 6e834ed (Update Taqwahub)
                                 }
 
                                 val remoteAiChatState = snapshot.get("aiChatState") as? Map<String, Any>
@@ -4934,19 +4277,11 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                     }
                                 }
                                 
-<<<<<<< HEAD
-                                sharedPrefs.edit().putLong("last_local_update", remoteLastUpdated).apply()
-                                Log.d("TaqwaViewModel", "Successfully completed realtime current user doc pull.")
-                            } catch (err: Exception) {
-                                Log.e("TaqwaViewModel", "Error processing realtime user update: ${err.message}")
-                            }
-=======
                                 sharedPrefs.edit().putLong("last_local_update", maxOf(remoteLastUpdated, System.currentTimeMillis())).apply()
                                 Log.d("TaqwaViewModel", "Successfully completed realtime current user doc pull.")
                             }
                         } catch (err: Exception) {
                             Log.e("TaqwaViewModel", "Error processing realtime user update: ${err.message}")
->>>>>>> 6e834ed (Update Taqwahub)
                         }
                     }
                 }
@@ -5131,27 +4466,16 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                                 tasbeehCount = (statsMap["tasbeehCount"] as? Long)?.toInt() ?: 0,
                                 lastResetDate = statsMap["lastResetDate"] as? String ?: "",
                                 currentStreak = (statsMap["currentStreak"] as? Long)?.toInt() ?: 0,
-<<<<<<< HEAD
-                                streakChancesLeft = (statsMap["streakChancesLeft"] as? Long)?.toInt() ?: 2,
-=======
                                 streakChancesLeft = ((statsMap["streakShields"] as? Long)?.toInt() ?: ((statsMap["streakChancesLeft"] as? Long)?.toInt() ?: 0)).coerceIn(0, 2),
                                 streakShields = ((statsMap["streakShields"] as? Long)?.toInt() ?: ((statsMap["streakChancesLeft"] as? Long)?.toInt() ?: 0)).coerceIn(0, 2),
->>>>>>> 6e834ed (Update Taqwahub)
                                 longestStreak = (statsMap["longestStreak"] as? Long)?.toInt() ?: 0,
                                 totalXp = (statsMap["totalXp"] as? Long)?.toInt() ?: 0,
                                 weeklyXp = activeWeeklyXp,
                                 lastActiveWeekOfYear = rawLastActiveWeek,
-<<<<<<< HEAD
-                                name = statsMap["name"] as? String ?: "Servant of Allah",
-                                username = statsMap["username"] as? String ?: "",
-                                gender = statsMap["gender"] as? String ?: "Male",
-                                sectOrCast = statsMap["sectOrCast"] as? String ?: "Sunni",
-=======
                                 name = (statsMap["name"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("name") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("displayName") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                 username = (statsMap["username"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("username") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                 gender = (statsMap["gender"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("gender") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sectGender") as? String)?.takeIf { it.isNotBlank() } ?: "",
                                 sectOrCast = (statsMap["sectOrCast"] as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sectOrCast") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("sect") as? String)?.takeIf { it.isNotBlank() } ?: (doc.get("cast") as? String)?.takeIf { it.isNotBlank() } ?: "",
->>>>>>> 6e834ed (Update Taqwahub)
                                 email = statsMap["email"] as? String ?: "",
                                 completedSurahs = statsMap["completedSurahs"] as? String ?: "",
                                 firstPlaceCount = (statsMap["firstPlaceCount"] as? Long)?.toInt() ?: 0,
@@ -5290,8 +4614,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
                 repository.saveUserStats(updatedStats)
                 markLocalUpdateAndSync()
             }
-<<<<<<< HEAD
-=======
             runGlobalWeeklyProcessor(currentWeekCode)
         }
     }
@@ -5443,7 +4765,6 @@ class TaqwaViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 Log.e("WeeklyProcessor", "Error running global weekly processor: ${e.message}", e)
             }
->>>>>>> 6e834ed (Update Taqwahub)
         }
     }
 
@@ -6426,16 +5747,12 @@ Core Guidelines:
             try {
                 Log.d("TaqwaViewModel", "Registering Firestore app config listener...")
                 val db = FirebaseFirestore.getInstance()
-<<<<<<< HEAD
-                db.collection("system").document("maintenance")
-=======
                 
                 // Clear previous registrations if any
                 appConfigListenerRegistration?.remove()
                 adminsListenerRegistration?.remove()
 
                 appConfigListenerRegistration = db.collection("system").document("maintenance")
->>>>>>> 6e834ed (Update Taqwahub)
                     .addSnapshotListener { snapshot, e ->
                         if (e != null) {
                             Log.w("TaqwaViewModel", "AppConfig snapshot listener failed: ${e.message}")
@@ -6466,8 +5783,6 @@ Core Guidelines:
                             val toolsPageMsg = snapshot.getString("toolsPageBlockedMessage") ?: "The Tools page is currently blocked."
                             val isLearnPageLocked = snapshot.getBoolean("isLearnPageLocked") ?: false
                             val learnPageMsg = snapshot.getString("learnPageBlockedMessage") ?: "The Learn page is currently blocked."
-<<<<<<< HEAD
-=======
 
                             // Module Matrix Properties
                             val isHadithLocked = snapshot.getBoolean("isHadithLocked") ?: false
@@ -6529,7 +5844,6 @@ Core Guidelines:
                             val isDonateHidden = snapshot.getBoolean("isDonateHidden") ?: false
                             val donateLockReason = snapshot.getString("donateLockReason") ?: "Support & Donate gateway is temporarily offline."
                             val donateLockCategory = snapshot.getString("donateLockCategory") ?: "server_maintenance"
->>>>>>> 6e834ed (Update Taqwahub)
                             
                             val isPrayerTimesLocked = snapshot.getBoolean("isPrayerTimesCardLocked") ?: false
                             val prayerTimesMsg = snapshot.getString("prayerTimesBlockedMessage") ?: "Prayer Times are temporarily unavailable."
@@ -6563,8 +5877,6 @@ Core Guidelines:
                                     toolsPageBlockedMessage = toolsPageMsg,
                                     isLearnPageLocked = isLearnPageLocked,
                                     learnPageBlockedMessage = learnPageMsg,
-<<<<<<< HEAD
-=======
 
                                     isHadithLocked = isHadithLocked,
                                     isHadithHidden = isHadithHidden,
@@ -6626,7 +5938,6 @@ Core Guidelines:
                                     donateLockReason = donateLockReason,
                                     donateLockCategory = donateLockCategory,
 
->>>>>>> 6e834ed (Update Taqwahub)
                                     isPrayerTimesCardLocked = isPrayerTimesLocked,
                                     prayerTimesBlockedMessage = prayerTimesMsg,
                                     isDailyAyahCardLocked = isDailyAyahLocked,
@@ -6645,26 +5956,13 @@ Core Guidelines:
                     }
 
                 // Register Firestore admins listener
-<<<<<<< HEAD
-                db.collection("system").document("admins")
-=======
                 adminsListenerRegistration = db.collection("system").document("admins")
->>>>>>> 6e834ed (Update Taqwahub)
                     .addSnapshotListener { snapshot, e2 ->
                         if (e2 != null) {
                             Log.w("TaqwaViewModel", "Admins snapshot listener failed: ${e2.message}")
                             return@addSnapshotListener
                         }
                         if (snapshot != null && snapshot.exists()) {
-<<<<<<< HEAD
-                            @Suppress("UNCHECKED_CAST")
-                            val emails = snapshot.get("emails") as? List<String>
-                            @Suppress("UNCHECKED_CAST")
-                            val superEmails = snapshot.get("superAdmins") as? List<String>
-                            viewModelScope.launch(Dispatchers.Main) {
-                                if (emails != null) adminEmails = emails
-                                if (superEmails != null) superAdminEmails = superEmails
-=======
                             val rawEmails = (snapshot.get("emails") as? List<*>)
                                 ?: (snapshot.get("admins") as? List<*>)
                             val rawSuperEmails = (snapshot.get("superAdmins") as? List<*>)
@@ -6684,7 +5982,6 @@ Core Guidelines:
                                 adminEmails = mergedAdminEmails
                                 superAdminEmails = cleanedSuperEmails
                                 saveCachedAdminEmails(mergedAdminEmails, cleanedSuperEmails)
->>>>>>> 6e834ed (Update Taqwahub)
                                 Log.d("TaqwaViewModel", "Realtime Admin emails updated: $adminEmails, Supers: $superAdminEmails")
                             }
                         }
@@ -6722,8 +6019,6 @@ Core Guidelines:
                     "toolsPageBlockedMessage" to newConfig.toolsPageBlockedMessage,
                     "isLearnPageLocked" to newConfig.isLearnPageLocked,
                     "learnPageBlockedMessage" to newConfig.learnPageBlockedMessage,
-<<<<<<< HEAD
-=======
 
                     "isHadithLocked" to newConfig.isHadithLocked,
                     "isHadithHidden" to newConfig.isHadithHidden,
@@ -6785,7 +6080,6 @@ Core Guidelines:
                     "donateLockReason" to newConfig.donateLockReason,
                     "donateLockCategory" to newConfig.donateLockCategory,
 
->>>>>>> 6e834ed (Update Taqwahub)
                     "isPrayerTimesCardLocked" to newConfig.isPrayerTimesCardLocked,
                     "prayerTimesBlockedMessage" to newConfig.prayerTimesBlockedMessage,
                     "isDailyAyahCardLocked" to newConfig.isDailyAyahCardLocked,
@@ -6801,15 +6095,9 @@ Core Guidelines:
                     "updatedAt" to timestampStr
                 )
                 db.collection("system").document("maintenance")
-<<<<<<< HEAD
-                    .set(data)
-                    .addOnSuccessListener {
-                        Log.d("TaqwaViewModel", "Firestore AppConfig saved successfully!")
-=======
                     .set(data, com.google.firebase.firestore.SetOptions.merge())
                     .addOnSuccessListener {
                         Log.d("TaqwaViewModel", "Firestore AppConfig saved successfully with merge!")
->>>>>>> 6e834ed (Update Taqwahub)
                         viewModelScope.launch(Dispatchers.Main) {
                             appConfig = newConfig
                             onSuccess()
@@ -6830,18 +6118,6 @@ Core Guidelines:
         }
     }
 
-<<<<<<< HEAD
-    fun updateAdminEmails(newEmails: List<String>, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val db = FirebaseFirestore.getInstance()
-                db.collection("system").document("admins")
-                    .update("emails", newEmails)
-                    .addOnSuccessListener {
-                        Log.d("TaqwaViewModel", "Firestore Admins updated successfully!")
-                        viewModelScope.launch(Dispatchers.Main) {
-                            adminEmails = newEmails
-=======
     fun saveAppConfigPartial(updates: Map<String, Any>, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -6902,7 +6178,6 @@ Core Guidelines:
                         viewModelScope.launch(Dispatchers.Main) {
                             adminEmails = cleanedEmails
                             saveCachedAdminEmails(cleanedEmails, superAdminEmails)
->>>>>>> 6e834ed (Update Taqwahub)
                             onSuccess()
                         }
                     }
@@ -6921,8 +6196,6 @@ Core Guidelines:
         }
     }
 
-<<<<<<< HEAD
-=======
     fun updateSuperAdminEmails(newSuperEmails: List<String>, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         if (!isSuperAdmin) {
             onFailure("Unauthorized: Only Super Admins can update Super Admin roles.")
@@ -6966,7 +6239,6 @@ Core Guidelines:
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun triggerFirebaseSync(forcePull: Boolean = false) {
         if (!isInitialized) return
         val user = currentUser ?: return
@@ -6990,20 +6262,6 @@ Core Guidelines:
                 var remoteLastUpdated: Long = 0
                 
                 val sharedPrefs = getApplication<Application>().getSharedPreferences("taqwahub_sync", android.content.Context.MODE_PRIVATE)
-<<<<<<< HEAD
-                val localLastUpdated = sharedPrefs.getLong("last_local_update", 0L)
-
-                val taskSource = com.google.android.gms.tasks.Tasks.await(userDocRef.get())
-                if (taskSource.exists()) {
-                    remoteDocExists = true
-                    remoteLastUpdated = taskSource.getLong("lastUpdatedAt") ?: 0L
-                    val hasUserStats = taskSource.get("userStats") != null
-                    if (hasUserStats) {
-                        try {
-                            val tprefs = getSecurePrefs()
-                            tprefs.edit().putBoolean("profile_completed_${user.uid}", true).apply()
-                            Log.d("TaqwaViewModel", "Bypassing profile setup flag set to true from Firestore task existence.")
-=======
                 val localLastUpdatedOnStart = sharedPrefs.getLong("last_local_update", 0L)
 
                 val taskSource = com.google.android.gms.tasks.Tasks.await(userDocRef.get())
@@ -7024,63 +6282,12 @@ Core Guidelines:
                             val stdPrefs = getApplication<Application>().getSharedPreferences("taqwa_prefs", android.content.Context.MODE_PRIVATE)
                             stdPrefs.edit().putBoolean("profile_completed_${user.uid}", true).apply()
                             Log.d("TaqwaViewModel", "Bypassing profile setup flag set to true from Firestore existence.")
->>>>>>> 6e834ed (Update Taqwahub)
                         } catch (e: Exception) {
                             Log.e("TaqwaViewModel", "Error saving profile sync exists key", e)
                         }
                     }
                 }
 
-<<<<<<< HEAD
-                Log.d("TaqwaViewModel", "Sync check: localLastUpdated=$localLastUpdated, remoteLastUpdated=$remoteLastUpdated")
-
-                if (remoteDocExists && (remoteLastUpdated > localLastUpdated || forcePull)) {
-                    Log.d("TaqwaViewModel", "Firebase is newer. Pulling remote data down to Room database...")
-                    
-                    val remoteStatsMap = taskSource.get("userStats") as? Map<String, Any>
-                    if (remoteStatsMap != null) {
-                        val stats = UserStatsEntity(
-                            id = 1,
-                            totalTasksCompleted = (remoteStatsMap["totalTasksCompleted"] as? Long)?.toInt() ?: 0,
-                            daysActive = (remoteStatsMap["daysActive"] as? Long)?.toInt() ?: 1,
-                            quranProgress = (remoteStatsMap["quranProgress"] as? Long)?.toInt() ?: 0,
-                            lastReadSurah = (remoteStatsMap["lastReadSurah"] as? Long)?.toInt() ?: 1,
-                            lastReadVerse = (remoteStatsMap["lastReadVerse"] as? Long)?.toInt() ?: 1,
-                            lastReadVerseKey = remoteStatsMap["lastReadVerseKey"] as? String ?: "1:1",
-                            tasbeehCount = (remoteStatsMap["tasbeehCount"] as? Long)?.toInt() ?: 0,
-                            lastResetDate = remoteStatsMap["lastResetDate"] as? String ?: "",
-                            currentStreak = (remoteStatsMap["currentStreak"] as? Long)?.toInt() ?: 0,
-                            streakChancesLeft = (remoteStatsMap["streakChancesLeft"] as? Long)?.toInt() ?: 2,
-                            longestStreak = (remoteStatsMap["longestStreak"] as? Long)?.toInt() ?: 0,
-                            totalXp = (remoteStatsMap["totalXp"] as? Long)?.toInt() ?: 0,
-                            weeklyXp = (remoteStatsMap["weeklyXp"] as? Long)?.toInt() ?: 0,
-                            lastActiveWeekOfYear = (remoteStatsMap["lastActiveWeekOfYear"] as? Long)?.toInt() ?: 0,
-                            name = remoteStatsMap["name"] as? String ?: "Servant of Allah",
-                            username = remoteStatsMap["username"] as? String ?: "",
-                            gender = remoteStatsMap["gender"] as? String ?: "Male",
-                            sectOrCast = remoteStatsMap["sectOrCast"] as? String ?: "Sunni",
-                            email = remoteStatsMap["email"] as? String ?: (user.email ?: ""),
-                            completedSurahs = remoteStatsMap["completedSurahs"] as? String ?: "",
-                            firstPlaceCount = (remoteStatsMap["firstPlaceCount"] as? Long)?.toInt() ?: 0,
-                            secondPlaceCount = (remoteStatsMap["secondPlaceCount"] as? Long)?.toInt() ?: 0,
-                            thirdPlaceCount = (remoteStatsMap["thirdPlaceCount"] as? Long)?.toInt() ?: 0,
-                            isBlocked = remoteStatsMap["isBlocked"] as? Boolean ?: false,
-                            isVerified = remoteStatsMap["isVerified"] as? Boolean ?: false,
-                            profilePictureBase64 = remoteStatsMap["profilePictureBase64"] as? String ?: "",
-                            lastWeekXp = (remoteStatsMap["lastWeekXp"] as? Long)?.toInt() ?: 0,
-                            lastWeekCode = (remoteStatsMap["lastWeekCode"] as? Long)?.toInt() ?: 0
-                        )
-                        repository.taqwaDao.insertUserStats(stats)
-                    }
-
-                    val remoteTasksList = taskSource.get("tasks") as? List<Map<String, Any>>
-                    if (remoteTasksList != null) {
-                        val tasks = remoteTasksList.map {
-                            TaskEntity(
-                                id = it["id"] as? String ?: "",
-                                title = it["title"] as? String ?: "",
-                                completed = it["completed"] as? Boolean ?: false,
-=======
                 val remoteAdminUpdated = if (taskSource.exists()) taskSource.getLong("adminUpdatedTimestamp") ?: 0L else 0L
                 val currentLocalStats = repository.taqwaDao.getUserStatsDirect()
                 val localTasks = repository.taqwaDao.getAllTasksDirect()
@@ -7171,7 +6378,6 @@ Core Guidelines:
                                 id = tid,
                                 title = it["title"] as? String ?: "",
                                 completed = isBufferedCompleted || (it["completed"] as? Boolean ?: false),
->>>>>>> 6e834ed (Update Taqwahub)
                                 category = it["category"] as? String ?: "",
                                 description = it["description"] as? String ?: "",
                                 points = (it["points"] as? Long)?.toInt() ?: 10,
@@ -7181,12 +6387,8 @@ Core Guidelines:
                                 isAuto = it["isAuto"] as? Boolean ?: false,
                                 autoType = it["autoType"] as? String ?: "",
                                 autoTarget = (it["autoTarget"] as? Long)?.toInt() ?: 0,
-<<<<<<< HEAD
-                                autoProgress = (it["autoProgress"] as? Long)?.toInt() ?: 0,
-=======
                                 autoProgress = if (isBufferedCompleted) ((it["autoTarget"] as? Long)?.toInt() ?: 0) else ((it["autoProgress"] as? Long)?.toInt() ?: 0),
                                 targetSurahNumber = (it["targetSurahNumber"] as? Long)?.toInt(),
->>>>>>> 6e834ed (Update Taqwahub)
                                 actionRoute = it["actionRoute"] as? String ?: ""
                             )
                         }.filter { it.id.isNotEmpty() }
@@ -7231,8 +6433,6 @@ Core Guidelines:
                             )
                             repository.taqwaDao.insertAllTimeTask(info)
                         }
-<<<<<<< HEAD
-=======
                         val streakRes = repository.recalculateAndSaveStreak()
                         if (streakRes.shieldConsumedForDate != null) {
                             withContext(Dispatchers.Main) {
@@ -7240,7 +6440,6 @@ Core Guidelines:
                                 showShieldActivatedCelebration = true
                             }
                         }
->>>>>>> 6e834ed (Update Taqwahub)
                     }
 
                     val remoteAiChatState = taskSource.get("aiChatState") as? Map<String, Any>
@@ -7299,12 +6498,6 @@ Core Guidelines:
                         }
                     }
 
-<<<<<<< HEAD
-                    sharedPrefs.edit().putLong("last_local_update", remoteLastUpdated).apply()
-                    Log.d("TaqwaViewModel", "Room Database successfully in sync with Firestore!")
-                } else {
-                    Log.d("TaqwaViewModel", "Local data is newer or Firestore is empty. Pushing up to Firestore...")
-=======
                     sharedPrefs.edit().putLong("last_local_update", maxOf(remoteLastUpdated, System.currentTimeMillis())).apply()
                     Log.d("TaqwaViewModel", "Room Database successfully in sync with Firestore!")
                     
@@ -7316,15 +6509,12 @@ Core Guidelines:
                     pendingCompletedSurahsBuffer.clear()
                 } else {
                     Log.d("TaqwaViewModel", "Local data is newer. Pushing up to Firestore...")
->>>>>>> 6e834ed (Update Taqwahub)
                     
                     var stats = repository.getUserStats()
                     if (stats.email.isBlank() && !user.email.isNullOrBlank()) {
                         stats = stats.copy(email = user.email!!)
                         repository.saveUserStats(stats)
                     }
-<<<<<<< HEAD
-=======
 
                     // Preserve remote username/name if local is blank
                     val safeName = if (stats.name.isNotBlank()) stats.name else ((remoteStatsMap?.get("name") as? String) ?: (taskSource.get("name") as? String) ?: "")
@@ -7342,7 +6532,6 @@ Core Guidelines:
                         repository.taqwaDao.insertUserStats(stats)
                     }
 
->>>>>>> 6e834ed (Update Taqwahub)
                     val tasksList = repository.taqwaDao.getAllTasksDirect()
                     val bookmarksList = repository.taqwaDao.getAllBookmarksDirect()
                     val allTimeList = repository.taqwaDao.getAllTimeTasksDirect()
@@ -7359,9 +6548,6 @@ Core Guidelines:
                         "tasbeehCount" to stats.tasbeehCount,
                         "lastResetDate" to stats.lastResetDate,
                         "currentStreak" to stats.currentStreak,
-<<<<<<< HEAD
-                        "streakChancesLeft" to stats.streakChancesLeft,
-=======
                         "streakChancesLeft" to stats.streakShields,
                         "streakShields" to stats.streakShields,
                         "maxShields" to stats.maxShields,
@@ -7370,7 +6556,6 @@ Core Guidelines:
                         "lastActiveDate" to stats.lastActiveDate,
                         "lastShieldUsedDate" to stats.lastShieldUsedDate,
                         "streakRepairsAvailable" to stats.streakRepairsAvailable,
->>>>>>> 6e834ed (Update Taqwahub)
                         "longestStreak" to stats.longestStreak,
                         "totalXp" to stats.totalXp,
                         "weeklyXp" to stats.weeklyXp,
@@ -7406,10 +6591,7 @@ Core Guidelines:
                             "autoType" to it.autoType,
                             "autoTarget" to it.autoTarget,
                             "autoProgress" to it.autoProgress,
-<<<<<<< HEAD
-=======
                             "targetSurahNumber" to it.targetSurahNumber,
->>>>>>> 6e834ed (Update Taqwahub)
                             "actionRoute" to it.actionRoute
                         )
                     }
@@ -7459,13 +6641,10 @@ Core Guidelines:
                     val dataPayload = hashMapOf(
                         "uid" to user.uid,
                         "email" to (user.email ?: ""),
-<<<<<<< HEAD
-=======
                         "name" to stats.name,
                         "username" to stats.username,
                         "gender" to stats.gender,
                         "sectOrCast" to stats.sectOrCast,
->>>>>>> 6e834ed (Update Taqwahub)
                         "lastUpdatedAt" to firebaseTimestamp,
                         "userStats" to statsMap,
                         "tasks" to tasksSerialized,
@@ -7474,16 +6653,10 @@ Core Guidelines:
                         "aiChatState" to aiChatStateMap
                     )
 
-<<<<<<< HEAD
-                    com.google.android.gms.tasks.Tasks.await(userDocRef.set(dataPayload))
-                    
-                    sharedPrefs.edit().putLong("last_local_update", firebaseTimestamp).apply()
-=======
                     // Update last_local_update BEFORE the network call to prevent snapshot listener race conditions
                     sharedPrefs.edit().putLong("last_local_update", firebaseTimestamp).apply()
 
                     com.google.android.gms.tasks.Tasks.await(userDocRef.set(dataPayload, com.google.firebase.firestore.SetOptions.merge()))
->>>>>>> 6e834ed (Update Taqwahub)
                     Log.d("TaqwaViewModel", "Local database state pushed successfully to Firestore!")
                 }
             } catch (err: Throwable) {
@@ -7504,8 +6677,6 @@ Core Guidelines:
         triggerFirebaseSync()
     }
 
-<<<<<<< HEAD
-=======
     fun markLocalUpdateAndSyncDebounced() {
         val sharedPrefs = getApplication<Application>().getSharedPreferences("taqwahub_sync", android.content.Context.MODE_PRIVATE)
         sharedPrefs.edit().putLong("last_local_update", System.currentTimeMillis()).apply()
@@ -7517,7 +6688,6 @@ Core Guidelines:
         }
     }
 
->>>>>>> 6e834ed (Update Taqwahub)
     fun updateCustomAdhanUri(uri: String?) {
         customAdhanUri = uri
         val prefs = getSecurePrefs()
@@ -7588,11 +6758,6 @@ Core Guidelines:
         }
     }
 
-<<<<<<< HEAD
-    override fun onCleared() {
-        super.onCleared()
-        audioPlayerHelper.release()
-=======
     fun isModuleLocked(moduleId: String): Boolean {
         return when (moduleId) {
             "quran" -> appConfig.isQuranLocked || appConfig.isQuranPageLocked
@@ -7924,7 +7089,6 @@ Core Guidelines:
         currentUserDocListener?.remove()
         appConfigListenerRegistration?.remove()
         adminsListenerRegistration?.remove()
->>>>>>> 6e834ed (Update Taqwahub)
     }
 }
 

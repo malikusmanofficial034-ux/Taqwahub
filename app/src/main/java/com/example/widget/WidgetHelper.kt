@@ -6,24 +6,15 @@ import com.example.data.api.AladhanTimings
 object WidgetHelper {
     private const val PREFS_NAME = "taqwahub_widget_prefs"
 
-<<<<<<< HEAD
-    fun savePrayerTimes(context: Context, timings: AladhanTimings) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit()
-=======
     fun savePrayerTimes(context: Context, timings: AladhanTimings, timezone: String? = null) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
->>>>>>> 6e834ed (Update Taqwahub)
             .putString("fajr", timings.Fajr)
             .putString("sunrise", timings.Sunrise)
             .putString("dhuhr", timings.Dhuhr)
             .putString("asr", timings.Asr)
             .putString("maghrib", timings.Maghrib)
             .putString("isha", timings.Isha)
-<<<<<<< HEAD
-            .apply()
-=======
         if (timezone != null) {
             editor.putString("timezone", timezone)
         }
@@ -33,7 +24,6 @@ object WidgetHelper {
     fun getPrayerTimezone(context: Context): String {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString("timezone", "") ?: ""
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     fun getPrayerTimes(context: Context): Map<String, String> {
@@ -47,8 +37,6 @@ object WidgetHelper {
             "Isha" to (prefs.getString("isha", "") ?: "")
         )
     }
-<<<<<<< HEAD
-=======
 
     fun getPrayerTimesTimings(context: Context): AladhanTimings? {
         val map = getPrayerTimes(context)
@@ -63,5 +51,4 @@ object WidgetHelper {
             Isha = map["Isha"] ?: ""
         )
     }
->>>>>>> 6e834ed (Update Taqwahub)
 }

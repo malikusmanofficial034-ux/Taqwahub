@@ -4,32 +4,22 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Index
 
-<<<<<<< HEAD
-@Entity(tableName = "downloaded_hadiths", indices = [Index(value = ["bookKey"])])
-=======
 @Entity(tableName = "downloaded_hadiths", indices = [Index(value = ["bookKey"]), Index(value = ["bookKey", "chapterNumber"])])
->>>>>>> 6e834ed (Update Taqwahub)
 data class HadithEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val bookKey: String,
     val hadithNumber: Int,
-<<<<<<< HEAD
-=======
     val bookNumber: Int = 1,
     val chapterNumber: Int = 1,
     val chapterNameEng: String = "General",
     val chapterNameAra: String = "عام",
     val chapterNameUrd: String = "عام",
->>>>>>> 6e834ed (Update Taqwahub)
     val arabic: String,
     val english: String,
     val urdu: String,
     val narrator: String,
     val chapter: String,
-<<<<<<< HEAD
-=======
     val grade: String = "Sahih",
->>>>>>> 6e834ed (Update Taqwahub)
     val source: String
 )
 
@@ -50,10 +40,7 @@ data class TaskEntity(
     val autoType: String = "", // "TASBEEH", "SURAH", "HADITH", "DUA", "99_NAMES"
     val autoTarget: Int = 0, // e.g., 100 for tasbeeh, 600 for surah time (seconds)
     val autoProgress: Int = 0,
-<<<<<<< HEAD
-=======
     val targetSurahNumber: Int? = null, // Specific Surah number (e.g., 67 for Al-Mulk, 18 for Al-Kahf) or null for Universal tasks
->>>>>>> 6e834ed (Update Taqwahub)
     val actionRoute: String = "" // Navigation route if the user clicks the task, e.g., "tasbeeh", "quran", "dua"
 )
 
@@ -90,21 +77,12 @@ data class UserStatsEntity(
     val tasbeehCount: Int = 0,
     val lastResetDate: String = "",
     val currentStreak: Int = 0,
-<<<<<<< HEAD
-    val name: String = "Servant of Allah",
-    val username: String = "",
-    val gender: String = "Male",
-    val sectOrCast: String = "Sunni",
-    val email: String = "",
-    val streakChancesLeft: Int = 2,
-=======
     val name: String = "",
     val username: String = "",
     val gender: String = "",
     val sectOrCast: String = "",
     val email: String = "",
     val streakChancesLeft: Int = 0,
->>>>>>> 6e834ed (Update Taqwahub)
     val longestStreak: Int = 0,
     val totalXp: Int = 0,
     val weeklyXp: Int = 0,
@@ -117,9 +95,6 @@ data class UserStatsEntity(
     val isVerified: Boolean = false,
     val profilePictureBase64: String = "",
     val lastWeekXp: Int = 0,
-<<<<<<< HEAD
-    val lastWeekCode: Int = 0
-=======
     val lastWeekCode: Int = 0,
     val lastActiveDate: String = "",
     val streakShields: Int = 0,
@@ -128,5 +103,4 @@ data class UserStatsEntity(
     val activeDates: String = "",
     val lastShieldUsedDate: String = "",
     val streakRepairsAvailable: Int = 1
->>>>>>> 6e834ed (Update Taqwahub)
 )

@@ -17,20 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-<<<<<<< HEAD
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
-
-class TaqwaRepository(val taqwaDao: TaqwaDao) {
-
-    // OkHttp Client with interceptor and timeouts
-    private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-=======
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.text.SimpleDateFormat
@@ -59,7 +45,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         }
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.HEADERS
->>>>>>> 6e834ed (Update Taqwahub)
         })
         .build()
 
@@ -105,10 +90,7 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         .create(OpenRouterApiService::class.java)
 
     var cachedPrayerTimes: AladhanTimings? = null
-<<<<<<< HEAD
-=======
     var cachedTimezone: String? = null
->>>>>>> 6e834ed (Update Taqwahub)
 
     // Flow properties for reactive UI binds
     val tasksFlow: Flow<List<TaskEntity>> = taqwaDao.getAllTasksFlow()
@@ -139,8 +121,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         if (currentTasks.isEmpty()) {
             val defaults = TaskGenerator.generateTasksForToday()
             taqwaDao.insertAllTasks(defaults)
-<<<<<<< HEAD
-=======
         } else {
             val defaults = TaskGenerator.generateTasksForToday()
             val missingTasks = defaults.filter { defaultTask ->
@@ -149,7 +129,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             if (missingTasks.isNotEmpty()) {
                 taqwaDao.insertAllTasks(missingTasks)
             }
->>>>>>> 6e834ed (Update Taqwahub)
         }
         recalculateAndSaveStreak()
     }
@@ -339,74 +318,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         taqwaDao.insertAllTasks(defaults)
     }
 
-<<<<<<< HEAD
-    // Toggle Task completion and save to stats
-    suspend fun toggleTaskCompletion(taskId: String, isCompleted: Boolean): Boolean = withContext(Dispatchers.IO) {
-        val currentTasks = taqwaDao.getAllTasksDirect()
-        val task = currentTasks.find { it.id == taskId } ?: return@withContext false
-
-        // Advance check & missed checks enforcement for prayer tasks
-        val isPrayerTask = task.title in listOf("Offer Fajr Namaz", "Offer Dhuhr Namaz", "Offer Asr Namaz", "Offer Maghrib Namaz", "Offer Isha Namaz")
-        if (isPrayerTask) {
-            val ranges = getPrayerRanges(cachedPrayerTimes)
-            val range = ranges.find { it.taskTitle == task.title }
-            if (range != null) {
-                val now = Date()
-                if (now < range.start) {
-                    return@withContext false // Locked (Advance)
-                }
-                if (now > range.end) {
-                    return@withContext false // Locked (Missed)
-                }
-            }
-        }
-
-        val updatedTask = task.copy(completed = isCompleted)
-        taqwaDao.insertTask(updatedTask)
-
-        val todayStr = getPakistanDateString()
-        val allTimeId = "${taskId}_${todayStr}"
-
-        if (isCompleted) {
-            // Save to historical completions log
-            val log = AllTimeTaskEntity(
-                id = allTimeId,
-                taskId = taskId,
-                title = task.title,
-                category = task.category,
-                date = todayStr,
-                completedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).apply {
-                    timeZone = TimeZone.getTimeZone("UTC")
-                }.format(Date())
-            )
-            taqwaDao.insertAllTimeTask(log)
-        } else {
-            taqwaDao.deleteAllTimeTaskById(allTimeId)
-            taqwaDao.deleteAllTimeTaskById("${taskId}_${todayStr}_MISSED")
-        }
-
-        // Update overall total tasks completed count & XP points
-        val currentStats = taqwaDao.getUserStatsDirect() ?: UserStatsEntity()
-        val newTotalCompleted = if (isCompleted) {
-            currentStats.totalTasksCompleted + 1
-        } else {
-            kotlin.math.max(0, currentStats.totalTasksCompleted - 1)
-        }
-
-        val pointsToChange = if (isCompleted) task.points else -task.points
-        val newTotalXp = kotlin.math.max(0, currentStats.totalXp + pointsToChange)
-        val newWeeklyXp = kotlin.math.max(0, currentStats.weeklyXp + pointsToChange)
-
-        taqwaDao.insertUserStats(
-            currentStats.copy(
-                totalTasksCompleted = newTotalCompleted,
-                totalXp = newTotalXp,
-                weeklyXp = newWeeklyXp
-            )
-        )
-        recalculateAndSaveStreak()
-        return@withContext true
-=======
     // Toggle Task completion and save to stats (100% idempotent, thread-safe & non-blocking)
     suspend fun toggleTaskCompletion(taskId: String, isCompleted: Boolean): Boolean = withContext(Dispatchers.IO) {
         taskMutex.withLock {
@@ -485,7 +396,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             recalculateAndSaveStreak()
             return@withLock true
         }
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     private fun isTaskForSurah(taskTitle: String, surahId: Int): Boolean {
@@ -534,57 +444,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
     }
 
     suspend fun updateAutoTaskProgress(autoType: String, amount: Int, contextId: Int? = null): Boolean = withContext(Dispatchers.IO) {
-<<<<<<< HEAD
-        val currentTasks = taqwaDao.getAllTasksDirect()
-        var completedAny = false
-        currentTasks.filter { it.isAuto && !it.completed && it.autoType == autoType }.forEach { task ->
-            if (autoType == "SURAH" && contextId != null) {
-                if (!isTaskForSurah(task.title, contextId)) {
-                    return@forEach
-                }
-            }
-            if (autoType == "TASBEEH" && contextId != null) {
-                if (!isTaskForTasbeeh(task.title, contextId)) {
-                    return@forEach
-                }
-            }
-
-            val newProgress = task.autoProgress + amount
-            if (newProgress >= task.autoTarget) {
-                // Completed!
-                taqwaDao.insertTask(task.copy(autoProgress = task.autoTarget, completed = true))
-                
-                val todayStr = getPakistanDateString()
-                val allTimeId = "${task.id}_${todayStr}"
-                val log = AllTimeTaskEntity(
-                    id = allTimeId,
-                    taskId = task.id,
-                    title = task.title,
-                    category = task.category,
-                    date = todayStr,
-                    completedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US).apply {
-                        timeZone = TimeZone.getTimeZone("UTC")
-                    }.format(Date())
-                )
-                taqwaDao.insertAllTimeTask(log)
-
-                // Add XP
-                val currentStats = taqwaDao.getUserStatsDirect() ?: UserStatsEntity()
-                taqwaDao.insertUserStats(
-                    currentStats.copy(
-                        totalTasksCompleted = currentStats.totalTasksCompleted + 1,
-                        totalXp = currentStats.totalXp + task.points,
-                        weeklyXp = currentStats.weeklyXp + task.points
-                    )
-                )
-                completedAny = true
-            } else {
-                taqwaDao.insertTask(task.copy(autoProgress = newProgress))
-            }
-        }
-        if (completedAny) recalculateAndSaveStreak()
-        return@withContext completedAny
-=======
         taskMutex.withLock {
             val currentTasks = taqwaDao.getAllTasksDirect()
             var completedAny = false
@@ -871,7 +730,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             }
             return@withLock completedTasks
         }
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     data class PrayerRange(val taskTitle: String, val start: Date, val end: Date)
@@ -884,24 +742,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         val m = timings?.Maghrib?.ifEmpty { "18:45" } ?: "18:45"
         val i = timings?.Isha?.ifEmpty { "20:15" } ?: "20:15"
 
-<<<<<<< HEAD
-        val todayDateStr = getPakistanDateString()
-
-        val todayFajr = parseTimeStr(todayDateStr, f)
-        val todaySunrise = parseTimeStr(todayDateStr, s)
-        val todayDhuhr = parseTimeStr(todayDateStr, d)
-        val todayAsr = parseTimeStr(todayDateStr, a)
-        val todayMaghrib = parseTimeStr(todayDateStr, m)
-        val todayIsha = parseTimeStr(todayDateStr, i)
-
-        val tomorrowCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Karachi")).apply {
-            add(Calendar.DAY_OF_YEAR, 1)
-        }
-        val tomorrowDateStr = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Karachi")
-        }.format(tomorrowCal.time)
-        val tomorrowFajr = parseTimeStr(tomorrowDateStr, f)
-=======
         val tzString = cachedTimezone
         val tz = if (!tzString.isNullOrEmpty()) {
             TimeZone.getTimeZone(tzString)
@@ -927,30 +767,17 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             timeZone = tz
         }.format(tomorrowCal.time)
         val tomorrowFajr = parseTimeStr(tomorrowDateStr, f, tz)
->>>>>>> 6e834ed (Update Taqwahub)
 
         return listOf(
             PrayerRange("Offer Fajr Namaz", todayFajr, todaySunrise),
             PrayerRange("Offer Dhuhr Namaz", todayDhuhr, todayAsr),
-<<<<<<< HEAD
-=======
             PrayerRange("Offer Jummah Prayer", todayDhuhr, todayAsr),
->>>>>>> 6e834ed (Update Taqwahub)
             PrayerRange("Offer Asr Namaz", todayAsr, todayMaghrib),
             PrayerRange("Offer Maghrib Namaz", todayMaghrib, todayIsha),
             PrayerRange("Offer Isha Namaz", todayIsha, tomorrowFajr)
         )
     }
 
-<<<<<<< HEAD
-    private fun parseTimeStr(dateStr: String, timeStr: String): Date {
-        val cleanTime = timeStr.replace(Regex("\\s\\(.*?\\)"), "")
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Karachi")
-        }
-        return try {
-            format.parse("$dateStr $cleanTime") ?: Date()
-=======
     private fun parseTimeStr(dateStr: String, timeStr: String, tz: TimeZone = TimeZone.getDefault() ?: TimeZone.getTimeZone("Asia/Karachi")): Date {
         val cleanTime = timeStr.replace(Regex("\\s\\(.*?\\)"), "").trim()
         val format24 = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).apply {
@@ -965,7 +792,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             } else {
                 format24.parse("$dateStr $cleanTime") ?: Date()
             }
->>>>>>> 6e834ed (Update Taqwahub)
         } catch (e: Exception) {
             Date()
         }
@@ -975,22 +801,14 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         val todayStr = getPakistanDateString()
         val allTasks = taqwaDao.getAllTasksDirect()
         val prayerTasks = allTasks.filter {
-<<<<<<< HEAD
-            it.title in listOf("Offer Fajr Namaz", "Offer Dhuhr Namaz", "Offer Asr Namaz", "Offer Maghrib Namaz", "Offer Isha Namaz")
-=======
             it.title in listOf("Offer Fajr Namaz", "Offer Dhuhr Namaz", "Offer Asr Namaz", "Offer Maghrib Namaz", "Offer Isha Namaz", "Offer Jummah Prayer")
->>>>>>> 6e834ed (Update Taqwahub)
         }
 
         val ranges = getPrayerRanges(cachedPrayerTimes)
         val now = Date()
 
         prayerTasks.forEach { task ->
-<<<<<<< HEAD
-            val range = ranges.find { it.taskTitle == task.title }
-=======
             val range = ranges.find { it.taskTitle == task.title || (task.title == "Offer Jummah Prayer" && it.taskTitle == "Offer Dhuhr Namaz") }
->>>>>>> 6e834ed (Update Taqwahub)
             if (range != null) {
                 if (now > range.end && !task.completed) {
                     val missedLogId = "${task.id}_${todayStr}_MISSED"
@@ -1031,17 +849,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
                 )
             )
 
-<<<<<<< HEAD
-            // Clear old system tasks and add today's system tasks
-            taqwaDao.clearSystemTasks()
-            val newSystemTasks = TaskGenerator.generateTasksForToday()
-            taqwaDao.insertAllTasks(newSystemTasks)
-
-            // Reset manual tasks completions (that the user created)
-            val tasks = taqwaDao.getAllTasksDirect()
-            val resetTasks = tasks.map { it.copy(completed = false, autoProgress = 0) }
-            taqwaDao.insertAllTasks(resetTasks)
-=======
             // Extract existing user-created custom tasks
             val existingManualTasks = taqwaDao.getAllTasksDirect().filter { !it.isSystemTask }
             val resetManualTasks = existingManualTasks.map { it.copy(completed = false, autoProgress = 0) }
@@ -1051,7 +858,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
             val newSystemTasks = TaskGenerator.generateTasksForToday()
             val combinedTasks = (newSystemTasks + resetManualTasks).distinctBy { it.id }
             taqwaDao.insertAllTasks(combinedTasks)
->>>>>>> 6e834ed (Update Taqwahub)
             recalculateAndSaveStreak()
             return@withContext true
         }
@@ -1059,17 +865,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         return@withContext false
     }
 
-<<<<<<< HEAD
-    data class StreakInfo(val currentStreak: Int, val chancesUsed: Int)
-
-    fun calculateStreakInfo(completedDates: List<String>, maxChancesAvailable: Int = 2): StreakInfo {
-        if (completedDates.isEmpty()) return StreakInfo(0, 0)
-        val uniqueDatesSet = completedDates.map { it.trim() }.filter { it.isNotEmpty() }.toSet()
-        if (uniqueDatesSet.isEmpty()) return StreakInfo(0, 0)
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        sdf.timeZone = TimeZone.getTimeZone("Asia/Karachi")
-=======
     data class StreakInfo(
         val currentStreak: Int,
         val longestStreak: Int,
@@ -1087,7 +882,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
             timeZone = TimeZone.getTimeZone("Asia/Karachi")
         }
->>>>>>> 6e834ed (Update Taqwahub)
 
         val todayCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Karachi"))
         val todayStr = sdf.format(todayCal.time)
@@ -1097,61 +891,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
         }
         val yesterdayStr = sdf.format(yesterdayCal.time)
 
-<<<<<<< HEAD
-        var currentCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Karachi"))
-        var currentDateStr = sdf.format(currentCal.time)
-        
-        // If today is not completed, check if yesterday was completed.
-        // If yesterday was completed, we start from yesterday (ongoing active streak is preserved).
-        // Otherwise, if both are missed, start today and consume chances for both.
-        if (!uniqueDatesSet.contains(currentDateStr) && uniqueDatesSet.contains(yesterdayStr)) {
-            currentCal.add(Calendar.DAY_OF_YEAR, -1)
-            currentDateStr = sdf.format(currentCal.time)
-        }
-
-        var streak = 0
-        var chancesUsed = 0
-        var consecutiveMissedDays = 0
-
-        for (day in 0..365) {
-            val dateStr = sdf.format(currentCal.time)
-            if (uniqueDatesSet.contains(dateStr)) {
-                streak++
-                consecutiveMissedDays = 0
-            } else {
-                if (chancesUsed < maxChancesAvailable) {
-                    chancesUsed++
-                    consecutiveMissedDays++
-                } else {
-                    break
-                }
-            }
-
-            if (consecutiveMissedDays > maxChancesAvailable) {
-                break
-            }
-
-            currentCal.add(Calendar.DAY_OF_YEAR, -1)
-        }
-
-        return StreakInfo(streak, chancesUsed)
-    }
-
-    suspend fun recalculateAndSaveStreak() = withContext(Dispatchers.IO) {
-        val allTimeLogs = taqwaDao.getAllTimeTasksDirect()
-        val completedDates = allTimeLogs.filter { it.completedAt != "MISSED" }.map { it.date }
-        val info = calculateStreakInfo(completedDates)
-
-        val currentStats = taqwaDao.getUserStatsDirect() ?: UserStatsEntity()
-        val newLongest = kotlin.math.max(currentStats.longestStreak, info.currentStreak)
-        taqwaDao.insertUserStats(
-            currentStats.copy(
-                currentStreak = info.currentStreak,
-                longestStreak = newLongest,
-                streakChancesLeft = maxOf(0, 2 - info.chancesUsed)
-            )
-        )
-=======
         val uniqueCompletedSet = completedDates.map { it.trim() }.filter { it.isNotEmpty() }.toSet()
         val frozenSet = existingFrozenDates.map { it.trim() }.filter { it.isNotEmpty() }.toMutableSet()
 
@@ -1272,7 +1011,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
 
         taqwaDao.insertUserStats(updatedStats)
         return@withContext info
->>>>>>> 6e834ed (Update Taqwahub)
     }
 
     // Save and load general statistics
@@ -1372,13 +1110,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
     }
 
     // Fetch Prayer Times
-<<<<<<< HEAD
-    suspend fun fetchPrayerTimes(lat: Double, lng: Double): AladhanTimings? {
-        return try {
-            val response = aladhanApi.getTimings(lat, lng)
-            if (response.code == 200) {
-                response.data?.timings
-=======
     suspend fun fetchPrayerTimes(lat: Double, lng: Double): Pair<AladhanTimings, String>? {
         return try {
             val response = aladhanApi.getTimings(lat, lng)
@@ -1390,7 +1121,6 @@ class TaqwaRepository(val taqwaDao: TaqwaDao, cacheDir: File? = null) {
                     cachedTimezone = timezone
                 }
                 if (timings != null) Pair(timings, timezone) else null
->>>>>>> 6e834ed (Update Taqwahub)
             } else {
                 null
             }

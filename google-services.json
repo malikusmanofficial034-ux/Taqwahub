@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1004556711832",
+    "project_id": "taqwahub-ai",
+    "storage_bucket": "taqwahub-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004556711832:android:d2f2f613d5b371326b9ded",
+        "android_client_info": {
+          "package_name": "com.taqwahub.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004556711832-2b58ctsokl900ro3qskpg6303bp0lsml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASgXuyQfVWstIVOBrJ6u8fzZmtyb_lJe4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004556711832-2b58ctsokl900ro3qskpg6303bp0lsml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,54 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // --- HELPER FUNCTIONS ---
+
+    // Checks if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Checks if the request owns the path or UID
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper to query firestore admin permissions during operations (requires integration enabled)
+    function isAdmin() {
+      return isAuthenticated() &&
+        firestore.exists(/databases/(default)/documents/system/admins) && (
+          request.auth.token.email.toLowerCase() in firestore.get(/databases/(default)/documents/system/admins).data.emails ||
+          request.auth.token.email.toLowerCase() in firestore.get(/databases/(default)/documents/system/admins).data.superAdmins
+        );
+    }
+
+    // --- STORAGE PATH MATCHES ---
+
+    // 1. User screenshot attachments for Support/Bug reports
+    match /user_uploads/bug_reports/{userId}/{fileName} {
+      // Allow read access to the ticket creator and administrative teams
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Allow users to upload images up to 5MB, strictly restricting to non-executable image mime-types
+      allow write: if isOwner(userId) && 
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      request.resource.contentType.matches('image/.*');
+    }
+
+    // 2. Custom Adhan Audio overrides uploaded by administrators
+    match /system_assets/adhan_audio/{fileName} {
+      // Anyone can stream/download standard adhan audio previews
+      allow read: if true;
+      // Writing custom official ringtones requires administrative clearance
+      allow write: if isAdmin() && 
+                      request.resource.size < 15 * 1024 * 1024 &&
+                      (request.resource.contentType.matches('audio/.*') || request.resource.contentType.matches('application/octet-stream'));
+    }
+
+    // 3. User backups and configurations
+    match /user_backups/{userId}/{fileName} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

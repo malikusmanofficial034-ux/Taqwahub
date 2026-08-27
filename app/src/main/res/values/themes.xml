@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.MyApplication" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#043325</item>
+        <item name="android:navigationBarColor">#0A4636</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background, animated icon, and post splash screen theme. -->
+        <item name="windowSplashScreenBackground">#022C22</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/mosque_hex_022c22_1780678493967</item>
+        <item name="postSplashScreenTheme">@style/Theme.MyApplication</item>
+    </style>
+</resources>

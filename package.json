@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@kazishariar/hisnul-muslim-data": "^1.0.3",
+    "@shkomaghdid/react-native-prayer-times": "^1.0.1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "TaqwaHub",
+  "description": "A comprehensive Islamic companion app featuring Quran, Hadith, Prayer Timings, Tasbeeh counter, and AI-powered Islamic assistance.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

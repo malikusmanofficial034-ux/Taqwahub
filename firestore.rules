@@ -1,0 +1,135 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- HELPER FUNCTIONS ---
+
+    // Checks if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Checks if the authenticated user matches the target resource/userId
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Checks if the authenticated user's email is present in the admin lists or is the hardcoded admin
+    function isAdmin() {
+      return isAuthenticated() && (
+        "email" in request.auth.token &&
+        request.auth.token.email != null && (
+          request.auth.token.email.lower() == "kb1747038@gmail.com" ||
+          (exists(/databases/$(database)/documents/system/admins) && (
+            ("emails" in get(/databases/$(database)/documents/system/admins).data && request.auth.token.email.lower() in get(/databases/$(database)/documents/system/admins).data.emails) ||
+            ("superAdmins" in get(/databases/$(database)/documents/system/admins).data && request.auth.token.email.lower() in get(/databases/$(database)/documents/system/admins).data.superAdmins)
+          ))
+        )
+      );
+    }
+
+    // Checks if the authenticated user's email is a Super Admin
+    function isSuperAdmin() {
+      return isAuthenticated() && (
+        "email" in request.auth.token &&
+        request.auth.token.email != null && (
+          request.auth.token.email.lower() == "kb1747038@gmail.com" ||
+          (exists(/databases/$(database)/documents/system/admins) && 
+            "superAdmins" in get(/databases/$(database)/documents/system/admins).data &&
+            request.auth.token.email.lower() in get(/databases/$(database)/documents/system/admins).data.superAdmins
+          )
+        )
+      );
+    }
+
+    // --- COLLECTION RULES ---
+
+    // 1. System Configurations
+    match /system/admins {
+      // Anyone authenticated can read admin lists to setup real-time listeners and adjust app visibility locally
+      allow read: if isAuthenticated();
+      // Only Super Admins can write new emails to prevent self-privilege escalation hacks
+      allow write: if isSuperAdmin();
+    }
+
+    match /system/maintenance {
+      // Allow unrestricted reads to allow both logged-in and guest profiles to verify maintenance statuses
+      allow read: if true;
+      // Writing/updating maintenance states requires administrative clearance
+      allow write: if isAdmin();
+    }
+
+    // 2. User Profiles and Synchronization states
+    match /users/{userId} {
+      // Anyone (including unauthenticated guests and new sign-ups) can check username availability or read profile details for the leaderboard.
+      // This solves the issue where username checking fails prior to being fully authenticated.
+      allow read: if true;
+      // Writing/updating is strictly restricted to the owner of the document or an admin.
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // 3. Community Content and Declarations
+    match /custom_duas/{duaId} {
+      // Accessible to everyone (both logged-in and guest profiles)
+      allow read: if true;
+      // Modifying community Duas is strictly authorized to admins only
+      allow write: if isAdmin();
+    }
+
+    match /custom_hadiths/{hadithId} {
+      // Accessible to everyone (both logged-in and guest profiles)
+      allow read: if true;
+      // Modifying community Hadith books is strictly authorized to admins only
+      allow write: if isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      // Allow general read checks for announcements for everyone
+      allow read: if true;
+      // Restrict write permissions to administrative roles
+      allow write: if isAdmin();
+    }
+
+    match /audio_overrides/{overrideId} {
+      // Accessible so client players can fetch remote audio override directives
+      allow read: if true;
+      // Only server admins can block/unblock media overrides
+      allow write: if isAdmin();
+    }
+
+    // 4. Incident Reports and Support Tickets
+    match /bug_reports/{reportId} {
+      // Users can read/list/update ONLY tickets they created. Admins can view and respond to ALL reports.
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      
+      // Creating a new bug report requires attaching the authenticated user's ID or "guest"
+      allow create: if request.resource.data.userId == "guest" || (isAuthenticated() && request.resource.data.userId == request.auth.uid);
+      
+      // Ensuring updates to support chats cannot mutate the owner ID or represent spoofed replies
+      allow update: if isAdmin() || (
+        isAuthenticated() && 
+        resource.data.userId == request.auth.uid && 
+        request.resource.data.userId == request.auth.uid
+      );
+      
+      // Deleting a ticket requires administrative privileges
+      allow delete: if isAdmin();
+    }
+
+    // 5. AI Chat Responses Feedback
+    match /ai_responses_feedback/{feedbackId} {
+      // Only admins can view, update, or delete feedback
+      allow read, update, delete: if isAdmin();
+      // Any authenticated user can create/submit feedback
+      allow create: if isAuthenticated();
+    }
+
+    // 6. Account Deletion Requests (from Website & App)
+    match /account_deletion_requests/{requestId} {
+      // Anyone can submit a deletion request from the website form
+      allow create: if true;
+      // Only admins can view, update, or delete deletion request documents in Firebase
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

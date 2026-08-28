@@ -1,11 +1,7 @@
 name: Build and Sign Android Release
 
 on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch: # Only runs when manually triggered with your confirmation via GitHub Actions UI
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"

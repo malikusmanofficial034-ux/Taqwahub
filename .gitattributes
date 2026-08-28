@@ -1,0 +1,8 @@
+# Prevent Git from corrupting binary files with line ending conversions (CRLF/LF)
+*.jar binary
+*.jks binary
+*.keystore binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.aar binary

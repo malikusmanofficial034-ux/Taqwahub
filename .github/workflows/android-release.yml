@@ -40,10 +40,13 @@ jobs:
         run: |
           keytool -list -v -keystore my-upload-key.jks -alias ${{ env.RELEASE_KEY_ALIAS }} -storepass ${{ secrets.RELEASE_STORE_PASSWORD }} -keypass ${{ secrets.RELEASE_KEY_PASSWORD }} | grep SHA1
 
+      - name: Make Gradlew Executable
+        run: chmod +x gradlew
+
       - name: Build Signed Release APK and Bundled AAB
-        run: gradle :app:assembleRelease :app:bundleRelease --stacktrace
+        run: ./gradlew :app:assembleRelease :app:bundleRelease --stacktrace
         env:
-          RELEASE_STORE_FILE: ../my-upload-key.jks
+          RELEASE_STORE_FILE: ${{ github.workspace }}/my-upload-key.jks
           RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ env.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
